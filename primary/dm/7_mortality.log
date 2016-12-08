@@ -1,0 +1,106 @@
+-----------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/
+> src/primary/dm/7_mortality.log
+  log type:  text
+ opened on:   6 Dec 2016, 13:28:29
+
+. 
+. *********************************************
+. * WASH Benefits Kenya
+. 
+. * Make analysis dataset: mortality
+. 
+. * by Jade
+. *********************************************
+. clear all
+
+. set more off
+
+. cd "~/Dropbox/WASHB-Kenya-Data/0-Untouched-Data/1-Main-survey/"
+/Users/jadederong/Dropbox/WASHB-Kenya-Data/0-Untouched-data/1-Mai
+> n-survey
+
+. 
+. 
+. use "3_Endline/msP_mortality_20161103.dta", clear
+
+. 
+. * merge in clusterid
+. merge m:1 childid using "msP_child_IDchar_20161103.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                         5,309
+        from master                         0  (_merge==1)
+        from using                      5,309  (_merge==2)
+
+    matched                             8,382  (_merge==3)
+    -----------------------------------------
+
+. * drop if not in death dataset
+. drop if _m==2
+(5,309 observations deleted)
+
+. drop _m
+
+. 
+. keep childid hhid clusterid childtype pregloss childdeath 
+
+. 
+. tostring clusterid, replace
+clusterid was double now str5
+
+. 
+. * merge in treatment info
+. merge m:1 clusterid using "~/Dropbox/WASHB-Kenya-Data/0-Untouch
+> ed-Data/0-Treatment-assignments/washb-kenya-tr.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                             0
+    matched                             8,382  (_merge==3)
+    -----------------------------------------
+
+. 
+. drop _m
+
+. 
+. order tr block clusterid hhid childid childtype pregloss childd
+> eath 
+
+. 
+. * drop if not live birth
+. drop if pregloss ==1
+(281 observations deleted)
+
+. drop pregloss
+
+. 
+. * recode childdeath
+. gen childdeathnew=childdeath
+
+. recode childdeathnew (2=0)
+(childdeathnew: 7774 changes made)
+
+. drop childdeath
+
+. ren childdeathnew childdeath
+
+. 
+. outsheet using "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-da
+> tasets/mortality.csv", comma replace
+(note: file /Users/jadederong/Dropbox/WASHB-Kenya-Data/1-primary-
+> outcome-datasets/mortality.csv not found)
+
+. 
+. 
+. 
+. 
+. log close
+      name:  <unnamed>
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/
+> src/primary/dm/7_mortality.log
+  log type:  text
+ closed on:   6 Dec 2016, 13:28:29
+-----------------------------------------------------------------

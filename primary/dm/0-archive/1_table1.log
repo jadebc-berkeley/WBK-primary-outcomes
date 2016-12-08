@@ -1,0 +1,604 @@
+----------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary
+> /dm/1_table1.log
+  log type:  text
+ opened on:  14 Oct 2016, 17:26:50
+
+. 
+. *********************************************
+. * WASH Benefits Kenya
+. 
+. * Make table 1 dataset
+. 
+. * by Jade
+. *********************************************
+. clear all
+
+. set more off
+
+. cd "~/Dropbox/WBK-primary-analysis/Data/Untouched/"
+/Users/jadederong/Dropbox/WBK-primary-analysis/Data/Untouched
+
+. 
+. use "Baseline/msP_bl_append_ID_clean_20161010.dta", clear
+
+. 
+. * -----------------------------------
+. * mother characteristics
+. * -----------------------------------
+. ren ms_bl_date date_baseline
+
+. 
+. * imputing missing day of birth as first day of the month 
+. replace b6_day=1 if b6_day==99 & b6_month!=99
+(1,109 real changes made)
+
+. replace b6_month=month(date_baseline) if b6_month==99 & b6_day!=99
+(41 real changes made)
+
+. 
+. gen dm_miss = 1 if b6_day==99 & b6_month==99
+(6,819 missing values generated)
+
+. replace b6_day=day(date_baseline) if dm_miss == 1
+(1,427 real changes made)
+
+. replace b6_month=month(date_baseline) if dm_miss == 1
+(1,427 real changes made)
+
+. drop dm_miss
+
+. 
+. gen mother_dob = .
+(8,246 missing values generated)
+
+. replace mother_dob = mdy(b6_month, b6_day, b6_year)
+(8,237 real changes made)
+
+. replace mother_dob=. if b6_year==9999
+(65 real changes made, 65 to missing)
+
+. 
+. format date_baseline mother_dob %d
+
+. 
+. gen mother_age = (date_baseline - mother_dob) / 365.25
+(74 missing values generated)
+
+. sum mother_age
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+  mother_age |      8,172    25.90161    6.343542   14.48597   50.00137
+
+. 
+. gen mother_edu = 0
+
+. replace mother_edu = 1 if b13_school >2 
+(3,926 real changes made)
+
+. replace mother_edu = . if b13_school ==. 
+(13 real changes made, 13 to missing)
+
+. 
+. * -----------------------------------
+. * father characteristics
+. * -----------------------------------
+. gen father_edu = (b14_spouse>2 & b14_spouse<99)
+
+. replace father_edu =. if b14_spouse==. 
+(376 real changes made, 376 to missing)
+
+. replace father_edu =. if b14_spouse==99
+(283 real changes made, 283 to missing)
+
+. 
+. gen father_agri = (b18_occ==1| b18_occ==2 | b18_occ==3)
+
+. replace father_agri =. if b18_occ==. 
+(377 real changes made, 377 to missing)
+
+. replace father_agri =. if b18_occ==99 
+(77 real changes made, 77 to missing)
+
+. 
+. * -----------------------------------
+. * compound info
+. * -----------------------------------
+. gen Nhh = a01_hh 
+(2 missing values generated)
+
+. gen Nppl = a6_gross
+(2 missing values generated)
+
+. 
+. * -----------------------------------
+. * household info
+. * -----------------------------------
+. gen u18 = a4_4t18 + a5_0t3
+(6 missing values generated)
+
+. 
+. gen elec = (b22a==1)
+
+. replace elec = . if b22a==. 
+(14 real changes made, 14 to missing)
+
+. 
+. gen cement = (b1_floor==3)
+
+. replace cement = . if b1_floor ==.
+(18 real changes made, 18 to missing)
+
+. 
+. gen roof = (b2_roof==2)
+
+. replace roof = . if b2_roof ==. 
+(6 real changes made, 6 to missing)
+
+. 
+. * -----------------------------------
+. * water
+. * -----------------------------------
+. label variable d8c_drink "Drink water from primary water source"
+
+. label variable d8c2_drink "Drink water from secondary water source"
+
+. 
+. ren d2 pws
+
+. ren d8c_drink drink_pws
+
+. ren d8c7 youdrink_pws
+
+. 
+. ren d3 sws
+
+. ren d8c2_drink drink_sws
+
+. ren d8c14 youdrink_sws
+
+. 
+. * if they drink from primary water source, is it improved
+. capture drop prim_water_imp
+
+. gen prim_water_imp = 0
+
+. replace prim_water_imp = 1 if (pws==1 | pws==4 | pws==6 | pws==7 | pws==11
+>  | pws==12) & (drink_pws==1 | youdrink_pws==1)
+(5,285 real changes made)
+
+. replace prim_water_imp = . if drink_pws==2 & youdrink_pws==2
+(986 real changes made, 986 to missing)
+
+. replace prim_water_imp = . if drink_pws==. & youdrink_pws==.
+(26 real changes made, 26 to missing)
+
+. 
+. * if they drink from secondary water source, is it improved
+. gen sec_water_imp = 0
+
+. replace sec_water_imp = 1 if (sws==1 | sws==4 | sws==6 | sws==7 | sws==11 
+> | sws==12) & (drink_sws==1 | youdrink_sws==1)
+(1,227 real changes made)
+
+. replace sec_water_imp = . if drink_sws==2 & youdrink_sws==2
+(1,545 real changes made, 1,545 to missing)
+
+. replace sec_water_imp = . if drink_sws==. & youdrink_sws==.
+(5,143 real changes made, 5,143 to missing)
+
+. 
+. * if they drink from neither water source, is source for stored water impr
+> oved
+. gen store_water_imp = 0
+
+. replace store_water_imp = 1 if (c1023==1 | c1023==4 | c1023==6 | c1023==7 
+> | c1023==11 | c1023==12)
+(5,199 real changes made)
+
+. replace store_water_imp = . if c1023==. 
+(1,567 real changes made, 1,567 to missing)
+
+. 
+. * primary drinking water source is improved
+. gen prim_drink_ws = 0
+
+. replace prim_drink_ws = 1 if prim_water_imp==1 
+(5,285 real changes made)
+
+. replace prim_drink_ws = 1 if prim_water_imp==. & sec_water_imp==1 
+(808 real changes made)
+
+. replace prim_drink_ws = 1 if prim_water_imp==. & sec_water_imp==. & store_
+> water_imp==1
+(38 real changes made)
+
+. replace prim_drink_ws = . if prim_water_imp==. & sec_water_imp==. & store_
+> water_imp==.
+(31 real changes made, 31 to missing)
+
+. 
+. drop prim_water_imp sec_water_imp store_water_imp
+
+. 
+. * one-way walking time to primary water source (in minutes)
+. gen wat_time = d7_min
+(141 missing values generated)
+
+. replace wat_time = d7_hrs * 60 if d7_min==. 
+(68 real changes made)
+
+. replace wat_time = . if d7_min==. & d7_hrs==.
+(0 real changes made)
+
+. 
+. * reported treating currently stored water
+. gen tr_storedwt = 0
+
+. replace tr_storedwt = 1 if c1005==1 & (c100601!=4 & c100601!=7 & c100601!=
+> .) |  (c100602!=4 & c100602!=7 & c100602!=.) |(c100603!=4 & c100603!=7 & c
+> 100603!=.)
+(841 real changes made)
+
+. replace tr_storedwt = . if c100601==. & c100602==. & c100603==. 
+(7,313 real changes made, 7,313 to missing)
+
+. replace tr_storedwt = 0 if c1005==2
+(5,737 real changes made)
+
+. 
+. * -----------------------------------
+. * sanitation
+. * -----------------------------------
+. * always or usually use primary toilet for defecation
+. 
+. * adult men 
+. gen toilet_men = 0
+
+. replace toilet_men = 1 if c809d==1 | c809d==2 
+(7,618 real changes made)
+
+. replace toilet_men = . if c809d==88
+(174 real changes made, 174 to missing)
+
+. replace toilet_men = 0 if c805==2
+(0 real changes made)
+
+. replace toilet_men = . if c809d==. & c805==. 
+(22 real changes made, 22 to missing)
+
+. 
+. * adult women
+. gen toilet_women = 0
+
+. replace toilet_women = 1 if c809e==1 | c809e==2 
+(7,860 real changes made)
+
+. replace toilet_women = . if c809e==88
+(14 real changes made, 14 to missing)
+
+. replace toilet_women = 0 if c805==2
+(0 real changes made)
+
+. replace toilet_women = . if c809e==. & c805==.
+(22 real changes made, 22 to missing)
+
+. 
+. * open defecation 
+.  
+. * child 3-<8
+. gen od_child38 = (c801b==1)
+
+. replace od_child38= . if c801b==. | c801b==88
+(2,910 real changes made, 2,910 to missing)
+
+. 
+. * child 0-<3
+. gen od_child03 = (c801a==1)
+
+. replace od_child03= . if c801a==. | c801a==88 | c801a==99
+(3,832 real changes made, 3,832 to missing)
+
+. 
+. * Latrine ownership at the compound level 
+. gen ownlat = 0
+
+. replace ownlat = 1 if c813!=4 & c813!=5 & c813!=99 & c813!=.
+(6,782 real changes made)
+
+. replace ownlat = . if c813==. | c813==99
+(202 real changes made, 202 to missing)
+
+. replace ownlat = 0 if c805==2
+(175 real changes made)
+
+. 
+. * access to improved latrine 
+. gen implat = 0 
+
+. replace implat = 1 if c806_7==1 | c806_5==1 
+(1,322 real changes made)
+
+. replace implat = . if (c806_7==. & c806_5==.) | (c806_7==99 & c806_5==.)
+(684 real changes made, 684 to missing)
+
+. replace implat = . if to1b==2 | to1b==3
+(0 real changes made)
+
+. replace implat = 0 if c805==2
+(171 real changes made)
+
+. 
+. * human feces observed in the compound
+. gen feces = 0
+
+. replace feces = 1 if (c827> 0 & c827<99) | (c828> 0 & c828<99) | (c830> 0 
+> & c830<99 )
+(697 real changes made)
+
+. replace feces = . if (c827==. | c827==99) & (c828==. | c828==99)  * (c830=
+> =. | c830==99)
+(36 real changes made, 36 to missing)
+
+. 
+. * -----------------------------------
+. * handwashing
+. * -----------------------------------
+. * handwashing location has water and soap
+. #delimit;
+delimiter now ;
+. gen water2m_lat = 0;
+
+. replace water2m_lat =1 if (c702a_inlat==1 & c702c_water==1) | 
+>         (c703a_inlat==1 & c703c_water==1);
+(54 real changes made)
+
+. replace water2m_lat = . if c702a_inlat==. & c702c_water==. ;
+(18 real changes made, 18 to missing)
+
+. gen water2m_kit = 0;
+
+. replace water2m_kit =1 if (c702a_incook==1 & c702c_water==1) | 
+>         (c703a_incook==1 & c703c_water==1);
+(245 real changes made)
+
+. replace water2m_kit = . if c702a_incook==. & c702c_water==. ;
+(18 real changes made, 18 to missing)
+
+. gen soap2m_lat = 0;
+
+. replace soap2m_lat =1 if (c702a_inlat==1 & (c702c_scentbar==1 | 
+>         c702c_unscentbar==1 | c702c_powder==1 | c702c_soapywat==1)) | (c70
+> 3a_inlat==1 
+>          & (c703c_scentbar==1 | c703c_unscentbar==1 | c703c_powder==1 | 
+>         c703c_soapywat==1));
+(10 real changes made)
+
+.         replace soap2m_lat = 0 if c702a_inlat==2;
+(2 real changes made)
+
+. replace soap2m_lat=. if (c702a_inlat==. & (c702c_scentbar==. | c702c_unsce
+> ntbar==. |
+>         c702c_powder==. | c702c_soapywat==.));
+(18 real changes made, 18 to missing)
+
+. gen soap2m_kit = 0;
+
+. replace soap2m_kit =1 if (c702a_incook==1 & (c702c_scentbar==1 | 
+>         c702c_unscentbar==1 | c702c_powder==1 | c702c_soapywat==1)) | (c70
+> 3a_inlat==1 
+>          & (c703c_scentbar==1 | c703c_unscentbar==1 | c703c_powder==1 | 
+>         c703c_soapywat==1));
+(73 real changes made)
+
+.         replace soap2m_kit = 0 if c702a_incook==2;
+(1 real change made)
+
+. replace soap2m_kit=. if (c702a_incook==. & (c702c_scentbar==. | c702c_unsc
+> entbar==. |
+>         c702c_powder==. | c702c_soapywat==.)) ;
+(18 real changes made, 18 to missing)
+
+. #delimit cr
+delimiter now cr
+. 
+. gen water2m = 0
+
+. replace water2m = 1 if water2m_lat ==1 | water2m_kit==1
+(287 real changes made)
+
+. replace water2m = . if water2m_lat ==. & water2m_kit==.
+(18 real changes made, 18 to missing)
+
+. 
+. gen soap2m = 0
+
+. replace soap2m = 1 if soap2m_lat ==1 | soap2m_kit==1
+(78 real changes made)
+
+. replace soap2m = . if soap2m_lat ==. & soap2m_kit==.
+(18 real changes made, 18 to missing)
+
+. 
+. drop *_lat *_kit
+
+. 
+. * -----------------------------------
+. * handwashing
+. * -----------------------------------
+. * food insecurity variable - based on Anne's SAS code
+. replace c1907_fr = 0 if c1907==2
+(6,860 real changes made)
+
+. replace c1908_fr = 0 if c1908==2
+(7,245 real changes made)
+
+. replace c1909_fr = 0 if c1909==2
+(7,642 real changes made)
+
+. 
+. gen hhs_7b=.
+(8,246 missing values generated)
+
+. gen hhs_8b=.
+(8,246 missing values generated)
+
+. gen hhs_9b=.
+(8,246 missing values generated)
+
+. 
+. replace hhs_7b = 0 if c1907_fr == 0
+(6,860 real changes made)
+
+. replace hhs_7b = 1 if c1907_fr == 1
+(814 real changes made)
+
+. replace hhs_7b = 1 if c1907_fr == 2 
+(390 real changes made)
+
+. replace hhs_7b = 2 if c1907_fr == 3
+(151 real changes made)
+
+. replace hhs_8b = 0 if c1908_fr == 0
+(7,245 real changes made)
+
+. replace hhs_8b = 1 if c1908_fr == 1
+(645 real changes made)
+
+. replace hhs_8b = 1 if c1908_fr == 2 
+(241 real changes made)
+
+. replace hhs_8b = 2 if c1908_fr == 3 
+(84 real changes made)
+
+. replace hhs_9b = 0 if c1909_fr == 0 
+(7,642 real changes made)
+
+. replace hhs_9b = 1 if c1909_fr == 1 
+(382 real changes made)
+
+. replace hhs_9b = 1 if c1909_fr == 2
+(140 real changes made)
+
+. replace hhs_9b = 2 if c1909_fr == 3 
+(51 real changes made)
+
+. gen HHS_total = hhs_7b + hhs_8b + hhs_9b
+(31 missing values generated)
+
+. 
+. gen HHS=.
+(8,246 missing values generated)
+
+. replace HHS=1 if HHS_total == 0
+(6,621 real changes made)
+
+. replace HHS=1 if HHS_total == 1
+(686 real changes made)
+
+. replace HHS=2 if HHS_total == 2
+(420 real changes made)
+
+. replace HHS=2 if HHS_total == 3 
+(374 real changes made)
+
+. replace HHS=3 if HHS_total == 4 
+(61 real changes made)
+
+. replace HHS=3 if HHS_total == 5
+(26 real changes made)
+
+. replace HHS=3 if HHS_total == 6 
+(27 real changes made)
+
+. 
+. replace HHS=9 if HHS==.
+(31 real changes made)
+
+. 
+. gen HHS_bi=.
+(8,246 missing values generated)
+
+. replace HHS_bi = 0 if HHS_total == 0 
+(6,621 real changes made)
+
+. replace HHS_bi = 0 if HHS_total == 1 
+(686 real changes made)
+
+. replace HHS_bi = 1 if HHS_total == 2 
+(420 real changes made)
+
+. replace HHS_bi = 1 if HHS_total == 3
+(374 real changes made)
+
+. replace HHS_bi = 1 if HHS_total == 4
+(61 real changes made)
+
+. replace HHS_bi = 1 if HHS_total == 5
+(26 real changes made)
+
+. replace HHS_bi = 1 if HHS_total == 6
+(27 real changes made)
+
+. 
+. label variable HHS_total "Sum of hunger score responses"
+
+. label variable HHS "Hunger score"
+
+. label variable HHS_bi "Hunger dichotimized (little none (HHS=1) vs. modera
+> te(HHS=2) and severe (HHS=3)"
+
+. 
+. label define HHSl 1 "Little to none" 2 "Moderate" 3 "Severe" 9 "Missing"
+
+. label values HHS HHSl 
+
+. 
+. * ---------------------------------------------
+. * merge in tr
+. * ---------------------------------------------
+. tostring clusterid, replace
+clusterid was double now str5
+
+. merge m:1 clusterid using "~/Dropbox/WASH Benefits/Kenya/Primary-analysis/
+> Data/tr/washb-kenya-tr.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                             0
+    matched                             8,246  (_merge==3)
+    -----------------------------------------
+
+. drop _m
+
+. 
+. 
+. #delimit; 
+delimiter now ;
+. keep hhid clusterid tr mother_age mother_edu father_edu father_agri Nhh Np
+> pl u18 elec cement roof 
+> prim_drink_ws wat_time tr_storedwt toilet_men toilet_women od_child38 od_c
+> hild03
+> ownlat implat feces water2m soap2m HHS_bi;
+
+. #delimit cr
+delimiter now cr
+. 
+. order clusterid hhid tr
+
+. 
+. outsheet using "~/Dropbox/WASH Benefits/Kenya/Primary-analysis/Data/final/
+> jade/table1.csv", replace comma 
+(note: file /Users/jadederong/Dropbox/WASH Benefits/Kenya/Primary-analysis/D
+> ata/final/jade/table1.csv not found)
+
+. 
+. log close 
+      name:  <unnamed>
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary
+> /dm/1_table1.log
+  log type:  text
+ closed on:  14 Oct 2016, 17:26:51
+----------------------------------------------------------------------------

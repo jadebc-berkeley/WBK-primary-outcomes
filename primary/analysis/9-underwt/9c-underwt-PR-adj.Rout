@@ -1,0 +1,2667 @@
+
+R version 3.2.3 (2015-12-10) -- "Wooden Christmas-Tree"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> ##############################################
+> # WASH Benefits Kenya
+> # Primary outcome analysis 
+> 
+> # underwted adjusted analysis
+> 
+> # by Jade (jadebc@berkeley.edu)
+> ##############################################
+> library(devtools)
+Warning message:
+package ‘devtools’ was built under R version 3.2.5 
+> library(washb)
+Welcome to the washb package
+Version: 0.2.0
+Created on 2016-10-12
+
+The package's reference manual and vignette are also online:
+https://ben-arnold.github.io/washb
+
+> 
+> rm(list=ls())
+> m=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midline-anthro.csv",stringsAsFactors=TRUE)
+> e=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/endline-anthro.csv",stringsAsFactors=TRUE)
+> 
+> source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
+Loading required package: zoo
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+> 
+> m=preprocess.anthro(m, y="underwt")
+> e=preprocess.anthro(e, y="underwt")
+> 
+> m=preprocess.adj(m,y="underwt",time=1)
+> e=preprocess.adj(e,y="underwt",time=2)
+> 
+> W=c("month","HHS","aged","sex","mother_age","motherht","mother_edu",
++     "u18","Ncomp","water_time","floor","roof","cow",
++     "goat","chicken","dog","elec","radio","tv","mobilephone",
++     "clock","bicycle","motorcycle","stove","staffid")
+> 
+> mW=m[,c("underwt","block","hhid","childid","tr","clusterid",W)]
+> mW$block=as.factor(mW$block)
+> 
+> eW=e[,c("underwt","block","hhid","childid","tr","clusterid",W)]
+> eW$block=as.factor(eW$block)
+> 
+> 
+> 
+> ######################################################
+> # H1: Adjusted prevalence ratios; each arm vs. control
+> ######################################################
+> 
+> #---------------------------------------------
+> # Midline
+> #---------------------------------------------
+> trlist=c("Passive Control","Water","Sanitation","Handwashing",
++          "WSH","Nutrition","Nutrition + WSH")
+> 
+> SL.library=c("SL.mean","SL.glm","SL.bayesglm","SL.gam","SL.glmnet")
+> 
+> # sort 
+> mW <- mW[order(mW$block,mW$clusterid,mW$hhid,mW$childid),]
+> 
+> est.h1.t1=apply(matrix(trlist), 1,function(x) washb_tmle(Y=mW$underwt,tr=mW$tr,
++     pair=mW$block, id=mW$block,W=mW[,W],
++     family="binomial",contrast=c("Control",x),Q.SL.library=SL.library,
++     g.SL.library=SL.library, pval=0.2, seed=67890, print=TRUE))
+Loading required package: tmle
+Loading required package: SuperLearner
+Loading required package: nnls
+Super Learner
+Version: 2.0-21
+Package created on 2016-11-11
+
+Welcome to the tmle package, version 1.2.0-2
+
+Use tmleNews() to see details on changes and bug fixes
+
+Attaching package: ‘tmle’
+
+The following object is masked from ‘package:SuperLearner’:
+
+    SL.glm.interaction
+
+
+----------------------------------------- 
+By specifying the pair argument,
+you have indicated that this is a matched pair analysis.
+
+Note: the analysis will only include pairs
+that have a contrast in the treatment variable. 
+-----------------------------------------
+----------------------------------------- 
+There were 11 pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 40 49 54 56 65 72 85
+----------------------------------------- 
+Starting N:   2150 
+N after dropping incomplete blocks:  2073 
+
+Total of 77 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+-----------------------------------------
+Total of 120 observations dropped due to missing
+values in one or more variables
+  Final sample size: 1953 
+-----------------------------------------
+
+-----------------------------------------
+Pre-screening the adjustment covariates
+using a univariate liklihood ratio test:
+-----------------------------------------
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.00282
+HHS         0.73993
+aged        0.05667
+sex         0.00199
+mother_age  0.16694
+motherht    0.00813
+mother_edu  0.04513
+u18         0.26543
+Ncomp       0.29409
+water_time  0.09158
+floor       0.31942
+roof        0.60452
+cow         0.01752
+goat        0.04475
+chicken     0.14105
+dog         0.57936
+elec        0.22522
+radio       0.69224
+tv          0.11672
+mobilephone 0.93502
+clock       0.61837
+bicycle     0.71910
+motorcycle  0.74469
+stove       0.76063
+staffid     0.05826
+
+
+Covariates selected (P<0.2):
+               P-value
+month      0.002815859
+aged       0.056667263
+sex        0.001986910
+mother_age 0.166935478
+motherht   0.008126059
+mother_edu 0.045128140
+water_time 0.091583554
+cow        0.017520927
+goat       0.044747460
+chicken    0.141051754
+tv         0.116716162
+staffid    0.058258746
+
+-----------------------------------------
+Loading required package: arm
+Loading required package: MASS
+Loading required package: Matrix
+Loading required package: lme4
+
+arm (Version 1.8-6, built: 2015-7-7)
+
+Working directory is /Users/jadederong/Documents/CRG/wash-benefits/kenya/src/primary/analysis/9-underwt
+
+Loading required package: gam
+Loading required package: splines
+Loading required package: foreach
+Loaded gam 1.12
+
+Loading required package: glmnet
+Loaded glmnet 2.0-2
+
+
+-----------------------------------------
+Estimation Results:
+-----------------------------------------
+ Initial estimation of Q
+	 Procedure: SuperLearner
+	 Model:
+		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
+
+	 Coefficients: 
+	     SL.mean_All    0.3185406 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0.3043132 
+	      SL.gam_All    0.3771461 
+	   SL.glmnet_All    0 
+
+ Estimation of g (treatment mechanism)
+	 Procedure: SuperLearner 
+	 Model:
+		 A ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All 
+
+	 Coefficients: 
+	     SL.mean_All    0.9034298 
+	      SL.glm_All    0.09657019 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0 
+
+ Estimation of g.Z (intermediate variable assignment mechanism)
+	 Procedure: No intermediate variable 
+
+ Estimation of g.Delta (missingness mechanism)
+	 Procedure: No missingness 
+
+ Bounds on g: ( 0.025 0.975 )
+
+ Additive Effect
+   Parameter Estimate:  0.0050865
+   Estimated Variance:  0.00016622
+              p-value:  0.69319
+    95% Conf Interval: (-0.020183, 0.030356) 
+
+ Relative Risk
+   Parameter Estimate:  1.072
+              p-value:  0.68937
+    95% Conf Interval: (0.76219, 1.5079) 
+
+              log(RR):  0.069567
+    variance(log(RR)):  0.030292 
+
+ Odds Ratio
+   Parameter Estimate:  1.0779
+              p-value:  0.68967
+    95% Conf Interval: (0.74576, 1.5581) 
+
+              log(OR):  0.075055
+    variance(log(OR)):  0.03533 
+
+-----------------------------------------
+
+----------------------------------------- 
+By specifying the pair argument,
+you have indicated that this is a matched pair analysis.
+
+Note: the analysis will only include pairs
+that have a contrast in the treatment variable. 
+-----------------------------------------
+----------------------------------------- 
+There were 13 pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 33 37 40 49 70 72 80 84 85
+----------------------------------------- 
+Starting N:   2125 
+N after dropping incomplete blocks:  2011 
+
+Total of 114 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+-----------------------------------------
+Total of 112 observations dropped due to missing
+values in one or more variables
+  Final sample size: 1899 
+-----------------------------------------
+
+-----------------------------------------
+Pre-screening the adjustment covariates
+using a univariate liklihood ratio test:
+-----------------------------------------
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.02030
+HHS         0.65987
+aged        0.18755
+sex         0.02148
+mother_age  0.52484
+motherht    0.00975
+mother_edu  0.00205
+u18         0.32652
+Ncomp       0.28772
+water_time  0.61305
+floor       0.34716
+roof        0.10208
+cow         0.03344
+goat        0.33917
+chicken     0.02334
+dog         0.95167
+elec        0.97656
+radio       0.08224
+tv          0.01398
+mobilephone 0.12675
+clock       0.46359
+bicycle     0.96347
+motorcycle  0.49710
+stove       0.81957
+staffid     0.11142
+
+
+Covariates selected (P<0.2):
+                P-value
+month       0.020301420
+aged        0.187551195
+sex         0.021477253
+motherht    0.009746953
+mother_edu  0.002051007
+roof        0.102084050
+cow         0.033442839
+chicken     0.023335498
+radio       0.082244354
+tv          0.013976274
+mobilephone 0.126752685
+staffid     0.111415427
+
+-----------------------------------------
+
+-----------------------------------------
+Estimation Results:
+-----------------------------------------
+ Initial estimation of Q
+	 Procedure: SuperLearner
+	 Model:
+		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
+
+	 Coefficients: 
+	     SL.mean_All    0.3614276 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0.3402134 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0.298359 
+
+ Estimation of g (treatment mechanism)
+	 Procedure: SuperLearner 
+	 Model:
+		 A ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All 
+
+	 Coefficients: 
+	     SL.mean_All    0.5970161 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0.4029839 
+	   SL.glmnet_All    0 
+
+ Estimation of g.Z (intermediate variable assignment mechanism)
+	 Procedure: No intermediate variable 
+
+ Estimation of g.Delta (missingness mechanism)
+	 Procedure: No missingness 
+
+ Bounds on g: ( 0.025 0.975 )
+
+ Additive Effect
+   Parameter Estimate:  -0.0037478
+   Estimated Variance:  0.00015664
+              p-value:  0.76459
+    95% Conf Interval: (-0.028278, 0.020783) 
+
+ Relative Risk
+   Parameter Estimate:  0.94602
+              p-value:  0.767
+    95% Conf Interval: (0.65535, 1.3656) 
+
+              log(RR):  -0.055495
+    variance(log(RR)):  0.035079 
+
+ Odds Ratio
+   Parameter Estimate:  0.94222
+              p-value:  0.76682
+    95% Conf Interval: (0.63579, 1.3963) 
+
+              log(OR):  -0.059515
+    variance(log(OR)):  0.040281 
+
+-----------------------------------------
+
+----------------------------------------- 
+By specifying the pair argument,
+you have indicated that this is a matched pair analysis.
+
+Note: the analysis will only include pairs
+that have a contrast in the treatment variable. 
+-----------------------------------------
+----------------------------------------- 
+There were 13 pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 33 40 49 54 61 65 72 80 84 85
+----------------------------------------- 
+Starting N:   2120 
+N after dropping incomplete blocks:  2036 
+
+Total of 84 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+-----------------------------------------
+Total of 110 observations dropped due to missing
+values in one or more variables
+  Final sample size: 1926 
+-----------------------------------------
+
+-----------------------------------------
+Pre-screening the adjustment covariates
+using a univariate liklihood ratio test:
+-----------------------------------------
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.38371
+HHS         0.48517
+aged        0.07525
+sex         0.00138
+mother_age  0.70501
+motherht    0.00694
+mother_edu  0.00010
+u18         0.18408
+Ncomp       0.17983
+water_time  0.94537
+floor       0.01576
+roof        0.24857
+cow         0.00072
+goat        0.84939
+chicken     0.14239
+dog         0.53736
+elec        0.92650
+radio       0.23854
+tv          0.01881
+mobilephone 0.69010
+clock       0.21174
+bicycle     0.50379
+motorcycle  0.28217
+stove       0.39229
+staffid     0.02431
+
+
+Covariates selected (P<0.2):
+                P-value
+aged       0.0752471806
+sex        0.0013812263
+motherht   0.0069437855
+mother_edu 0.0001026131
+u18        0.1840768746
+Ncomp      0.1798258355
+floor      0.0157561676
+cow        0.0007247125
+chicken    0.1423948422
+tv         0.0188081193
+staffid    0.0243108356
+
+-----------------------------------------
+
+-----------------------------------------
+Estimation Results:
+-----------------------------------------
+ Initial estimation of Q
+	 Procedure: SuperLearner
+	 Model:
+		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
+
+	 Coefficients: 
+	     SL.mean_All    0.2363254 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0.7636746 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0 
+
+ Estimation of g (treatment mechanism)
+	 Procedure: SuperLearner 
+	 Model:
+		 A ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All 
+
+	 Coefficients: 
+	     SL.mean_All    1 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0 
+
+ Estimation of g.Z (intermediate variable assignment mechanism)
+	 Procedure: No intermediate variable 
+
+ Estimation of g.Delta (missingness mechanism)
+	 Procedure: No missingness 
+
+ Bounds on g: ( 0.025 0.975 )
+
+ Additive Effect
+   Parameter Estimate:  0.016601
+   Estimated Variance:  0.00016475
+              p-value:  0.19588
+    95% Conf Interval: (-0.0085564, 0.041759) 
+
+ Relative Risk
+   Parameter Estimate:  1.2379
+              p-value:  0.17272
+    95% Conf Interval: (0.91086, 1.6824) 
+
+              log(RR):  0.21343
+    variance(log(RR)):  0.0245 
+
+ Odds Ratio
+   Parameter Estimate:  1.2604
+              p-value:  0.17444
+    95% Conf Interval: (0.90251, 1.7602) 
+
+              log(OR):  0.23143
+    variance(log(OR)):  0.029041 
+
+-----------------------------------------
+
+----------------------------------------- 
+By specifying the pair argument,
+you have indicated that this is a matched pair analysis.
+
+Note: the analysis will only include pairs
+that have a contrast in the treatment variable. 
+-----------------------------------------
+----------------------------------------- 
+There were 12 pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 33 40 49 51 54 56 57 65 85
+----------------------------------------- 
+Starting N:   2126 
+N after dropping incomplete blocks:  2047 
+
+Total of 79 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+-----------------------------------------
+Total of 114 observations dropped due to missing
+values in one or more variables
+  Final sample size: 1933 
+-----------------------------------------
+
+-----------------------------------------
+Pre-screening the adjustment covariates
+using a univariate liklihood ratio test:
+-----------------------------------------
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.10275
+HHS         0.38271
+aged        0.13269
+sex         0.02152
+mother_age  0.07030
+motherht    0.00577
+mother_edu  0.00267
+u18         0.31459
+Ncomp       0.17386
+water_time  0.50763
+floor       0.01200
+roof        0.13907
+cow         0.09735
+goat        0.10301
+chicken     0.14465
+dog         0.68810
+elec        0.78506
+radio       0.30676
+tv          0.25580
+mobilephone 0.23315
+clock       0.83227
+bicycle     0.30317
+motorcycle  0.51454
+stove       0.39639
+staffid     0.36454
+
+
+Covariates selected (P<0.2):
+               P-value
+month      0.102753922
+aged       0.132685450
+sex        0.021518453
+mother_age 0.070298903
+motherht   0.005765925
+mother_edu 0.002666762
+Ncomp      0.173864904
+floor      0.012004689
+roof       0.139074433
+cow        0.097346081
+goat       0.103011778
+chicken    0.144652603
+
+-----------------------------------------
+
+-----------------------------------------
+Estimation Results:
+-----------------------------------------
+ Initial estimation of Q
+	 Procedure: SuperLearner
+	 Model:
+		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
+
+	 Coefficients: 
+	     SL.mean_All    0.5466487 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0.4533513 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0 
+
+ Estimation of g (treatment mechanism)
+	 Procedure: SuperLearner 
+	 Model:
+		 A ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All 
+
+	 Coefficients: 
+	     SL.mean_All    1 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0 
+
+ Estimation of g.Z (intermediate variable assignment mechanism)
+	 Procedure: No intermediate variable 
+
+ Estimation of g.Delta (missingness mechanism)
+	 Procedure: No missingness 
+
+ Bounds on g: ( 0.025 0.975 )
+
+ Additive Effect
+   Parameter Estimate:  -0.0020631
+   Estimated Variance:  0.00012868
+              p-value:  0.85568
+    95% Conf Interval: (-0.024297, 0.020171) 
+
+ Relative Risk
+   Parameter Estimate:  0.96793
+              p-value:  0.85649
+    95% Conf Interval: (0.67989, 1.378) 
+
+              log(RR):  -0.032592
+    variance(log(RR)):  0.032481 
+
+ Odds Ratio
+   Parameter Estimate:  0.9658
+              p-value:  0.85644
+    95% Conf Interval: (0.66249, 1.408) 
+
+              log(OR):  -0.034794
+    variance(log(OR)):  0.03699 
+
+-----------------------------------------
+
+----------------------------------------- 
+By specifying the pair argument,
+you have indicated that this is a matched pair analysis.
+
+Note: the analysis will only include pairs
+that have a contrast in the treatment variable. 
+-----------------------------------------
+----------------------------------------- 
+There were 14 pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 25 33 40 49 54 56 61 65 72 85
+----------------------------------------- 
+Starting N:   2150 
+N after dropping incomplete blocks:  2032 
+
+Total of 118 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+-----------------------------------------
+Total of 107 observations dropped due to missing
+values in one or more variables
+  Final sample size: 1925 
+-----------------------------------------
+
+-----------------------------------------
+Pre-screening the adjustment covariates
+using a univariate liklihood ratio test:
+-----------------------------------------
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.16525
+HHS         0.68073
+aged        0.27026
+sex         0.03327
+mother_age  0.56133
+motherht    0.00032
+mother_edu  0.07492
+u18         0.51804
+Ncomp       0.57115
+water_time  0.77075
+floor       0.00403
+roof        0.75869
+cow         0.19867
+goat        0.10913
+chicken     0.11956
+dog         0.58342
+elec        0.70483
+radio       0.52544
+tv          0.11992
+mobilephone 0.60760
+clock       0.27724
+bicycle     0.92796
+motorcycle  0.90194
+stove       0.74910
+staffid     0.04610
+
+
+Covariates selected (P<0.2):
+                P-value
+month      0.1652540573
+sex        0.0332659170
+motherht   0.0003211146
+mother_edu 0.0749220112
+floor      0.0040270370
+cow        0.1986668872
+goat       0.1091272185
+chicken    0.1195559591
+tv         0.1199245876
+staffid    0.0460958290
+
+-----------------------------------------
+
+-----------------------------------------
+Estimation Results:
+-----------------------------------------
+ Initial estimation of Q
+	 Procedure: SuperLearner
+	 Model:
+		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
+
+	 Coefficients: 
+	     SL.mean_All    0.4986639 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0.5013361 
+	   SL.glmnet_All    0 
+
+ Estimation of g (treatment mechanism)
+	 Procedure: SuperLearner 
+	 Model:
+		 A ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All 
+
+	 Coefficients: 
+	     SL.mean_All    0.8792431 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0.1207569 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0 
+
+ Estimation of g.Z (intermediate variable assignment mechanism)
+	 Procedure: No intermediate variable 
+
+ Estimation of g.Delta (missingness mechanism)
+	 Procedure: No missingness 
+
+ Bounds on g: ( 0.025 0.975 )
+
+ Additive Effect
+   Parameter Estimate:  -0.007801
+   Estimated Variance:  0.000168
+              p-value:  0.54726
+    95% Conf Interval: (-0.033205, 0.017603) 
+
+ Relative Risk
+   Parameter Estimate:  0.88658
+              p-value:  0.55415
+    95% Conf Interval: (0.59496, 1.3211) 
+
+              log(RR):  -0.12039
+    variance(log(RR)):  0.041415 
+
+ Odds Ratio
+   Parameter Estimate:  0.87921
+              p-value:  0.55365
+    95% Conf Interval: (0.57424, 1.3462) 
+
+              log(OR):  -0.12873
+    variance(log(OR)):  0.047236 
+
+-----------------------------------------
+
+----------------------------------------- 
+By specifying the pair argument,
+you have indicated that this is a matched pair analysis.
+
+Note: the analysis will only include pairs
+that have a contrast in the treatment variable. 
+-----------------------------------------
+----------------------------------------- 
+There were 14 pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 30 33 40 51 54 56 65 72 84 85
+----------------------------------------- 
+Starting N:   2103 
+N after dropping incomplete blocks:  1964 
+
+Total of 139 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+-----------------------------------------
+Total of 109 observations dropped due to missing
+values in one or more variables
+  Final sample size: 1855 
+-----------------------------------------
+
+-----------------------------------------
+Pre-screening the adjustment covariates
+using a univariate liklihood ratio test:
+-----------------------------------------
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.15393
+HHS         0.74482
+aged        0.57055
+sex         0.00946
+mother_age  0.72344
+motherht    0.00338
+mother_edu  0.01879
+u18         0.84132
+Ncomp       0.32652
+water_time  0.55430
+floor       0.00633
+roof        0.03124
+cow         0.12747
+goat        0.11627
+chicken     0.10288
+dog         0.52312
+elec        0.88403
+radio       0.02106
+tv          0.00950
+mobilephone 0.05038
+clock       0.12074
+bicycle     0.54574
+motorcycle  0.65168
+stove       0.12538
+staffid     0.41365
+
+
+Covariates selected (P<0.2):
+                P-value
+month       0.153930171
+sex         0.009461022
+motherht    0.003382030
+mother_edu  0.018787896
+floor       0.006329657
+roof        0.031240590
+cow         0.127471497
+goat        0.116265079
+chicken     0.102877132
+radio       0.021062614
+tv          0.009501634
+mobilephone 0.050378139
+clock       0.120739705
+stove       0.125380833
+
+-----------------------------------------
+
+-----------------------------------------
+Estimation Results:
+-----------------------------------------
+ Initial estimation of Q
+	 Procedure: SuperLearner
+	 Model:
+		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
+
+	 Coefficients: 
+	     SL.mean_All    0.7143659 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0.2856341 
+	   SL.glmnet_All    0 
+
+ Estimation of g (treatment mechanism)
+	 Procedure: SuperLearner 
+	 Model:
+		 A ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All 
+
+	 Coefficients: 
+	     SL.mean_All    0.7860313 
+	      SL.glm_All    0.2139687 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0 
+
+ Estimation of g.Z (intermediate variable assignment mechanism)
+	 Procedure: No intermediate variable 
+
+ Estimation of g.Delta (missingness mechanism)
+	 Procedure: No missingness 
+
+ Bounds on g: ( 0.025 0.975 )
+
+ Additive Effect
+   Parameter Estimate:  -0.0046828
+   Estimated Variance:  0.00012182
+              p-value:  0.67137
+    95% Conf Interval: (-0.026316, 0.016951) 
+
+ Relative Risk
+   Parameter Estimate:  0.93168
+              p-value:  0.67532
+    95% Conf Interval: (0.66903, 1.2974) 
+
+              log(RR):  -0.070767
+    variance(log(RR)):  0.028546 
+
+ Odds Ratio
+   Parameter Estimate:  0.92702
+              p-value:  0.67504
+    95% Conf Interval: (0.65047, 1.3211) 
+
+              log(OR):  -0.075782
+    variance(log(OR)):  0.032673 
+
+-----------------------------------------
+
+----------------------------------------- 
+By specifying the pair argument,
+you have indicated that this is a matched pair analysis.
+
+Note: the analysis will only include pairs
+that have a contrast in the treatment variable. 
+-----------------------------------------
+----------------------------------------- 
+There were 12 pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 33 40 49 65 72 80 84 85
+----------------------------------------- 
+Starting N:   2179 
+N after dropping incomplete blocks:  2090 
+
+Total of 89 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+-----------------------------------------
+Total of 130 observations dropped due to missing
+values in one or more variables
+  Final sample size: 1960 
+-----------------------------------------
+
+-----------------------------------------
+Pre-screening the adjustment covariates
+using a univariate liklihood ratio test:
+-----------------------------------------
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.25820
+HHS         0.20390
+aged        0.37221
+sex         0.00086
+mother_age  0.22855
+motherht    0.00281
+mother_edu  0.01790
+u18         0.35580
+Ncomp       0.21322
+water_time  0.48961
+floor       0.13661
+roof        0.61934
+cow         0.06807
+goat        0.97412
+chicken     0.06901
+dog         0.50837
+elec        0.52982
+radio       0.50557
+tv          0.00975
+mobilephone 0.91068
+clock       0.91595
+bicycle     0.80631
+motorcycle  0.26314
+stove       0.66318
+staffid     0.14310
+
+
+Covariates selected (P<0.2):
+               P-value
+sex        0.000856815
+motherht   0.002808807
+mother_edu 0.017895080
+floor      0.136608325
+cow        0.068067898
+chicken    0.069006236
+tv         0.009746340
+staffid    0.143099096
+
+-----------------------------------------
+
+-----------------------------------------
+Estimation Results:
+-----------------------------------------
+ Initial estimation of Q
+	 Procedure: SuperLearner
+	 Model:
+		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
+
+	 Coefficients: 
+	     SL.mean_All    0.4596328 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0.5403672 
+	   SL.glmnet_All    0 
+
+ Estimation of g (treatment mechanism)
+	 Procedure: SuperLearner 
+	 Model:
+		 A ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All 
+
+	 Coefficients: 
+	     SL.mean_All    1 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0 
+
+ Estimation of g.Z (intermediate variable assignment mechanism)
+	 Procedure: No intermediate variable 
+
+ Estimation of g.Delta (missingness mechanism)
+	 Procedure: No missingness 
+
+ Bounds on g: ( 0.025 0.975 )
+
+ Additive Effect
+   Parameter Estimate:  -0.032478
+   Estimated Variance:  9.8529e-05
+              p-value:  0.0010682
+    95% Conf Interval: (-0.051933, -0.013022) 
+
+ Relative Risk
+   Parameter Estimate:  0.53437
+              p-value:  0.0057147
+    95% Conf Interval: (0.34264, 0.8334) 
+
+              log(RR):  -0.62666
+    variance(log(RR)):  0.051414 
+
+ Odds Ratio
+   Parameter Estimate:  0.51635
+              p-value:  0.0052125
+    95% Conf Interval: (0.32474, 0.821) 
+
+              log(OR):  -0.66098
+    variance(log(OR)):  0.055982 
+
+-----------------------------------------
+Warning message:
+package ‘SuperLearner’ was built under R version 3.2.5 
+>   
+> underwt_t1_h1_pr_adj_j=format.tmle(est.h1.t1,family="binomial")$rr
+> underwt_t1_h1_rd_adj_j=format.tmle(est.h1.t1,family="binomial")$rd
+> 
+> rownames(underwt_t1_h1_pr_adj_j)=c("Passive Control vs. C", "Water vs. C",
++                              "Sanitation vs. C", "Handwashing vs. C", "WSH vs. C",
++                              "Nutrition vs. C", "Nutrition + WSH vs. C")
+> rownames(underwt_t1_h1_rd_adj_j)=c("Passive Control vs. C", "Water vs. C",
++                              "Sanitation vs. C", "Handwashing vs. C", "WSH vs. C",
++                              "Nutrition vs. C", "Nutrition + WSH vs. C")
+> 
+> #---------------------------------------------
+> # Endline
+> #---------------------------------------------
+> # sort 
+> eW <- eW[order(eW$block,eW$clusterid,eW$hhid,eW$childid),]
+> 
+> est.h1.t2=apply(matrix(trlist), 1,function(x) washb_tmle(Y=eW$underwt,tr=eW$tr,
++     pair=eW$block, id=eW$block,W=eW[,W],
++     family="binomial",contrast=c("Control",x),Q.SL.library=SL.library,
++     g.SL.library=SL.library, pval=0.2, seed=67890, print=TRUE))
+
+----------------------------------------- 
+By specifying the pair argument,
+you have indicated that this is a matched pair analysis.
+
+Note: the analysis will only include pairs
+that have a contrast in the treatment variable. 
+-----------------------------------------
+----------------------------------------- 
+There were 11 pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 40 49 54 56 65 72 85
+----------------------------------------- 
+Starting N:   2269 
+N after dropping incomplete blocks:  2185 
+
+Total of 84 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+-----------------------------------------
+Total of 177 observations dropped due to missing
+values in one or more variables
+  Final sample size: 2008 
+-----------------------------------------
+
+-----------------------------------------
+Pre-screening the adjustment covariates
+using a univariate liklihood ratio test:
+-----------------------------------------
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.91241
+HHS         0.09231
+aged        0.63562
+sex         0.04559
+mother_age  0.01379
+motherht    0.00000
+mother_edu  0.00000
+u18         0.03365
+Ncomp       0.86468
+water_time  0.10413
+floor       0.00664
+roof        0.38283
+cow         0.00163
+goat        0.04021
+chicken     0.00281
+dog         0.27004
+elec        0.16643
+radio       0.33341
+tv          0.13960
+mobilephone 0.23966
+clock       0.04544
+bicycle     0.35020
+motorcycle  0.30624
+stove       0.16704
+staffid     0.74511
+
+
+Covariates selected (P<0.2):
+                P-value
+HHS        9.231191e-02
+sex        4.558611e-02
+mother_age 1.378767e-02
+motherht   3.257802e-06
+mother_edu 1.062802e-06
+u18        3.365205e-02
+water_time 1.041284e-01
+floor      6.644115e-03
+cow        1.629565e-03
+goat       4.021385e-02
+chicken    2.809075e-03
+elec       1.664279e-01
+tv         1.396006e-01
+clock      4.543795e-02
+stove      1.670444e-01
+
+-----------------------------------------
+
+-----------------------------------------
+Estimation Results:
+-----------------------------------------
+ Initial estimation of Q
+	 Procedure: SuperLearner
+	 Model:
+		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
+
+	 Coefficients: 
+	     SL.mean_All    0.2611985 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0.7388015 
+	   SL.glmnet_All    0 
+
+ Estimation of g (treatment mechanism)
+	 Procedure: SuperLearner 
+	 Model:
+		 A ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All 
+
+	 Coefficients: 
+	     SL.mean_All    0.7258556 
+	      SL.glm_All    0.2741444 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0 
+
+ Estimation of g.Z (intermediate variable assignment mechanism)
+	 Procedure: No intermediate variable 
+
+ Estimation of g.Delta (missingness mechanism)
+	 Procedure: No missingness 
+
+ Bounds on g: ( 0.025 0.975 )
+
+ Additive Effect
+   Parameter Estimate:  0.0020364
+   Estimated Variance:  0.0001752
+              p-value:  0.87773
+    95% Conf Interval: (-0.023907, 0.02798) 
+
+ Relative Risk
+   Parameter Estimate:  1.0228
+              p-value:  0.87703
+    95% Conf Interval: (0.76879, 1.3607) 
+
+              log(RR):  0.022538
+    variance(log(RR)):  0.021214 
+
+ Odds Ratio
+   Parameter Estimate:  1.0251
+              p-value:  0.8771
+    95% Conf Interval: (0.74884, 1.4032) 
+
+              log(OR):  0.024776
+    variance(log(OR)):  0.025667 
+
+-----------------------------------------
+
+----------------------------------------- 
+By specifying the pair argument,
+you have indicated that this is a matched pair analysis.
+
+Note: the analysis will only include pairs
+that have a contrast in the treatment variable. 
+-----------------------------------------
+----------------------------------------- 
+There were 13 pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 33 37 40 49 70 72 80 84 85
+----------------------------------------- 
+Starting N:   2275 
+N after dropping incomplete blocks:  2159 
+
+Total of 116 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+-----------------------------------------
+Total of 169 observations dropped due to missing
+values in one or more variables
+  Final sample size: 1990 
+-----------------------------------------
+
+-----------------------------------------
+Pre-screening the adjustment covariates
+using a univariate liklihood ratio test:
+-----------------------------------------
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.29081
+HHS         0.45906
+aged        0.31170
+sex         0.00558
+mother_age  0.80744
+motherht    0.00000
+mother_edu  0.00000
+u18         0.09315
+Ncomp       0.94838
+water_time  0.62391
+floor       0.03275
+roof        0.41624
+cow         0.00504
+goat        0.01942
+chicken     0.00775
+dog         0.22232
+elec        0.55363
+radio       0.03702
+tv          0.08346
+mobilephone 0.20944
+clock       0.03595
+bicycle     0.55528
+motorcycle  0.02185
+stove       0.22331
+staffid     0.91605
+
+
+Covariates selected (P<0.2):
+                P-value
+sex        5.580890e-03
+motherht   2.394635e-09
+mother_edu 1.852221e-07
+u18        9.314612e-02
+floor      3.275162e-02
+cow        5.039962e-03
+goat       1.941640e-02
+chicken    7.746490e-03
+radio      3.702139e-02
+tv         8.345935e-02
+clock      3.594541e-02
+motorcycle 2.185164e-02
+
+-----------------------------------------
+
+-----------------------------------------
+Estimation Results:
+-----------------------------------------
+ Initial estimation of Q
+	 Procedure: SuperLearner
+	 Model:
+		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
+
+	 Coefficients: 
+	     SL.mean_All    0.2448658 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0.7551342 
+	   SL.glmnet_All    0 
+
+ Estimation of g (treatment mechanism)
+	 Procedure: SuperLearner 
+	 Model:
+		 A ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All 
+
+	 Coefficients: 
+	     SL.mean_All    0.6307778 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0.3692222 
+	   SL.glmnet_All    0 
+
+ Estimation of g.Z (intermediate variable assignment mechanism)
+	 Procedure: No intermediate variable 
+
+ Estimation of g.Delta (missingness mechanism)
+	 Procedure: No missingness 
+
+ Bounds on g: ( 0.025 0.975 )
+
+ Additive Effect
+   Parameter Estimate:  0.0053993
+   Estimated Variance:  0.00016732
+              p-value:  0.67637
+    95% Conf Interval: (-0.019954, 0.030752) 
+
+ Relative Risk
+   Parameter Estimate:  1.0598
+              p-value:  0.6743
+    95% Conf Interval: (0.80846, 1.3892) 
+
+              log(RR):  0.058035
+    variance(log(RR)):  0.01907 
+
+ Odds Ratio
+   Parameter Estimate:  1.0661
+              p-value:  0.6745
+    95% Conf Interval: (0.79086, 1.4371) 
+
+              log(OR):  0.063988
+    variance(log(OR)):  0.023214 
+
+-----------------------------------------
+
+----------------------------------------- 
+By specifying the pair argument,
+you have indicated that this is a matched pair analysis.
+
+Note: the analysis will only include pairs
+that have a contrast in the treatment variable. 
+-----------------------------------------
+----------------------------------------- 
+There were 13 pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 33 40 49 54 61 65 72 80 84 85
+----------------------------------------- 
+Starting N:   2295 
+N after dropping incomplete blocks:  2194 
+
+Total of 101 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+-----------------------------------------
+Total of 170 observations dropped due to missing
+values in one or more variables
+  Final sample size: 2024 
+-----------------------------------------
+
+-----------------------------------------
+Pre-screening the adjustment covariates
+using a univariate liklihood ratio test:
+-----------------------------------------
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.05588
+HHS         0.72103
+aged        0.38436
+sex         0.00375
+mother_age  0.31034
+motherht    0.00000
+mother_edu  0.00000
+u18         0.17981
+Ncomp       0.78617
+water_time  0.50538
+floor       0.00110
+roof        0.21638
+cow         0.00006
+goat        0.10051
+chicken     0.00520
+dog         0.13255
+elec        0.47452
+radio       0.21677
+tv          0.30447
+mobilephone 0.06782
+clock       0.07005
+bicycle     0.36588
+motorcycle  0.05538
+stove       0.23819
+staffid     0.78252
+
+
+Covariates selected (P<0.2):
+                 P-value
+month       5.588458e-02
+sex         3.754879e-03
+motherht    1.749752e-06
+mother_edu  2.762918e-07
+u18         1.798130e-01
+floor       1.098930e-03
+cow         5.924655e-05
+goat        1.005092e-01
+chicken     5.199937e-03
+dog         1.325514e-01
+mobilephone 6.781980e-02
+clock       7.004762e-02
+motorcycle  5.538175e-02
+
+-----------------------------------------
+
+-----------------------------------------
+Estimation Results:
+-----------------------------------------
+ Initial estimation of Q
+	 Procedure: SuperLearner
+	 Model:
+		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
+
+	 Coefficients: 
+	     SL.mean_All    0.4102422 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0.3089478 
+	      SL.gam_All    0.28081 
+	   SL.glmnet_All    0 
+
+ Estimation of g (treatment mechanism)
+	 Procedure: SuperLearner 
+	 Model:
+		 A ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All 
+
+	 Coefficients: 
+	     SL.mean_All    0.698915 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0.301085 
+
+ Estimation of g.Z (intermediate variable assignment mechanism)
+	 Procedure: No intermediate variable 
+
+ Estimation of g.Delta (missingness mechanism)
+	 Procedure: No missingness 
+
+ Bounds on g: ( 0.025 0.975 )
+
+ Additive Effect
+   Parameter Estimate:  0.017235
+   Estimated Variance:  0.00030069
+              p-value:  0.32026
+    95% Conf Interval: (-0.016752, 0.051222) 
+
+ Relative Risk
+   Parameter Estimate:  1.1889
+              p-value:  0.30204
+    95% Conf Interval: (0.85595, 1.6513) 
+
+              log(RR):  0.173
+    variance(log(RR)):  0.028098 
+
+ Odds Ratio
+   Parameter Estimate:  1.2119
+              p-value:  0.30399
+    95% Conf Interval: (0.8401, 1.7481) 
+
+              log(OR):  0.19215
+    variance(log(OR)):  0.034943 
+
+-----------------------------------------
+
+----------------------------------------- 
+By specifying the pair argument,
+you have indicated that this is a matched pair analysis.
+
+Note: the analysis will only include pairs
+that have a contrast in the treatment variable. 
+-----------------------------------------
+----------------------------------------- 
+There were 12 pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 33 40 49 51 54 56 57 65 85
+----------------------------------------- 
+Starting N:   2254 
+N after dropping incomplete blocks:  2166 
+
+Total of 88 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+-----------------------------------------
+Total of 177 observations dropped due to missing
+values in one or more variables
+  Final sample size: 1989 
+-----------------------------------------
+
+-----------------------------------------
+Pre-screening the adjustment covariates
+using a univariate liklihood ratio test:
+-----------------------------------------
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.82103
+HHS         0.13723
+aged        0.94491
+sex         0.00231
+mother_age  0.00251
+motherht    0.00000
+mother_edu  0.00000
+u18         0.41780
+Ncomp       0.68466
+water_time  0.18843
+floor       0.00456
+roof        0.26560
+cow         0.00329
+goat        0.57185
+chicken     0.00079
+dog         0.16981
+elec        0.31999
+radio       0.05800
+tv          0.02045
+mobilephone 0.01565
+clock       0.28598
+bicycle     0.43793
+motorcycle  0.50766
+stove       0.17689
+staffid     0.26192
+
+
+Covariates selected (P<0.2):
+                 P-value
+HHS         1.372271e-01
+sex         2.307214e-03
+mother_age  2.509739e-03
+motherht    8.255571e-08
+mother_edu  1.076498e-07
+water_time  1.884336e-01
+floor       4.561253e-03
+cow         3.289379e-03
+chicken     7.860794e-04
+dog         1.698099e-01
+radio       5.799543e-02
+tv          2.045163e-02
+mobilephone 1.565123e-02
+stove       1.768891e-01
+
+-----------------------------------------
+
+-----------------------------------------
+Estimation Results:
+-----------------------------------------
+ Initial estimation of Q
+	 Procedure: SuperLearner
+	 Model:
+		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
+
+	 Coefficients: 
+	     SL.mean_All    0.242486 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0.757514 
+	   SL.glmnet_All    0 
+
+ Estimation of g (treatment mechanism)
+	 Procedure: SuperLearner 
+	 Model:
+		 A ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All 
+
+	 Coefficients: 
+	     SL.mean_All    0.9553829 
+	      SL.glm_All    0.04461706 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0 
+
+ Estimation of g.Z (intermediate variable assignment mechanism)
+	 Procedure: No intermediate variable 
+
+ Estimation of g.Delta (missingness mechanism)
+	 Procedure: No missingness 
+
+ Bounds on g: ( 0.025 0.975 )
+
+ Additive Effect
+   Parameter Estimate:  0.00049425
+   Estimated Variance:  0.00019327
+              p-value:  0.97164
+    95% Conf Interval: (-0.026754, 0.027742) 
+
+ Relative Risk
+   Parameter Estimate:  1.0055
+              p-value:  0.9716
+    95% Conf Interval: (0.74344, 1.3599) 
+
+              log(RR):  0.0054837
+    variance(log(RR)):  0.023733 
+
+ Odds Ratio
+   Parameter Estimate:  1.006
+              p-value:  0.97161
+    95% Conf Interval: (0.7219, 1.402) 
+
+              log(OR):  0.0060269
+    variance(log(OR)):  0.028675 
+
+-----------------------------------------
+
+----------------------------------------- 
+By specifying the pair argument,
+you have indicated that this is a matched pair analysis.
+
+Note: the analysis will only include pairs
+that have a contrast in the treatment variable. 
+-----------------------------------------
+----------------------------------------- 
+There were 14 pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 25 33 40 49 54 56 61 65 72 85
+----------------------------------------- 
+Starting N:   2273 
+N after dropping incomplete blocks:  2144 
+
+Total of 129 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+-----------------------------------------
+Total of 169 observations dropped due to missing
+values in one or more variables
+  Final sample size: 1975 
+-----------------------------------------
+
+-----------------------------------------
+Pre-screening the adjustment covariates
+using a univariate liklihood ratio test:
+-----------------------------------------
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.63789
+HHS         0.46379
+aged        0.44798
+sex         0.01781
+mother_age  0.29784
+motherht    0.00000
+mother_edu  0.00001
+u18         0.21976
+Ncomp       0.35967
+water_time  0.49176
+floor       0.00677
+roof        0.85726
+cow         0.00276
+goat        0.04690
+chicken     0.00062
+dog         0.04083
+elec        0.30844
+radio       0.23715
+tv          0.03959
+mobilephone 0.14384
+clock       0.12970
+bicycle     0.16923
+motorcycle  0.53861
+stove       0.19907
+staffid     0.53913
+
+
+Covariates selected (P<0.2):
+                 P-value
+sex         1.781227e-02
+motherht    4.904205e-07
+mother_edu  5.418971e-06
+floor       6.771003e-03
+cow         2.763065e-03
+goat        4.690044e-02
+chicken     6.203868e-04
+dog         4.083138e-02
+tv          3.959180e-02
+mobilephone 1.438363e-01
+clock       1.296955e-01
+bicycle     1.692313e-01
+stove       1.990660e-01
+
+-----------------------------------------
+
+-----------------------------------------
+Estimation Results:
+-----------------------------------------
+ Initial estimation of Q
+	 Procedure: SuperLearner
+	 Model:
+		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
+
+	 Coefficients: 
+	     SL.mean_All    0.2722439 
+	      SL.glm_All    0.0105618 
+	 SL.bayesglm_All    0.4839616 
+	      SL.gam_All    0.2332327 
+	   SL.glmnet_All    0 
+
+ Estimation of g (treatment mechanism)
+	 Procedure: SuperLearner 
+	 Model:
+		 A ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All 
+
+	 Coefficients: 
+	     SL.mean_All    0.7721275 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0.2278725 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0 
+
+ Estimation of g.Z (intermediate variable assignment mechanism)
+	 Procedure: No intermediate variable 
+
+ Estimation of g.Delta (missingness mechanism)
+	 Procedure: No missingness 
+
+ Bounds on g: ( 0.025 0.975 )
+
+ Additive Effect
+   Parameter Estimate:  0.0025136
+   Estimated Variance:  0.00018535
+              p-value:  0.85352
+    95% Conf Interval: (-0.024171, 0.029198) 
+
+ Relative Risk
+   Parameter Estimate:  1.0273
+              p-value:  0.85277
+    95% Conf Interval: (0.77269, 1.3659) 
+
+              log(RR):  0.026972
+    variance(log(RR)):  0.021121 
+
+ Odds Ratio
+   Parameter Estimate:  1.0302
+              p-value:  0.85284
+    95% Conf Interval: (0.75236, 1.4106) 
+
+              log(OR):  0.029743
+    variance(log(OR)):  0.025712 
+
+-----------------------------------------
+
+----------------------------------------- 
+By specifying the pair argument,
+you have indicated that this is a matched pair analysis.
+
+Note: the analysis will only include pairs
+that have a contrast in the treatment variable. 
+-----------------------------------------
+----------------------------------------- 
+There were 14 pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 30 33 40 51 54 56 65 72 84 85
+----------------------------------------- 
+Starting N:   2246 
+N after dropping incomplete blocks:  2094 
+
+Total of 152 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+-----------------------------------------
+Total of 175 observations dropped due to missing
+values in one or more variables
+  Final sample size: 1919 
+-----------------------------------------
+
+-----------------------------------------
+Pre-screening the adjustment covariates
+using a univariate liklihood ratio test:
+-----------------------------------------
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.47767
+HHS         0.14809
+aged        0.92696
+sex         0.03372
+mother_age  0.12783
+motherht    0.00000
+mother_edu  0.00000
+u18         0.41961
+Ncomp       0.82076
+water_time  0.92406
+floor       0.00152
+roof        0.38780
+cow         0.00618
+goat        0.06092
+chicken     0.00156
+dog         0.46168
+elec        0.19085
+radio       0.00682
+tv          0.02208
+mobilephone 0.00095
+clock       0.07936
+bicycle     0.27910
+motorcycle  0.44629
+stove       0.09956
+staffid     0.64433
+
+
+Covariates selected (P<0.2):
+                 P-value
+HHS         1.480889e-01
+sex         3.371797e-02
+mother_age  1.278320e-01
+motherht    1.599147e-06
+mother_edu  2.095744e-06
+floor       1.523622e-03
+cow         6.177097e-03
+goat        6.091644e-02
+chicken     1.564691e-03
+elec        1.908507e-01
+radio       6.818376e-03
+tv          2.208468e-02
+mobilephone 9.482020e-04
+clock       7.936018e-02
+stove       9.955824e-02
+
+-----------------------------------------
+
+-----------------------------------------
+Estimation Results:
+-----------------------------------------
+ Initial estimation of Q
+	 Procedure: SuperLearner
+	 Model:
+		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
+
+	 Coefficients: 
+	     SL.mean_All    0.3634836 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0.6365164 
+	   SL.glmnet_All    0 
+
+ Estimation of g (treatment mechanism)
+	 Procedure: SuperLearner 
+	 Model:
+		 A ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All 
+
+	 Coefficients: 
+	     SL.mean_All    0.8470539 
+	      SL.glm_All    0.1529461 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0 
+
+ Estimation of g.Z (intermediate variable assignment mechanism)
+	 Procedure: No intermediate variable 
+
+ Estimation of g.Delta (missingness mechanism)
+	 Procedure: No missingness 
+
+ Bounds on g: ( 0.025 0.975 )
+
+ Additive Effect
+   Parameter Estimate:  -0.0039201
+   Estimated Variance:  0.00024517
+              p-value:  0.80231
+    95% Conf Interval: (-0.034609, 0.026769) 
+
+ Relative Risk
+   Parameter Estimate:  0.95616
+              p-value:  0.80389
+    95% Conf Interval: (0.67123, 1.362) 
+
+              log(RR):  -0.044826
+    variance(log(RR)):  0.032587 
+
+ Odds Ratio
+   Parameter Estimate:  0.95206
+              p-value:  0.80373
+    95% Conf Interval: (0.64627, 1.4026) 
+
+              log(OR):  -0.049122
+    variance(log(OR)):  0.03907 
+
+-----------------------------------------
+
+----------------------------------------- 
+By specifying the pair argument,
+you have indicated that this is a matched pair analysis.
+
+Note: the analysis will only include pairs
+that have a contrast in the treatment variable. 
+-----------------------------------------
+----------------------------------------- 
+There were 12 pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 33 40 49 65 72 80 84 85
+----------------------------------------- 
+Starting N:   2313 
+N after dropping incomplete blocks:  2214 
+
+Total of 99 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+-----------------------------------------
+Total of 189 observations dropped due to missing
+values in one or more variables
+  Final sample size: 2025 
+-----------------------------------------
+
+-----------------------------------------
+Pre-screening the adjustment covariates
+using a univariate liklihood ratio test:
+-----------------------------------------
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.48143
+HHS         0.11966
+aged        0.90509
+sex         0.02804
+mother_age  0.01642
+motherht    0.00000
+mother_edu  0.00011
+u18         0.54695
+Ncomp       0.96452
+water_time  0.28466
+floor       0.01583
+roof        0.84866
+cow         0.00095
+goat        0.56618
+chicken     0.00001
+dog         0.27762
+elec        0.30575
+radio       0.22911
+tv          0.04624
+mobilephone 0.06543
+clock       0.03432
+bicycle     0.61747
+motorcycle  0.61430
+stove       0.14403
+staffid     0.82439
+
+
+Covariates selected (P<0.2):
+                 P-value
+HHS         1.196597e-01
+sex         2.804453e-02
+mother_age  1.641617e-02
+motherht    5.189700e-08
+mother_edu  1.083572e-04
+floor       1.582850e-02
+cow         9.533211e-04
+chicken     8.144917e-06
+tv          4.623516e-02
+mobilephone 6.542982e-02
+clock       3.432269e-02
+stove       1.440271e-01
+
+-----------------------------------------
+
+-----------------------------------------
+Estimation Results:
+-----------------------------------------
+ Initial estimation of Q
+	 Procedure: SuperLearner
+	 Model:
+		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
+
+	 Coefficients: 
+	     SL.mean_All    0.2425643 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0.7574357 
+	   SL.glmnet_All    0 
+
+ Estimation of g (treatment mechanism)
+	 Procedure: SuperLearner 
+	 Model:
+		 A ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All 
+
+	 Coefficients: 
+	     SL.mean_All    0.7314373 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0.2685627 
+	   SL.glmnet_All    0 
+
+ Estimation of g.Z (intermediate variable assignment mechanism)
+	 Procedure: No intermediate variable 
+
+ Estimation of g.Delta (missingness mechanism)
+	 Procedure: No missingness 
+
+ Bounds on g: ( 0.025 0.975 )
+
+ Additive Effect
+   Parameter Estimate:  -0.024039
+   Estimated Variance:  0.00018024
+              p-value:  0.073367
+    95% Conf Interval: (-0.050353, 0.0022751) 
+
+ Relative Risk
+   Parameter Estimate:  0.73062
+              p-value:  0.097979
+    95% Conf Interval: (0.50378, 1.0596) 
+
+              log(RR):  -0.31386
+    variance(log(RR)):  0.035975 
+
+ Odds Ratio
+   Parameter Estimate:  0.71184
+              p-value:  0.095643
+    95% Conf Interval: (0.47725, 1.0617) 
+
+              log(OR):  -0.33991
+    variance(log(OR)):  0.041609 
+
+-----------------------------------------
+>   
+> underwt_t2_h1_pr_adj_j=format.tmle(est.h1.t2,family="binomial")$rr
+> underwt_t2_h1_rd_adj_j=format.tmle(est.h1.t2,family="binomial")$rd
+> 
+> rownames(underwt_t2_h1_pr_adj_j)=c("Passive Control vs. C", "Water vs. C",
++                              "Sanitation vs. C", "Handwashing vs. C", "WSH vs. C",
++                              "Nutrition vs. C", "Nutrition + WSH vs. C")
+> rownames(underwt_t2_h1_rd_adj_j)=c("Passive Control vs. C", "Water vs. C",
++                              "Sanitation vs. C", "Handwashing vs. C", "WSH vs. C",
++                              "Nutrition vs. C", "Nutrition + WSH vs. C")
+> 
+> ######################################################
+> # H3: Adjusted prevalence ratios / differences;
+> # WSHN vs. N and WSHN vs. WSH 
+> ######################################################
+> # Midline
+> trlist=c("Nutrition","WSH")
+> 
+> # sort 
+> mW <- mW[order(mW$block,mW$clusterid,mW$hhid,mW$childid),]
+> 
+> est.h3.t1=apply(matrix(trlist), 1,function(x) washb_tmle(Y=mW$underwt,tr=mW$tr,
++     pair=mW$block, id=mW$block,W=mW[,W],
++     family="binomial",contrast=c(x,"Nutrition + WSH"),Q.SL.library=SL.library,
++     g.SL.library=SL.library, pval=0.2, seed=67890, print=TRUE))
+
+----------------------------------------- 
+By specifying the pair argument,
+you have indicated that this is a matched pair analysis.
+
+Note: the analysis will only include pairs
+that have a contrast in the treatment variable. 
+-----------------------------------------
+----------------------------------------- 
+There were 15 pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 30 33 40 49 51 54 56 65 72 80 84
+----------------------------------------- 
+Starting N:   1400 
+N after dropping incomplete blocks:  1331 
+
+Total of 69 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+-----------------------------------------
+Total of 71 observations dropped due to missing
+values in one or more variables
+  Final sample size: 1260 
+-----------------------------------------
+
+-----------------------------------------
+Pre-screening the adjustment covariates
+using a univariate liklihood ratio test:
+-----------------------------------------
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.31325
+HHS         0.75932
+aged        0.80286
+sex         0.00463
+mother_age  0.66391
+motherht    0.01819
+mother_edu  0.01756
+u18         0.59972
+Ncomp       0.97929
+water_time  0.51595
+floor       0.31707
+roof        0.12212
+cow         0.57008
+goat        0.19427
+chicken     0.04112
+dog         0.23150
+elec        0.69858
+radio       0.01797
+tv          0.02427
+mobilephone 0.00068
+clock       0.74648
+bicycle     0.75134
+motorcycle  0.12556
+stove       0.00122
+staffid     0.57597
+
+
+Covariates selected (P<0.2):
+                 P-value
+sex         0.0046264542
+motherht    0.0181920934
+mother_edu  0.0175585079
+roof        0.1221188147
+goat        0.1942675257
+chicken     0.0411229978
+radio       0.0179714441
+tv          0.0242678089
+mobilephone 0.0006774718
+motorcycle  0.1255575315
+stove       0.0012166268
+
+-----------------------------------------
+
+-----------------------------------------
+Estimation Results:
+-----------------------------------------
+ Initial estimation of Q
+	 Procedure: SuperLearner
+	 Model:
+		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
+
+	 Coefficients: 
+	     SL.mean_All    0.2282193 
+	      SL.glm_All    0.2043088 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0.5674719 
+	   SL.glmnet_All    0 
+
+ Estimation of g (treatment mechanism)
+	 Procedure: SuperLearner 
+	 Model:
+		 A ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All 
+
+	 Coefficients: 
+	     SL.mean_All    1 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0 
+
+ Estimation of g.Z (intermediate variable assignment mechanism)
+	 Procedure: No intermediate variable 
+
+ Estimation of g.Delta (missingness mechanism)
+	 Procedure: No missingness 
+
+ Bounds on g: ( 0.025 0.975 )
+
+ Additive Effect
+   Parameter Estimate:  -0.031861
+   Estimated Variance:  0.0001327
+              p-value:  0.0056764
+    95% Conf Interval: (-0.054439, -0.0092835) 
+
+ Relative Risk
+   Parameter Estimate:  0.51758
+              p-value:  0.0071448
+    95% Conf Interval: (0.32031, 0.83633) 
+
+              log(RR):  -0.65859
+    variance(log(RR)):  0.059941 
+
+ Odds Ratio
+   Parameter Estimate:  0.5005
+              p-value:  0.0069112
+    95% Conf Interval: (0.30289, 0.82704) 
+
+              log(OR):  -0.69214
+    variance(log(OR)):  0.065661 
+
+-----------------------------------------
+
+----------------------------------------- 
+By specifying the pair argument,
+you have indicated that this is a matched pair analysis.
+
+Note: the analysis will only include pairs
+that have a contrast in the treatment variable. 
+-----------------------------------------
+----------------------------------------- 
+There were 16 pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 25 33 40 49 54 56 61 65 72 80 84 85
+----------------------------------------- 
+Starting N:   1447 
+N after dropping incomplete blocks:  1382 
+
+Total of 65 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+-----------------------------------------
+Total of 69 observations dropped due to missing
+values in one or more variables
+  Final sample size: 1313 
+-----------------------------------------
+
+-----------------------------------------
+Pre-screening the adjustment covariates
+using a univariate liklihood ratio test:
+-----------------------------------------
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.79147
+HHS         0.18796
+aged        0.66657
+sex         0.10860
+mother_age  0.24668
+motherht    0.00288
+mother_edu  0.36633
+u18         0.76739
+Ncomp       0.50679
+water_time  0.97888
+floor       0.27338
+roof        0.59186
+cow         0.43182
+goat        0.22623
+chicken     0.06596
+dog         0.76063
+elec        0.36899
+radio       0.47555
+tv          0.35316
+mobilephone 0.16582
+clock       0.90506
+bicycle     0.89897
+motorcycle  0.17524
+stove       0.22581
+staffid     0.66336
+
+
+Covariates selected (P<0.2):
+                P-value
+HHS         0.187959785
+sex         0.108597369
+motherht    0.002876951
+chicken     0.065957352
+mobilephone 0.165815240
+motorcycle  0.175239035
+
+-----------------------------------------
+
+-----------------------------------------
+Estimation Results:
+-----------------------------------------
+ Initial estimation of Q
+	 Procedure: SuperLearner
+	 Model:
+		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
+
+	 Coefficients: 
+	     SL.mean_All    0.6466454 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0.3533546 
+	   SL.glmnet_All    0 
+
+ Estimation of g (treatment mechanism)
+	 Procedure: SuperLearner 
+	 Model:
+		 A ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All 
+
+	 Coefficients: 
+	     SL.mean_All    1 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0 
+
+ Estimation of g.Z (intermediate variable assignment mechanism)
+	 Procedure: No intermediate variable 
+
+ Estimation of g.Delta (missingness mechanism)
+	 Procedure: No missingness 
+
+ Bounds on g: ( 0.025 0.975 )
+
+ Additive Effect
+   Parameter Estimate:  -0.026792
+   Estimated Variance:  0.00020412
+              p-value:  0.060758
+    95% Conf Interval: (-0.054794, 0.0012108) 
+
+ Relative Risk
+   Parameter Estimate:  0.55758
+              p-value:  0.069353
+    95% Conf Interval: (0.29684, 1.0474) 
+
+              log(RR):  -0.58414
+    variance(log(RR)):  0.10346 
+
+ Odds Ratio
+   Parameter Estimate:  0.54212
+              p-value:  0.0686
+    95% Conf Interval: (0.28048, 1.0478) 
+
+              log(OR):  -0.61226
+    variance(log(OR)):  0.11304 
+
+-----------------------------------------
+>   
+> underwt_t1_h3_pr_adj_j=format.tmle(est.h3.t1,family="binomial")$rr
+> underwt_t1_h3_rd_adj_j=format.tmle(est.h3.t1,family="binomial")$rd
+> 
+> rownames(underwt_t1_h3_pr_adj_j)=c("Nutrition + WSH vs. Nutrition",
++                                 "Nutrition + WSH vs. WSH")
+> rownames(underwt_t1_h3_rd_adj_j)=c("Nutrition + WSH vs. Nutrition",
++                                 "Nutrition + WSH vs. WSH")
+> 
+> # Endline
+> 
+> # sort 
+> eW <- eW[order(eW$block,eW$clusterid,eW$hhid,eW$childid),]
+> 
+> est.h3.t2=apply(matrix(trlist), 1,function(x) washb_tmle(Y=eW$underwt,tr=eW$tr,
++     pair=eW$block, id=eW$block,W=eW[,W],
++     family="binomial",contrast=c(x,"Nutrition + WSH"),Q.SL.library=SL.library,
++     g.SL.library=SL.library, pval=0.2, seed=67890, print=TRUE))
+
+----------------------------------------- 
+By specifying the pair argument,
+you have indicated that this is a matched pair analysis.
+
+Note: the analysis will only include pairs
+that have a contrast in the treatment variable. 
+-----------------------------------------
+----------------------------------------- 
+There were 15 pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 30 33 40 49 51 54 56 65 72 80 84
+----------------------------------------- 
+Starting N:   1463 
+N after dropping incomplete blocks:  1395 
+
+Total of 68 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+-----------------------------------------
+Total of 107 observations dropped due to missing
+values in one or more variables
+  Final sample size: 1288 
+-----------------------------------------
+
+-----------------------------------------
+Pre-screening the adjustment covariates
+using a univariate liklihood ratio test:
+-----------------------------------------
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.89184
+HHS         0.19847
+aged        0.43992
+sex         0.16844
+mother_age  0.75656
+motherht    0.00192
+mother_edu  0.01602
+u18         0.64899
+Ncomp       0.70558
+water_time  0.50646
+floor       0.03996
+roof        0.07760
+cow         0.21401
+goat        0.63726
+chicken     0.00000
+dog         0.52035
+elec        0.07362
+radio       0.01753
+tv          0.00345
+mobilephone 0.00001
+clock       0.08142
+bicycle     0.18759
+motorcycle  0.60325
+stove       0.00018
+staffid     0.19616
+
+
+Covariates selected (P<0.2):
+                 P-value
+HHS         1.984744e-01
+sex         1.684382e-01
+motherht    1.922323e-03
+mother_edu  1.602420e-02
+floor       3.995994e-02
+roof        7.759915e-02
+chicken     1.727920e-07
+elec        7.362053e-02
+radio       1.753312e-02
+tv          3.448196e-03
+mobilephone 1.093992e-05
+clock       8.141947e-02
+bicycle     1.875865e-01
+stove       1.839637e-04
+staffid     1.961565e-01
+
+-----------------------------------------
+
+-----------------------------------------
+Estimation Results:
+-----------------------------------------
+ Initial estimation of Q
+	 Procedure: SuperLearner
+	 Model:
+		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
+
+	 Coefficients: 
+	     SL.mean_All    0.455179 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0.544821 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0 
+
+ Estimation of g (treatment mechanism)
+	 Procedure: SuperLearner 
+	 Model:
+		 A ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All 
+
+	 Coefficients: 
+	     SL.mean_All    0.9348656 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0.0651344 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0 
+
+ Estimation of g.Z (intermediate variable assignment mechanism)
+	 Procedure: No intermediate variable 
+
+ Estimation of g.Delta (missingness mechanism)
+	 Procedure: No missingness 
+
+ Bounds on g: ( 0.025 0.975 )
+
+ Additive Effect
+   Parameter Estimate:  -0.024702
+   Estimated Variance:  0.00023989
+              p-value:  0.11074
+    95% Conf Interval: (-0.055059, 0.0056554) 
+
+ Relative Risk
+   Parameter Estimate:  0.71773
+              p-value:  0.11508
+    95% Conf Interval: (0.47511, 1.0842) 
+
+              log(RR):  -0.33167
+    variance(log(RR)):  0.044301 
+
+ Odds Ratio
+   Parameter Estimate:  0.69881
+              p-value:  0.11442
+    95% Conf Interval: (0.44784, 1.0904) 
+
+              log(OR):  -0.35838
+    variance(log(OR)):  0.051536 
+
+-----------------------------------------
+
+----------------------------------------- 
+By specifying the pair argument,
+you have indicated that this is a matched pair analysis.
+
+Note: the analysis will only include pairs
+that have a contrast in the treatment variable. 
+-----------------------------------------
+----------------------------------------- 
+There were 16 pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 25 33 40 49 54 56 61 65 72 80 84 85
+----------------------------------------- 
+Starting N:   1490 
+N after dropping incomplete blocks:  1422 
+
+Total of 68 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+-----------------------------------------
+Total of 104 observations dropped due to missing
+values in one or more variables
+  Final sample size: 1318 
+-----------------------------------------
+
+-----------------------------------------
+Pre-screening the adjustment covariates
+using a univariate liklihood ratio test:
+-----------------------------------------
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.37318
+HHS         0.30800
+aged        0.74738
+sex         0.10973
+mother_age  0.99572
+motherht    0.00029
+mother_edu  0.01649
+u18         0.26761
+Ncomp       0.22195
+water_time  0.28516
+floor       0.16842
+roof        0.84553
+cow         0.17522
+goat        0.55236
+chicken     0.00000
+dog         0.03626
+elec        0.27290
+radio       0.39596
+tv          0.01203
+mobilephone 0.04616
+clock       0.16016
+bicycle     0.15128
+motorcycle  0.09590
+stove       0.00502
+staffid     0.06572
+
+
+Covariates selected (P<0.2):
+                 P-value
+sex         1.097347e-01
+motherht    2.865123e-04
+mother_edu  1.648663e-02
+floor       1.684176e-01
+cow         1.752216e-01
+chicken     2.134998e-06
+dog         3.626027e-02
+tv          1.203001e-02
+mobilephone 4.616210e-02
+clock       1.601575e-01
+bicycle     1.512786e-01
+motorcycle  9.590042e-02
+stove       5.018027e-03
+staffid     6.572279e-02
+
+-----------------------------------------
+
+-----------------------------------------
+Estimation Results:
+-----------------------------------------
+ Initial estimation of Q
+	 Procedure: SuperLearner
+	 Model:
+		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
+
+	 Coefficients: 
+	     SL.mean_All    0.4133793 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0.5866207 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0 
+
+ Estimation of g (treatment mechanism)
+	 Procedure: SuperLearner 
+	 Model:
+		 A ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All 
+
+	 Coefficients: 
+	     SL.mean_All    0.5520189 
+	      SL.glm_All    0 
+	 SL.bayesglm_All    0 
+	      SL.gam_All    0 
+	   SL.glmnet_All    0.4479811 
+
+ Estimation of g.Z (intermediate variable assignment mechanism)
+	 Procedure: No intermediate variable 
+
+ Estimation of g.Delta (missingness mechanism)
+	 Procedure: No missingness 
+
+ Bounds on g: ( 0.025 0.975 )
+
+ Additive Effect
+   Parameter Estimate:  -0.029931
+   Estimated Variance:  0.00018919
+              p-value:  0.029552
+    95% Conf Interval: (-0.05689, -0.0029716) 
+
+ Relative Risk
+   Parameter Estimate:  0.68533
+              p-value:  0.035705
+    95% Conf Interval: (0.48168, 0.97508) 
+
+              log(RR):  -0.37786
+    variance(log(RR)):  0.032368 
+
+ Odds Ratio
+   Parameter Estimate:  0.66338
+              p-value:  0.034753
+    95% Conf Interval: (0.45321, 0.97103) 
+
+              log(OR):  -0.4104
+    variance(log(OR)):  0.037787 
+
+-----------------------------------------
+>   
+> underwt_t2_h3_pr_adj_j=format.tmle(est.h3.t2,family="binomial")$rr
+> underwt_t2_h3_rd_adj_j=format.tmle(est.h3.t2,family="binomial")$rd
+> 
+> rownames(underwt_t2_h3_pr_adj_j)=c("Nutrition + WSH vs. Nutrition",
++                                 "Nutrition + WSH vs. WSH")
+> rownames(underwt_t2_h3_rd_adj_j)=c("Nutrition + WSH vs. Nutrition",
++                                 "Nutrition + WSH vs. WSH")
+> 
+> ######################################################
+> # Save results
+> ######################################################
+> save(underwt_t1_h1_pr_adj_j,underwt_t1_h3_pr_adj_j,
++      underwt_t2_h1_pr_adj_j,underwt_t2_h3_pr_adj_j,
++   underwt_t1_h1_rd_adj_j,underwt_t1_h3_rd_adj_j,
++   underwt_t2_h1_rd_adj_j,underwt_t2_h3_rd_adj_j,
++   file="~/Dropbox/WBK-primary-analysis/Results/jade/underwted-PR-adj.RData")
+> 
+> 
+> 
+> proc.time()
+   user  system elapsed 
+143.666   3.578 151.195 

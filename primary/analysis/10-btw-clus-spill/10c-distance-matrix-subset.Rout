@@ -1,0 +1,49 @@
+
+R version 3.2.3 (2015-12-10) -- "Wooden Christmas-Tree"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> #####################################################
+> # WASH Benefits Kenya
+> # Primary analysis
+> 
+> # subset distance matrix to distance from control compounds
+> # to each treatment arm
+> 
+> # want to know : distribution of distances between
+> # compound in C and each T arm
+> 
+> # by Jade (jadebc@berkeley.edu)
+> #####################################################
+> 
+> source("~/Documents/CRG/wash-benefits/kenya/src/primary/analysis/10-btw-clus-spill/10a-distance-functions.R")
+> 
+> # load distance matrix objects
+> load("~/Dropbox/WBK-primary-analysis/Results/Jade/washb-dist.RData")
+> 
+> # load cluster treatment assignments
+> tx=read.csv("~/Dropbox/WASHB-Kenya-Data/0-Untouched-data/0-Treatment-assignments/washb-kenya-tr.csv")
+> tx=tx[,c("clusterid","tr")]
+> 
+> # load list of compound ids
+> washb=read.csv("~/Dropbox/WASHB-Kenya-Data/0-Untouched-data/1-Main-survey/msP_household_tracking_20160909.csv")
+Error in file(file, "rt") : cannot open the connection
+Calls: read.csv -> read.table -> file
+In addition: Warning message:
+In file(file, "rt") :
+  cannot open file '/Users/jadederong/Dropbox/WASHB-Kenya-Data/0-Untouched-data/1-Main-survey/msP_household_tracking_20160909.csv': No such file or directory
+Execution halted

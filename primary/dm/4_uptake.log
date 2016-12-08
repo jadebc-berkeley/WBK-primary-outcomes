@@ -1,0 +1,840 @@
+-----------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary/dm/4_u
+> ptake.log
+  log type:  text
+ opened on:  20 Oct 2016, 10:00:32
+
+. 
+. *********************************************
+. * WASH Benefits Kenya
+. 
+. * Make uptake dataset
+. 
+. * by Jade
+. *********************************************
+. clear all
+
+. set more off
+
+. cd "~/Dropbox/WBK-primary-analysis/Data/Untouched/"
+/Users/jadederong/Dropbox/WBK-primary-analysis/Data/Untouched
+
+. 
+. 
+. *********************************************
+. * Baseline
+. *********************************************
+. 
+. use "Baseline/msP_bl_append_ID_clean_20161010.dta", clear
+
+. tostring hhid clusterid, replace
+hhid was long now str7
+clusterid was double now str5
+
+. 
+. * Visited by promoter in past month
+. gen promoter=.
+(8,246 missing values generated)
+
+. 
+. * stored drinking water has detectable free chlorine
+. gen chlorine = 1 if c1015a>0 & c1015a!=99.9
+(331 missing values generated)
+
+. #delimit;
+delimiter now ;
+. replace chlorine = 0 if c1015a==0 | c1005==2 | (c1005==1 & c100601!=1 &
+>         c100601!=2 & c100601!=11 & c100601!=12 & c100601!=13 &  c100602!=1 & 
+>         c100602!=2 & c100602!=11 & c100602!=12 & c100602!=13);
+(6,494 real changes made)
+
+. replace chlorine = . if  c1003_1==2 | c1014!=1 | c1015a==99.9 | c1023==11 | c1023
+> ==12;
+(1,688 real changes made, 1,688 to missing)
+
+.  #delimit cr
+delimiter now cr
+. 
+. 
+. * access to improved latrine
+. gen imp_lat=0
+
+. replace imp_lat=1 if c806_7==1 | c806_5==1 
+(1,322 real changes made)
+
+. replace imp_lat=. if c806_7==. & c806_5==. | (to1b==2 | to1b==3)
+(684 real changes made, 684 to missing)
+
+. replace imp_lat=0 if c805==2
+(171 real changes made)
+
+. 
+. * child feces safely disposed
+. * merging in indicator for having child in parasite cohort
+. preserve
+
+. use "~/Dropbox/WBK-primary-analysis/Data/Untouched/msP_household_tracking_2016100
+> 6.dta", clear
+
+. keep hhid parasite_bl
+
+. tostring hhid, replace
+hhid was double now str7
+
+. tempfile para
+
+. save `para'
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_00839.000002 saved
+
+. restore
+
+. 
+. merge 1:1 hhid using `para'
+(label yes_no already defined)
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                             0
+    matched                             8,246  (_merge==3)
+    -----------------------------------------
+
+. drop _m
+
+. 
+. gen feces_disp=0
+
+. replace feces_disp= 1 if c903_intoilet==1 | c903_diaper==1 | ((c903_potty_incourt
+> ==1 | c903_potty_inhouse==1) & (c904==2 | c904==7)) 
+(530 real changes made)
+
+. replace feces_disp = . if parasite_bl ==1
+(743 real changes made, 743 to missing)
+
+. replace feces_disp = . if c903_intoilet==. & c903_potty_incourt==. & c903_potty_i
+> nhouse==. & (c904==. | c904==99)
+(4,451 real changes made, 4,451 to missing)
+
+. 
+. /* handwashing location has water and soap
+> #delimit;
+> gen water2m_lat = 0;
+> replace water2m_lat =1 if (c702a_inlat==1 & c702c_water==1) | 
+>         (c703a_inlat==1 & c703c_water==1);
+> replace water2m_lat = . if c702a_inlat==. & c702c_water==. ;
+> 
+> gen water2m_kit = 0;
+> replace water2m_kit =1 if (c702a_incook==1 & c702c_water==1) | 
+>         (c703a_incook==1 & c703c_water==1);
+> replace water2m_kit = . if c702a_incook==. & c702c_water==. ;
+> 
+> gen soap2m_lat = 0;
+> replace soap2m_lat =1 if (c702a_inlat==1 & (c702c_scentbar==1 | 
+>         c702c_unscentbar==1 | c702c_powder==1 | c702c_soapywat==1)) | (c703a_inla
+> t==1 
+>          & (c703c_scentbar==1 | c703c_unscentbar==1 | c703c_powder==1 | 
+>         c703c_soapywat==1));    
+> replace soap2m_lat = 0 if c702a_inlat==2;
+> replace soap2m_lat=. if (c702a_inlat==. & (c702c_scentbar==. | c702c_unscentbar==
+> . |
+>         c702c_powder==. | c702c_soapywat==.));
+> 
+> gen soap2m_kit = 0;
+> replace soap2m_kit =1 if (c702a_incook==1 & (c702c_scentbar==1 | 
+>         c702c_unscentbar==1 | c702c_powder==1 | c702c_soapywat==1)) | (c703a_inla
+> t==1 
+>          & (c703c_scentbar==1 | c703c_unscentbar==1 | c703c_powder==1 | 
+>         c703c_soapywat==1));    
+> replace soap2m_kit = 0 if c702a_incook==2;
+> replace soap2m_kit=. if (c702a_incook==. & (c702c_scentbar==. | c702c_unscentbar=
+> =. |
+>         c702c_powder==. | c702c_soapywat==.)) ;
+> #delimit cr
+>         
+> gen hws_lat = 0
+> replace hws_lat = 1 if water2m_lat ==1 & soap2m_lat==1
+> replace hws_lat = . if water2m_lat ==. & soap2m_lat==. 
+> 
+> gen hws_kit = 0
+> replace hws_kit = 1 if water2m_kit ==1 & soap2m_kit==1
+> replace hws_kit = . if water2m_kit ==. & soap2m_kit==.
+> 
+> gen hws=0
+> replace hws=1 if hws_lat==1 | hws_kit ==1
+> replace hws=. if hws_lat==. & hws_kit==.  */
+. 
+. #delimit; 
+delimiter now ;
+. gen hws=0;
+
+. replace hws=1 if (c702c_water==1 & (c702c_scentbar==1 | c702c_unscentbar==1 | c70
+> 2c_powder==1 | 
+>         c702c_soapywat==1)) | ( c703c_water==1 & (c703c_scentbar==1 | c703c_unsce
+> ntbar==1 | 
+>         c703c_powder==1 | c703c_soapywat==1));
+(478 real changes made)
+
+.         replace hws=. if (c702c_water==. & c702c_scentbar==. & c702c_unscentbar==
+> . & c702c_powder==. & 
+>         c702c_soapywat==.) & ( c703c_water==. & c703c_scentbar==. & c703c_unscent
+> bar==. &
+>         c703c_powder==. & c703c_soapywat==.);
+(18 real changes made, 18 to missing)
+
+. #delimit cr
+delimiter now cr
+. 
+. * LNS sachets consumed
+. gen lns=0
+
+. 
+. * ---------------------------------------------
+. * merge in tr
+. * ---------------------------------------------
+. tostring clusterid, replace
+clusterid already string; no replace
+
+. merge m:1 clusterid using "~/Dropbox/WBK-primary-analysis/Data/Untouched/tr/washb
+> -kenya-tr.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                             0
+    matched                             8,246  (_merge==3)
+    -----------------------------------------
+
+. drop _m
+
+. 
+. keep hhid clusterid tr promoter chlorine imp_lat feces_disp hws lns
+
+. 
+. outsheet using "~/Dropbox/WBK-primary-analysis/Data/final/jade/uptake_baseline.cs
+> v", replace comma 
+
+. 
+. *********************************************
+. * Midline
+. *********************************************
+. use "Midline/msP_ml_append_ID_clean_uptake_20161015.dta", clear
+
+. tostring hhid clusterid, replace
+hhid was long now str7
+clusterid was double now str5
+
+. 
+. * Visited by promoter in past month
+. gen promoter=0
+
+. replace promoter =1 if f2==1
+(2,788 real changes made)
+
+. replace promoter=. if f2==. | f2==99
+(2,315 real changes made, 2,315 to missing)
+
+. 
+. * stored drinking water has detectable free chlorine
+. gen chlorine = 1 if c1015a>0 & c1015a!=99.9 & c1015a!=999
+(292 missing values generated)
+
+. #delimit; 
+delimiter now ;
+. replace chlorine = 0 if c1015a==0 | c1005==2 | (c1005==1 & c1006_cldisp!=1 & 
+>         c1006_botcl!=1 & c1006_pur!=1 & c1006_aqua!=1 & c1006_cl!=1);
+(2,844 real changes made)
+
+. replace chlorine = . if  c1003_1==2 | c1014!=1 | c1015a==99.9 | c1015a==999;
+(2,860 real changes made, 2,860 to missing)
+
+. #delimit cr
+delimiter now cr
+. 
+. * access to improved latrine
+. gen imp_lat=0
+
+. replace imp_lat=1 if c806_7==1 | c806_5==1 
+(1,686 real changes made)
+
+. replace imp_lat=. if c806_7==. & c806_5==. | (c8052==2 | c8052==3)
+(2,415 real changes made, 2,415 to missing)
+
+. replace imp_lat=0 if c8052==4
+(156 real changes made)
+
+. replace imp_lat=. if c8052==2 | c8052==3
+(0 real changes made)
+
+. 
+. * child feces safely disposed
+. * merging in indicator for having child in parasite cohort
+. preserve
+
+. use "~/Dropbox/WBK-primary-analysis/Data/Untouched/msP_household_tracking_2016100
+> 6.dta", clear
+
+. keep hhid parasite_bl
+
+. tostring hhid, replace
+hhid was double now str7
+
+. tempfile para
+
+. save `para'
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_00839.000004 saved
+
+. restore
+
+. 
+. merge 1:1 hhid using `para'
+(label yes_no already defined)
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                         2,162
+        from master                         0  (_merge==1)
+        from using                      2,162  (_merge==2)
+
+    matched                             6,084  (_merge==3)
+    -----------------------------------------
+
+. drop if _m==2
+(2,162 observations deleted)
+
+. drop _m
+
+. 
+. gen feces_disp=0
+
+. replace feces_disp= 1 if c903_intoilet==1 | ( c903_diaper==1 & c904==2) | ((c903_
+> pottyincourt==1 | c903_pottyinhouse==1) & (c904==2 | c904==7)) 
+(1,898 real changes made)
+
+. replace feces_disp = . if parasite_bl ==1
+(534 real changes made, 534 to missing)
+
+. replace feces_disp = . if c903_intoilet==. & c903_pottyincourt==. & c903_pottyinh
+> ouse==. & c904==. 
+(2,094 real changes made, 2,094 to missing)
+
+. 
+. * handwashing location has water and soap
+. /*#delimit; 
+> gen water2m_lat = 0;
+> replace water2m_lat = 1 if (c702a_inlat==1 & c702c_water==1) | 
+>         (c703a_inlat==1 & c703c_water==1);
+> replace water2m_lat = . if c702a_inlat==. & c702c_water==. ;
+> 
+> gen water2m_kit = 0;
+> replace water2m_kit = 1 if (c702a_incook==1 & c702c_water==1) | 
+>         (c703a_incook==1 & c703c_water==1);
+> replace water2m_kit = . if c702a_incook==. & c702c_water==. ;
+> 
+> gen soap2m_lat = 0;
+> replace soap2m_lat = 1 if (c702a_inlat==1 & (c702c_scentbar==1 | c702c_unscentbar
+> ==1 | 
+>         c702c_powder==1 | c702c_soapywat==1)) | (c703a_inlat==1 & (c703c_scentbar
+> ==1 | 
+>         c703c_unscentbar==1 | c703c_powder==1 | c703c_soapywat==1));
+>         replace soap2m_lat = 0 if c702a_inlat==2;
+> replace soap2m_lat=. if (c702a_inlat==. & (c702c_scentbar==. | c702c_unscentbar==
+> . |
+>         c702c_powder==. | c702c_soapywat==.));
+>         
+> gen soap2m_kit = 0;
+> replace soap2m_kit = 1 if (c702a_incook==1 & (c702c_scentbar==1 | c702c_unscentba
+> r==1 | 
+>         c702c_powder==1 | c702c_soapywat==1)) | (c703a_incook==1 & (c703c_scentba
+> r==1 | 
+>         c703c_unscentbar==1 | c703c_powder==1 | c703c_soapywat==1));
+> replace soap2m_kit = 0 if c702a_incook==2;
+> replace soap2m_kit=. if (c702a_incook==. & (c702c_scentbar==. | c702c_unscentbar=
+> =. |
+>         c702c_powder==. | c702c_soapywat==.)) ;
+>         
+> gen tippy = 0 ;
+> replace tippy=1 if ((tt702c_inlat==1 | tt702c_incook==1) & tt702b1==1 & tt702d==1
+>  & tt702f==1) | 
+>         ((tt703c_inlat==1 | tt703c_incook==1) & tt702b1==1 & tt703d==1 & tt703f==
+> 1);
+> replace tippy = . if (tt702c_inlat==. & tt702c_incook==. & tt702b1==. & tt702d==.
+>  & tt703f==.)  | 
+>         (tt703c_inlat==. & tt703c_incook==. & tt703b1==. & tt703d==. & tt703f==.)
+> ;
+>         
+> #delimit cr
+> 
+> gen hws_lat = 0
+> replace hws_lat = 1 if water2m_lat ==1 & soap2m_lat==1 
+> replace hws_lat = . if water2m_lat ==. & soap2m_lat==. 
+> 
+> gen hws_kit = 0
+> replace hws_kit = 1 if water2m_kit ==1 & soap2m_kit==1
+> replace hws_kit = . if water2m_kit ==. & soap2m_kit==.
+> 
+> gen hws=0
+> replace hws=1 if hws_lat==1 | hws_kit ==1 | tippy ==1 
+> replace hws=. if hws_lat==. & hws_kit==. & tippy==. */
+. 
+. #delimit;
+delimiter now ;
+. gen ws = 0;
+
+. replace ws = 1 if (c702c_water==1 & (c702c_scentbar==1 | c702c_unscentbar==1 | 
+>         c702c_powder==1 | c702c_soapywat==1)) | (c703c_water==1 & (c703c_scentbar
+> ==1 | 
+>         c703c_unscentbar==1 | c703c_powder==1 | c703c_soapywat==1));
+(1,440 real changes made)
+
+. replace ws = . if (c702c_water==. & c702c_scentbar==. & c702c_unscentbar==. & c70
+> 2c_powder==. & 
+>         c702c_soapywat==.) & ( c703c_water==. & c703c_scentbar==. & c703c_unscent
+> bar==. &
+>         c703c_powder==. & c703c_soapywat==.);
+(2,107 real changes made, 2,107 to missing)
+
+. #delimit cr
+delimiter now cr
+.         
+. gen tt = 0
+
+. replace tt=1 if (tt702b1==1 & tt702d==1 & tt702f==1) | (tt703b1==1 & tt703d==1 & 
+> tt703f==1)
+(161 real changes made)
+
+. replace tt=. if tt702b1==. & tt702d==. & tt702f==. & tt703b1==. & tt703d==. & tt7
+> 03f==.
+(5,802 real changes made, 5,802 to missing)
+
+. 
+. gen hws=0
+
+. replace hws=1 if ws ==1 | tt==1
+(1,465 real changes made)
+
+. replace hws=. if ws==. & tt==.
+(2,107 real changes made, 2,107 to missing)
+
+. 
+. 
+. * LNS sachets consumed
+. 
+. * merge in age to restrict LNS to ages 6-24 months
+. preserve
+
+. use "msP_child_IDchar_20161006.dta", clear
+
+. tostring childid hhid, replace
+childid was double now str10
+hhid was double now str7
+
+. * keeping first index child - not including twin data because LNS was
+. * only recorded once in the survey
+. keep if childtype==1
+(5,430 observations deleted)
+
+. 
+. * calculate age
+. ren DOB dob
+
+. 
+. keep hhid childid dob
+
+. 
+. tempfile dob
+
+. save `dob'
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_00839.000006 saved
+
+. restore
+
+. 
+. merge 1:1 hhid using `dob'
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                         2,559
+        from master                       673  (_merge==1)
+        from using                      1,886  (_merge==2)
+
+    matched                             5,411  (_merge==3)
+    -----------------------------------------
+
+. drop if _m==2
+(1,886 observations deleted)
+
+. drop _m
+
+. 
+. format ms_ml_up_date %d
+
+. gen double agem=(ms_ml_up_date-dob)/30.4167
+(687 missing values generated)
+
+. 
+. * mean self-reported sachets of LNS fed in prior week
+. gen lns_cons=c1408*c1409
+(5,270 missing values generated)
+
+. 
+. gen lns=lns_cons/14
+(5,270 missing values generated)
+
+. 
+. replace lns=. if agem <6 | agem >24
+(0 real changes made)
+
+. 
+. * ---------------------------------------------
+. * merge in tr
+. * ---------------------------------------------
+. tostring clusterid, replace
+clusterid already string; no replace
+
+. merge m:1 clusterid using "~/Dropbox/WBK-primary-analysis/Data/Untouched/tr/washb
+> -kenya-tr.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                            80
+        from master                         0  (_merge==1)
+        from using                         80  (_merge==2)
+
+    matched                             6,084  (_merge==3)
+    -----------------------------------------
+
+. 
+. drop if _m==2
+(80 observations deleted)
+
+. drop _m
+
+. 
+. keep hhid clusterid tr promoter chlorine imp_lat feces_disp hws lns
+
+. 
+. outsheet using "~/Dropbox/WBK-primary-analysis/Data/final/jade/uptake_midline.csv
+> ", replace comma 
+
+. 
+. *********************************************
+. * Endline
+. *********************************************
+. use "Endline/msP_el_append_ID_clean_uptake_20161015.dta", clear
+
+. tostring hhid clusterid, replace
+hhid was long now str7
+clusterid was float now str5
+
+. 
+. * Visited by promoter in past month
+. gen promoter=0
+
+. replace promoter =1 if f2==1
+(2,004 real changes made)
+
+. replace promoter=. if f2==. | f2==99
+(1,627 real changes made, 1,627 to missing)
+
+. 
+. * stored drinking water has detectable free chlorine
+. gen chlorine = 1 if c1015a>0 & c1015a!=99.9 & c1015a!=999
+(395 missing values generated)
+
+. #delimit; 
+delimiter now ;
+. replace chlorine = 0 if c1015a==0 | c1005==2 | (c1005==1 & c1006_cldisp!=1 & 
+>         c1006_botcl!=1 & c1006_pur!=1 & c1006_aqua!=1 & c1006_cl!=1);
+(4,744 real changes made)
+
+. replace chlorine = . if  c1003_1==2 | c1014!=1 | c1015a==99.9 | c1015a==999;
+(1,926 real changes made, 1,926 to missing)
+
+. #delimit cr
+delimiter now cr
+. 
+. * access to improved latrine
+. gen imp_lat=0
+
+. replace imp_lat=1 if c806_7==1 | c806_5==1 
+(2,260 real changes made)
+
+. replace imp_lat=. if c806_7==. & c806_5==. 
+(1,825 real changes made, 1,825 to missing)
+
+. replace imp_lat=0 if c8052==4
+(87 real changes made)
+
+. replace imp_lat=. if c8052==2 | c8052==3
+(0 real changes made)
+
+. 
+. * child feces safely disposed
+. * merging in indicator for having child in parasite cohort
+. preserve
+
+. use "~/Dropbox/WBK-primary-analysis/Data/Untouched/msP_household_tracking_2016100
+> 6.dta", clear
+
+. keep hhid parasite_bl
+
+. tostring hhid, replace
+hhid was double now str7
+
+. tempfile para
+
+. save `para'
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_00839.000008 saved
+
+. restore
+
+. 
+. merge 1:1 hhid using `para'
+(label yes_no already defined)
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                         1,108
+        from master                         0  (_merge==1)
+        from using                      1,108  (_merge==2)
+
+    matched                             7,138  (_merge==3)
+    -----------------------------------------
+
+. drop if _m==2
+(1,108 observations deleted)
+
+. drop _m
+
+. 
+. * child feces safely disposed 
+. gen feces_disp=0
+
+. replace feces_disp= 1 if c903==7 | (c903==8 & c904==2) | ((c903 ==1 | c903 ==2) &
+>  (c904==2 | c904==7))
+(1,078 real changes made)
+
+. replace feces_disp = . if parasite_bl ==1
+(638 real changes made, 638 to missing)
+
+. replace feces_disp = . if (c903==. | c903==99) & (c904==. | c904==99)
+(1,409 real changes made, 1,409 to missing)
+
+. 
+. 
+. * handwashing location has water and soap
+. /*#delimit; 
+> gen water2m_lat = 0;
+> replace water2m_lat = 1 if (c702a_inlat==1 & c702c_water==1) | 
+>         (c703a_inlat==1 & c703c_water==1);
+> replace water2m_lat = . if c702a_inlat==. & c702c_water==. ;
+> 
+> gen water2m_kit = 0;
+> replace water2m_kit = 1 if (c702a_incook==1 & c702c_water==1) | 
+>         (c703a_incook==1 & c703c_water==1);
+> replace water2m_kit = . if c702a_incook==. & c702c_water==. ;
+> 
+> gen soap2m_lat = 0;
+> replace soap2m_lat = 1 if (c702a_inlat==1 & (c702c_scentbar==1 | c702c_unscentbar
+> ==1 | 
+>         c702c_powder==1 | c702c_soapywat==1)) | (c703a_inlat==1 & (c703c_scentbar
+> ==1 | 
+>         c703c_unscentbar==1 | c703c_powder==1 | c703c_soapywat==1));
+>         replace soap2m_lat = 0 if c702a_inlat==2;
+> replace soap2m_lat=. if (c702a_inlat==. & (c702c_scentbar==. | c702c_unscentbar==
+> . |
+>         c702c_powder==. | c702c_soapywat==.));
+>         
+> gen soap2m_kit = 0;
+> replace soap2m_kit = 1 if (c702a_incook==1 & (c702c_scentbar==1 | c702c_unscentba
+> r==1 | 
+>         c702c_powder==1 | c702c_soapywat==1)) | (c703a_incook==1 & (c703c_scentba
+> r==1 | 
+>         c703c_unscentbar==1 | c703c_powder==1 | c703c_soapywat==1));
+> replace soap2m_kit = 0 if c702a_incook==2;
+> replace soap2m_kit=. if (c702a_incook==. & (c702c_scentbar==. | c702c_unscentbar=
+> =. |
+>         c702c_powder==. | c702c_soapywat==.)) ;
+>         
+> gen tippy = 0 ;
+> replace tippy=1 if ((tt702c_inlat==1 | tt702c_incook==1) & tt702b1==1 & tt702d==1
+>  & tt702f==1) | 
+>         ((tt703c_inlat==1 | tt703c_incook==1) & tt702b1==1 & tt703d==1 & tt703f==
+> 1);
+> replace tippy = . if (tt702c_inlat==. & tt702c_incook==. & tt702b1==. & tt702d==.
+>  & tt703f==.)  | 
+>         (tt703c_inlat==. & tt703c_incook==. & tt703b1==. & tt703d==. & tt703f==.)
+> ;
+>         
+> #delimit cr
+> 
+> gen hws_lat = 0
+> replace hws_lat = 1 if water2m_lat ==1 & soap2m_lat==1 
+> replace hws_lat = . if water2m_lat ==. & soap2m_lat==. 
+> 
+> gen hws_kit = 0
+> replace hws_kit = 1 if water2m_kit ==1 & soap2m_kit==1
+> replace hws_kit = . if water2m_kit ==. & soap2m_kit==.
+> 
+> gen hws=0
+> replace hws=1 if hws_lat==1 | hws_kit ==1 | tippy ==1 
+> replace hws=. if hws_lat==. & hws_kit==. & tippy==. */
+. 
+. 
+. #delimit;
+delimiter now ;
+. gen ws = 0;
+
+. replace ws = 1 if (c702c_water==1 & (c702c_scentbar==1 | c702c_unscentbar==1 | 
+>         c702c_powder==1 | c702c_soapywat==1)) | (c703c_water==1 & (c703c_scentbar
+> ==1 | 
+>         c703c_unscentbar==1 | c703c_powder==1 | c703c_soapywat==1));
+(717 real changes made)
+
+. replace ws = . if (c702c_water==. & c702c_scentbar==. & c702c_unscentbar==. & c70
+> 2c_powder==. & 
+>         c702c_soapywat==.) & ( c703c_water==. & c703c_scentbar==. & c703c_unscent
+> bar==. &
+>         c703c_powder==. & c703c_soapywat==.);
+(1,463 real changes made, 1,463 to missing)
+
+. #delimit cr
+delimiter now cr
+.         
+. gen tt = 0
+
+. replace tt=1 if (tt702b1==1 & tt702d==1 & tt702f==1) | (tt703b1==1 & tt703d==1 & 
+> tt703f==1)
+(64 real changes made)
+
+. replace tt=. if tt702b1==. & tt702d==. & tt702f==. & tt703b1==. & tt703d==. & tt7
+> 03f==.
+(5,895 real changes made, 5,895 to missing)
+
+. 
+. gen hws=0
+
+. replace hws=1 if ws ==1 | tt==1
+(753 real changes made)
+
+. replace hws=. if ws==. & tt==.
+(1,463 real changes made, 1,463 to missing)
+
+. 
+. 
+. 
+. 
+. * LNS sachets consumed
+. 
+. * merge in age to restrict LNS to ages 6-24 months
+. preserve
+
+. use "msP_child_IDchar_20161006.dta", clear
+
+. tostring childid hhid, replace
+childid was double now str10
+hhid was double now str7
+
+. * keeping first index child - not including twin data because LNS was
+. * only recorded once in the survey
+. keep if childtype==1
+(5,430 observations deleted)
+
+. 
+. * calculate age
+. ren DOB dob
+
+. 
+. keep hhid childid dob
+
+. 
+. tempfile dob
+
+. save `dob'
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_00839.00000a saved
+
+. restore
+
+. 
+. merge 1:1 hhid using `dob'
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                         1,447
+        from master                       644  (_merge==1)
+        from using                        803  (_merge==2)
+
+    matched                             6,494  (_merge==3)
+    -----------------------------------------
+
+. drop if _m==2
+(803 observations deleted)
+
+. drop _m
+
+. 
+. format ms_el_up_date %d
+
+. gen double agem=(ms_el_up_date-dob)/30.4167
+(657 missing values generated)
+
+. 
+. * mean self-reported sachets of LNS fed in prior week
+. 
+. gen lns_cons=c1408*c1409
+(6,539 missing values generated)
+
+. 
+. gen lns=lns_cons/14
+(6,539 missing values generated)
+
+. 
+. replace lns=. if agem <6 | agem >24
+(128 real changes made, 128 to missing)
+
+. 
+. * ---------------------------------------------
+. * merge in tr
+. * ---------------------------------------------
+. tostring clusterid, replace
+clusterid already string; no replace
+
+. merge m:1 clusterid using "~/Dropbox/WBK-primary-analysis/Data/Untouched/tr/washb
+> -kenya-tr.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                            35
+        from master                         0  (_merge==1)
+        from using                         35  (_merge==2)
+
+    matched                             7,138  (_merge==3)
+    -----------------------------------------
+
+. 
+. drop if _m==2
+(35 observations deleted)
+
+. drop _m
+
+. 
+. keep hhid clusterid tr promoter chlorine imp_lat feces_disp hws lns
+
+. 
+. * there are 66 observations in the passive control arm, but my understanding
+. * was that measurements were not taken in that arm. 
+. drop if tr==8
+(66 observations deleted)
+
+. 
+. outsheet using "~/Dropbox/WBK-primary-analysis/Data/final/jade/uptake_endline.csv
+> ", replace comma 
+
+. 
+. 
+. log close
+      name:  <unnamed>
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary/dm/4_u
+> ptake.log
+  log type:  text
+ closed on:  20 Oct 2016, 10:00:34
+-----------------------------------------------------------------------------------

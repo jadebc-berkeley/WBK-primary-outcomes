@@ -1,0 +1,107 @@
+
+R version 3.2.3 (2015-12-10) -- "Wooden Christmas-Tree"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> ##############################################
+> # WASH Benefits Kenya
+> # Primary outcome analysis 
+> 
+> # Length-for-age 
+> # N, mean, SD by arm
+> 
+> # by Jade (jadebc@berkeley.edu)
+> ##############################################
+> 
+> rm(list=ls())
+> m=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midline-anthro.csv")
+> e=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/endline-anthro.csv")
+> 
+> source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
+Loading required package: zoo
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+> 
+> m=preprocess.anthro(m, "haz")
+> e=preprocess.anthro(e, "haz")
+> 
+> #----------------------------------------------
+> # N by arm
+> #----------------------------------------------
+> N.1=table(m$tr[!is.na(m$haz)])
+> N.2=table(e$tr[!is.na(e$haz)])
+> 
+> #----------------------------------------------
+> # mean haz by arm
+> #----------------------------------------------
+> mn.haz.1=as.numeric(t(aggregate(m$haz,list(m$tr),mean,na.rm=TRUE))[2,])
+> mn.haz.2=as.numeric(t(aggregate(e$haz,list(e$tr),mean,na.rm=TRUE))[2,])
+> 
+> 
+> #----------------------------------------------
+> # sd of haz by arm
+> #----------------------------------------------
+> sd.haz.1=as.numeric(t(aggregate(m$haz,list(m$tr),sd,na.rm=TRUE))[2,])
+> sd.haz.2=as.numeric(t(aggregate(e$haz,list(e$tr),sd,na.rm=TRUE))[2,])
+> 
+> laz_t1_n_j=as.data.frame(matrix(cbind(N.1,mn.haz.1,sd.haz.1),8,3))
+> rownames(laz_t1_n_j)=levels(m$tr)
+> colnames(laz_t1_n_j)=c("N","mean","sd")
+> 
+> laz_t2_n_j=as.data.frame(matrix(cbind(N.2,mn.haz.2,sd.haz.2),8,3))
+> rownames(laz_t2_n_j)=levels(e$tr)
+> colnames(laz_t2_n_j)=c("N","mean","sd")
+> 
+> laz_t1_n_j
+                   N      mean       sd
+Control         1431 -1.130664 1.128948
+Passive Control  703 -1.139531 1.147588
+Water            679 -1.134050 1.074044
+Sanitation       676 -1.184453 1.136328
+Handwashing      679 -1.163490 1.058301
+WSH              703 -1.149659 1.056527
+Nutrition        657 -1.033501 1.122651
+Nutrition + WSH  734 -1.025831 1.074528
+> 
+> laz_t2_n_j
+                   N      mean       sd
+Control         1535 -1.536638 1.110814
+Passive Control  716 -1.555978 1.053863
+Water            719 -1.581572 1.080944
+Sanitation       739 -1.605751 1.133449
+Handwashing      700 -1.595014 1.064764
+WSH              719 -1.587872 1.049647
+Nutrition        695 -1.439036 1.109207
+Nutrition + WSH  760 -1.392289 1.046505
+> 
+> save(laz_t1_n_j,laz_t2_n_j,
++      file="~/Dropbox/WBK-primary-analysis/results/jade/laz_mean.RData")
+> 
+> 
+> 
+> 
+> 
+> proc.time()
+   user  system elapsed 
+  8.899   0.517  10.135 

@@ -1,0 +1,138 @@
+
+R version 3.2.3 (2015-12-10) -- "Wooden Christmas-Tree"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> ##############################################
+> # WASH Benefits Kenya
+> # Primary outcome analysis 
+> 
+> # Stunting 
+> # n, N, prevalence, and 95% CI by arm at
+> # baseline and follow-up
+> 
+> # by Jade (jadebc@berkeley.edu)
+> ##############################################
+> library(washb)
+Welcome to the washb package
+Version: 0.2.0
+Created on 2016-10-12
+
+The package's reference manual and vignette are also online:
+https://ben-arnold.github.io/washb
+
+> 
+> rm(list=ls())
+> source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
+Loading required package: zoo
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+> 
+> m=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midline-anthro.csv")
+> e=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/endline-anthro.csv")
+> 
+> m=preprocess.anthro(m, "stunted")
+> e=preprocess.anthro(e, "stunted")
+> 
+> #----------------------------------------------
+> # n and N by arm and follow-up time point
+> #----------------------------------------------
+> N.1=table(m$tr[!is.na(m$stunted)])
+> n.1=table(m$stunted,m$tr)[2,]
+> 
+> stunt_t1_n_j=data.frame(cbind(N.1=N.1,n.1=n.1))
+> 
+> N.2=table(e$tr[!is.na(e$stunted)])
+> n.2=table(e$stunted,e$tr)[2,]
+> 
+> stunt_t2_n_j=data.frame(cbind(N.2=N.2,n.2=n.2))
+> 
+> names(N.1)=NULL
+> names(N.2)=NULL
+> 
+> #----------------------------------------------
+> # prevalence by arm and time point
+> #----------------------------------------------
+> stunt_t1_prev_j=t(sapply(levels(m$tr), function(x) washb_mean(
++   Y=m$stunted[m$tr==x],id=m$clusterid[m$tr==x],print=FALSE)))
+> 
+> stunt_t2_prev_j=t(sapply(levels(e$tr), function(x) washb_mean(
++   Y=e$stunted[e$tr==x],id=e$clusterid[e$tr==x],print=FALSE)))
+> 
+> colnames(stunt_t1_prev_j)=c("N","Prev","SD","Robust SE","lb","ub")
+> colnames(stunt_t2_prev_j)=c("N","Prev","SD","Robust SE","lb","ub")
+> 
+> # drop columns that aren't needed
+> stunt_t1_prev_j=stunt_t1_prev_j[,c("Prev","lb","ub")]
+> stunt_t2_prev_j=stunt_t2_prev_j[,c("Prev","lb","ub")]
+> 
+> stunt_t1_n_j
+                 N.1 n.1
+Control         1431 286
+Passive Control  703 133
+Water            679 132
+Sanitation       676 148
+Handwashing      679 142
+WSH              703 148
+Nutrition        657 115
+Nutrition + WSH  734 119
+> stunt_t2_n_j
+                 N.2 n.2
+Control         1535 483
+Passive Control  716 223
+Water            719 233
+Sanitation       739 255
+Handwashing      700 235
+WSH              719 236
+Nutrition        695 201
+Nutrition + WSH  760 203
+> 
+> stunt_t1_prev_j
+                     Prev        lb        ub
+Control         0.1998602 0.1762763 0.2234442
+Passive Control 0.1891892 0.1581715 0.2202069
+Water           0.1944035 0.1639137 0.2248933
+Sanitation      0.2189349 0.1853117 0.2525581
+Handwashing     0.2091311 0.1758341 0.2424281
+WSH             0.2105263 0.1808802 0.2401724
+Nutrition       0.1750381 0.1431300 0.2069461
+Nutrition + WSH 0.1621253 0.1316414 0.1926093
+> stunt_t2_prev_j
+                     Prev        lb        ub
+Control         0.3146580 0.2880825 0.3412334
+Passive Control 0.3114525 0.2710889 0.3518161
+Water           0.3240612 0.2884261 0.3596963
+Sanitation      0.3450609 0.3096277 0.3804941
+Handwashing     0.3357143 0.3005770 0.3708515
+WSH             0.3282337 0.2929763 0.3634911
+Nutrition       0.2892086 0.2526138 0.3258035
+Nutrition + WSH 0.2671053 0.2302615 0.3039490
+> 
+> save(stunt_t1_n_j, stunt_t2_n_j, stunt_t1_prev_j, stunt_t2_prev_j, 
++      file="~/Dropbox/WBK-primary-analysis/results/jade/stunt_prev.RData")
+> 
+> 
+> proc.time()
+   user  system elapsed 
+  1.477   0.044   1.574 

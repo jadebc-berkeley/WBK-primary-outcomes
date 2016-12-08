@@ -1,0 +1,105 @@
+
+R version 3.2.3 (2015-12-10) -- "Wooden Christmas-Tree"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> ##############################################
+> # WASH Benefits Kenya
+> # Primary outcome analysis 
+> 
+> # Weight-for-height 
+> # N, mean, SD by arm
+> 
+> # by Jade (jadebc@berkeley.edu)
+> ##############################################
+> 
+> rm(list=ls())
+> m=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midline-anthro.csv")
+> e=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/endline-anthro.csv")
+> 
+> source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
+Loading required package: zoo
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+> 
+> m=preprocess.anthro(m, "whz")
+> e=preprocess.anthro(e, "whz")
+> 
+> #----------------------------------------------
+> # N by arm
+> #----------------------------------------------
+> N.1=table(m$tr[!is.na(m$whz)])
+> N.2=table(e$tr[!is.na(e$whz)])
+> 
+> #----------------------------------------------
+> # mean whz by arm
+> #----------------------------------------------
+> mn.whz.1=as.numeric(t(aggregate(m$whz,list(m$tr),mean,na.rm=TRUE))[2,])
+> mn.whz.2=as.numeric(t(aggregate(e$whz,list(e$tr),mean,na.rm=TRUE))[2,])
+> 
+> 
+> #----------------------------------------------
+> # sd of whz by arm
+> #----------------------------------------------
+> sd.whz.1=as.numeric(t(aggregate(m$whz,list(m$tr),sd,na.rm=TRUE))[2,])
+> sd.whz.2=as.numeric(t(aggregate(e$whz,list(e$tr),sd,na.rm=TRUE))[2,])
+> 
+> whz_t1_n_j=as.data.frame(matrix(cbind(N.1,mn.whz.1,sd.whz.1),8,3))
+> rownames(whz_t1_n_j)=levels(m$tr)
+> colnames(whz_t1_n_j)=c("N","mean","sd")
+> 
+> whz_t2_n_j=as.data.frame(matrix(cbind(N.2,mn.whz.2,sd.whz.2),8,3))
+> rownames(whz_t2_n_j)=levels(e$tr)
+> colnames(whz_t2_n_j)=c("N","mean","sd")
+> 
+> whz_t1_n_j
+                   N      mean       sd
+Control         1430 0.2452727 1.032726
+Passive Control  704 0.2204830 1.083798
+Water            679 0.2952430 1.106051
+Sanitation       678 0.1631416 1.052131
+Handwashing      679 0.2683063 1.072040
+WSH              704 0.2634233 1.056110
+Nutrition        657 0.3565601 1.021766
+Nutrition + WSH  735 0.3991973 1.003404
+> 
+> whz_t2_n_j
+                   N       mean        sd
+Control         1536 0.10602214 0.9410059
+Passive Control  717 0.07552301 0.9181746
+Water            719 0.14242003 0.9517895
+Sanitation       740 0.05097297 0.9672220
+Handwashing      700 0.09104286 0.9303056
+WSH              714 0.08004202 0.9240091
+Nutrition        695 0.13643165 0.9169129
+Nutrition + WSH  762 0.18034121 0.9040521
+> 
+> save(whz_t1_n_j,whz_t2_n_j,
++      file="~/Dropbox/WBK-primary-analysis/results/jade/whz_mean.RData")
+> 
+> 
+> 
+> 
+> 
+> proc.time()
+   user  system elapsed 
+  1.332   0.047   1.437 

@@ -1,0 +1,231 @@
+
+R version 3.2.3 (2015-12-10) -- "Wooden Christmas-Tree"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> ##############################################
+> # WASH Benefits Kenya
+> # Primary outcome analysis 
+> 
+> # Diarrhea unadjusted analysis
+> # Pooled midline and endline 
+> 
+> # Permutation tests: non-parametric Wilcoxon signed rank test statistic
+> # 2-sided p-values
+> 
+> # Note: this code does not use the washb R package
+> # However, the results are replicated with the washb_permute function
+> 
+> # by Jade (jadebc@berkeley.edu)
+> ##############################################
+> 
+> rm(list=ls())
+> library(reshape2)
+> library(coin)
+Loading required package: survival
+Warning message:
+package ‘coin’ was built under R version 3.2.5 
+> 
+> data=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/diarrhea.csv")
+> source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
+Loading required package: zoo
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+> 
+> d=preprocess.diarr(data)
+> 
+> #----------------------------------------------
+> # H1: P-value from permutation test for unadjusted 
+> # differences; each arm vs. control
+> #----------------------------------------------
+> P.df=coin.prep(d,tx="Passive Control",cont="Control",y="diarr7")
+[1] "Blocks dropped:"
+[1] "22" "47" "52" "54" "63" "70" "12" "19"
+[1] "N before dropping blocks: 4309"
+[1] "N after dropping blocks: 4151"
+[1] "Number of blocks included: 78"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "40" "49" "54" "56" "65" "72" "85"
+> set.seed(67890)
+> P.permtest=wilcoxsign_test(diarr7~tr | block, data=P.df,
++        distribution=approximate(B=100000))
+> P.perm.p=pvalue(P.permtest)
+> 
+> W.df=coin.prep(d,tx="Water",cont="Control",y="diarr7")
+[1] "Blocks dropped:"
+[1] "20" "30" "34" "45" "66" "68" "76" "80" "81"
+[1] "N before dropping blocks: 4293"
+[1] "N after dropping blocks: 4065"
+[1] "Number of blocks included: 76"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "33" "37" "40" "49" "70" "72" "80" "84" "85"
+> set.seed(67890)
+> W.permtest=wilcoxsign_test(diarr7~tr | block, data=W.df,
++    distribution=approximate(B=100000))
+> W.perm.p=pvalue(W.permtest)
+> 
+> WSH.S.df=coin.prep(d,tx="Sanitation",cont="Control",y="diarr7")
+[1] "Blocks dropped:"
+[1] "31" "46" "51" "58" "62" "69" "77" "81" "11"
+[1] "N before dropping blocks: 4281"
+[1] "N after dropping blocks: 4098"
+[1] "Number of blocks included: 76"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "33" "40" "49" "54" "61" "65" "72" "80" "84" "85"
+> set.seed(67890)
+> WSH.S.permtest=wilcoxsign_test(diarr7~tr | block, data=WSH.S.df,
++    distribution=approximate(B=100000))
+> WSH.S.perm.p=pvalue(WSH.S.permtest)
+> 
+> H.df=coin.prep(d,tx="Handwashing",cont="Control",y="diarr7")
+[1] "Blocks dropped:"
+[1] "30" "45" "47" "50" "52" "53" "61"
+[1] "N before dropping blocks: 4257"
+[1] "N after dropping blocks: 4093"
+[1] "Number of blocks included: 77"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "33" "40" "49" "51" "54" "56" "57" "65" "85"
+> set.seed(67890)
+> H.permtest=wilcoxsign_test(diarr7~tr | block, data=H.df,
++    distribution=approximate(B=100000))
+> H.perm.p=pvalue(H.permtest)
+> 
+> WSH.df=coin.prep(d,tx="WSH",cont="Control",y="diarr7")
+[1] "Blocks dropped:"
+ [1] "21" "23" "31" "46" "51" "53" "58" "62" "69" "11"
+[1] "N before dropping blocks: 4314"
+[1] "N after dropping blocks: 4070"
+[1] "Number of blocks included: 75"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "25" "33" "40" "49" "54" "56" "61" "65" "72" "85"
+> set.seed(67890)
+> WSH.permtest=wilcoxsign_test(diarr7~tr | block, data=WSH.df,
++    distribution=approximate(B=100000))
+> WSH.perm.p=pvalue(WSH.permtest)
+> 
+> N.df=coin.prep(d,tx="Nutrition",cont="Control",y="diarr7")
+[1] "Blocks dropped:"
+ [1] "22" "29" "32" "49" "52" "54" "63" "70" "82" "11" "13" "83"
+[1] "N before dropping blocks: 4232"
+[1] "N after dropping blocks: 3944"
+[1] "Number of blocks included: 75"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "30" "33" "40" "51" "54" "56" "65" "72" "84" "85"
+> set.seed(67890)
+> N.permtest=wilcoxsign_test(diarr7~tr | block, data=N.df,
++    distribution=approximate(B=100000))
+> N.perm.p=pvalue(N.permtest)
+> 
+> WSHN.df=coin.prep(d,tx="Nutrition + WSH",cont="Control",y="diarr7")
+[1] "Blocks dropped:"
+[1] "20" "30" "46" "62" "69" "77" "81" "37" "82"
+[1] "N before dropping blocks: 4372"
+[1] "N after dropping blocks: 4187"
+[1] "Number of blocks included: 77"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "33" "40" "49" "65" "72" "80" "84" "85"
+> set.seed(67890)
+> WSHN.permtest=wilcoxsign_test(diarr7~tr | block, data=WSHN.df,
++    distribution=approximate(B=100000))
+> WSHN.perm.p=pvalue(WSHN.permtest)
+> 
+> diar_h1_pval_unadj_j=data.frame(perm.pvalue=c(P.perm.p,W.perm.p,WSH.S.perm.p,H.perm.p,
++                          WSH.perm.p,N.perm.p,WSHN.perm.p))
+> rownames(diar_h1_pval_unadj_j)=c("Passive Control vs. C","Water vs. C",
++    "Sanitation vs. C", "Handwashing vs. C", "WSH vs. C",
++    "Nutrition vs. C", "Nutrition + WSH vs. C")
+> 
+> #----------------------------------------------
+> # H2: P-value from permutation test for unadjusted 
+> # differences; WSHN vs. single arms
+> #----------------------------------------------
+> WSH.W.df=coin.prep(d,tx="WSH",cont="Water",y="diarr7")
+[1] "Blocks dropped:"
+ [1] "22" "48" "50" "55" "59" "78" "11" "33" "64" "73" "77"
+[1] "N before dropping blocks: 2797"
+[1] "N after dropping blocks: 2575"
+[1] "Number of blocks included: 71"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "25" "33" "37" "40" "49" "54" "56" "61" "65" "70" "72"
+[16] "80" "84" "85"
+> set.seed(67890)
+> WSH.W.permtest=wilcoxsign_test(diarr7~tr | block, data=WSH.W.df,
++    distribution=approximate(B=100000))
+> WSH.W.perm.p=pvalue(WSH.W.permtest)
+> 
+> WSH.S.df=coin.prep(d,tx="WSH",cont="Sanitation",y="diarr7")
+[1] "Blocks dropped:"
+[1] "21" "23" "50" "71" "75"
+[1] "N before dropping blocks: 2785"
+[1] "N after dropping blocks: 2696"
+[1] "Number of blocks included: 74"
+[1] "List of blocks dropped:"
+ [1] "13" "20" "23" "25" "33" "40" "49" "54" "56" "61" "65" "72" "80" "84" "85"
+> set.seed(67890)
+> WSH.S.permtest=wilcoxsign_test(diarr7~tr | block, data=WSH.S.df,
++    distribution=approximate(B=100000))
+> WSH.S.perm.p=pvalue(WSH.S.permtest)
+> 
+> WSH.H.df=coin.prep(d,tx="WSH",cont="Handwashing",y="diarr7")
+[1] "Blocks dropped:"
+[1] "21" "23" "54" "64" "11" "46" "50"
+[1] "N before dropping blocks: 2761"
+[1] "N after dropping blocks: 2621"
+[1] "Number of blocks included: 73"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "25" "33" "40" "49" "51" "54" "56" "57" "61" "65" "72"
+[16] "85"
+> set.seed(67890)
+> WSH.H.permtest=wilcoxsign_test(diarr7~tr | block, data=WSH.H.df,
++     distribution=approximate(B=100000))
+> WSH.H.perm.p=pvalue(WSH.H.permtest)
+> 
+> diar_h2_pval_unadj_j=data.frame(perm.pvalue=c(WSH.W.perm.p,WSH.S.perm.p,WSH.H.perm.p))
+> rownames(diar_h2_pval_unadj_j)=c("WSH vs. Water",
++                                  "WSH vs. Sanitation", "WSH vs. Handwashing")
+> 
+> save(diar_h1_pval_unadj_j,diar_h2_pval_unadj_j,
++      file="~/Dropbox/WBK-primary-analysis/results/jade/diarr_pval_unadj.RData")
+> 
+> 
+> diar_h1_pval_unadj_j
+                      perm.pvalue
+Passive Control vs. C     0.95684
+Water vs. C               0.81410
+Sanitation vs. C          0.95811
+Handwashing vs. C         0.75755
+WSH vs. C                 0.50503
+Nutrition vs. C           0.74564
+Nutrition + WSH vs. C     0.69148
+> diar_h2_pval_unadj_j
+                    perm.pvalue
+WSH vs. Water           0.35891
+WSH vs. Sanitation      0.86144
+WSH vs. Handwashing     0.72689
+> 
+> 
+> 
+> proc.time()
+   user  system elapsed 
+ 11.163   0.206  12.352 

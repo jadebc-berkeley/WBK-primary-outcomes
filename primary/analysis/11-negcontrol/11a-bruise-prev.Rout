@@ -1,0 +1,191 @@
+
+R version 3.2.3 (2015-12-10) -- "Wooden Christmas-Tree"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> ##############################################
+> # WASH Benefits Kenya
+> # Primary outcome analysis 
+> 
+> # Bruising (negative control) 
+> # n, N, prevalence, and 95% CI by arm at
+> # baseline and follow-up
+> 
+> # by Jade (jadebc@berkeley.edu)
+> ##############################################
+> library(washb)
+Welcome to the washb package
+Version: 0.2.0
+Created on 2016-10-12
+
+The package's reference manual and vignette are also online:
+https://ben-arnold.github.io/washb
+
+> 
+> rm(list=ls())
+> source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
+Loading required package: zoo
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+> 
+> d=read.csv("~/Dropbox/WBK-primary-analysis/Data/final/jade/bruise.csv")
+> 
+> # keep diarrhea cohort members
+> d=subset(d, d$dcohort==1)
+> 
+> # reorder tr labels
+> reord=function(x){
++   x$tr=factor(x$tr,levels(x$tr)[c(1,5,7,6,2,8,3,4)])
++   return(x)
++ }
+> 
+> d=reord(d)
+> 
+> #----------------------------------------------
+> # n and N by arm and follow-up time point
+> #----------------------------------------------
+> # N.0=table(d$tr[!is.na(d$bruise7)& d$time==0])
+> # n.0=table(d$bruise7[d$time==0],d$tr[d$time==0])[2,]
+> # 
+> # bruise_t0_n_j=data.frame(cbind(N.0=N.0,n.0=n.0))
+> 
+> N.1=table(d$tr[!is.na(d$bruise7) & d$time==1])
+> n.1=table(d$bruise7[d$time==1],d$tr[d$time==1])[2,]
+> 
+> bruise_t1_n_j=data.frame(cbind(N.1=N.1,n.1=n.1))
+> 
+> N.2=table(d$tr[!is.na(d$bruise7) & d$time==2])
+> n.2=table(d$bruise7[d$time==2],d$tr[d$time==2])[2,]
+> 
+> bruise_t2_n_j=data.frame(cbind(N.2=N.2,n.2=n.2))
+> 
+> N.12=table(d$tr[!is.na(d$bruise7) & d$time>0])
+> n.12=table(d$bruise7[d$time>0],d$tr[d$time>0])[2,]
+> 
+> bruise_t12_n_j=data.frame(cbind(N.12=N.12,n.12=n.12))
+> 
+> # names(N.0)=NULL
+> names(N.1)=NULL
+> names(N.2)=NULL
+> names(N.12)=NULL
+> 
+> #----------------------------------------------
+> # prevalence by arm and time point
+> #----------------------------------------------
+> # bruise_t0_prev_j=t(sapply(levels(d$tr), function(x) washb_mean(
+> #   Y=d$bruise7[d$tr==x & d$time==0],id=d$clusterid[d$tr==x & d$time==0],print=FALSE)))
+> 
+> bruise_t1_prev_j=t(sapply(levels(d$tr), function(x) washb_mean(
++   Y=d$bruise7[d$tr==x & d$time==1],id=d$clusterid[d$tr==x & d$time==1],print=FALSE)))
+> 
+> bruise_t2_prev_j=t(sapply(levels(d$tr), function(x) washb_mean(
++   Y=d$bruise7[d$tr==x & d$time==2],id=d$clusterid[d$tr==x & d$time==2],print=FALSE)))
+> 
+> bruise_t12_prev_j=t(sapply(levels(d$tr), function(x) washb_mean(
++   Y=d$bruise7[d$tr==x & d$time>=1],id=d$clusterid[d$tr==x & d$time>=1],print=FALSE)))
+> 
+> # colnames(bruise_t0_prev_j)=c("N","Prev","SD","Robust SE","lb","ub")
+> colnames(bruise_t1_prev_j)=c("N","Prev","SD","Robust SE","lb","ub")
+> colnames(bruise_t2_prev_j)=c("N","Prev","SD","Robust SE","lb","ub")
+> colnames(bruise_t12_prev_j)=c("N","Prev","SD","Robust SE","lb","ub")
+> 
+> # drop columns that aren't needed
+> # bruise_t0_prev_j=bruise_t0_prev_j[,c("Prev","lb","ub")]
+> bruise_t1_prev_j=bruise_t1_prev_j[,c("Prev","lb","ub")]
+> bruise_t2_prev_j=bruise_t2_prev_j[,c("Prev","lb","ub")]
+> bruise_t12_prev_j=bruise_t12_prev_j[,c("Prev","lb","ub")]
+> 
+> # bruise_t0_n_j
+> bruise_t1_n_j
+                 N.1 n.1
+Control         1399 231
+Passive Control  700 124
+Water            674  97
+Sanitation       653 106
+Handwashing      662 110
+WSH              698 114
+Nutrition        647 108
+Nutrition + WSH  720 117
+> bruise_t2_n_j
+                 N.2 n.2
+Control         1526 319
+Passive Control  710 142
+Water            720 119
+Sanitation       730 151
+Handwashing      694 152
+WSH              716 148
+Nutrition        683 160
+Nutrition + WSH  753 162
+> bruise_t12_n_j
+                N.12 n.12
+Control         2925  550
+Passive Control 1410  266
+Water           1394  216
+Sanitation      1383  257
+Handwashing     1356  262
+WSH             1414  262
+Nutrition       1330  268
+Nutrition + WSH 1473  279
+> 
+> # bruise_t0_prev_j
+> bruise_t1_prev_j
+                     Prev        lb        ub
+Control         0.1651179 0.1382155 0.1920203
+Passive Control 0.1771429 0.1423270 0.2119587
+Water           0.1439169 0.1105729 0.1772610
+Sanitation      0.1623277 0.1288264 0.1958290
+Handwashing     0.1661631 0.1301483 0.2021780
+WSH             0.1633238 0.1295484 0.1970992
+Nutrition       0.1669243 0.1308745 0.2029740
+Nutrition + WSH 0.1625000 0.1278900 0.1971100
+> bruise_t2_prev_j
+                     Prev        lb        ub
+Control         0.2090433 0.1865938 0.2314927
+Passive Control 0.2000000 0.1693766 0.2306234
+Water           0.1652778 0.1303723 0.2001833
+Sanitation      0.2068493 0.1716777 0.2420209
+Handwashing     0.2190202 0.1836477 0.2543926
+WSH             0.2067039 0.1745502 0.2388576
+Nutrition       0.2342606 0.1957525 0.2727687
+Nutrition + WSH 0.2151394 0.1796782 0.2506007
+> bruise_t12_prev_j
+                     Prev        lb        ub
+Control         0.1880342 0.1714389 0.2046295
+Passive Control 0.1886525 0.1662376 0.2110674
+Water           0.1549498 0.1329121 0.1769875
+Sanitation      0.1858279 0.1632009 0.2084549
+Handwashing     0.1932153 0.1687096 0.2177211
+WSH             0.1852900 0.1633952 0.2071848
+Nutrition       0.2015038 0.1729995 0.2300080
+Nutrition + WSH 0.1894094 0.1664403 0.2123784
+> 
+> save(
++   # bruise_t0_n_j, 
++   bruise_t1_n_j, bruise_t2_n_j, bruise_t12_n_j, 
++      # bruise_t0_prev_j, 
++   bruise_t1_prev_j, bruise_t2_prev_j, bruise_t12_prev_j,
++      file="~/Dropbox/WBK-primary-analysis/results/jade/bruise_prev.RData")
+> 
+> 
+> proc.time()
+   user  system elapsed 
+  1.155   0.057   1.321 

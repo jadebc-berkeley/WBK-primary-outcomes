@@ -1,0 +1,109 @@
+
+R version 3.2.3 (2015-12-10) -- "Wooden Christmas-Tree"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> ##############################################
+> # WASH Benefits Kenya
+> # Primary outcome analysis 
+> 
+> # WAZ unadjusted analysis
+> 
+> # by Jade (jadebc@berkeley.edu)
+> ##############################################
+> 
+> library(washb)
+Welcome to the washb package
+Version: 0.2.0
+Created on 2016-10-12
+
+The package's reference manual and vignette are also online:
+https://ben-arnold.github.io/washb
+
+> 
+> rm(list=ls())
+> m=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midline-anthro.csv")
+> e=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/endline-anthro.csv")
+> 
+> source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
+Loading required package: zoo
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+> 
+> m=preprocess.anthro(m, "waz")
+> e=preprocess.anthro(e, "waz")
+> 
+> # #----------------------------------------------
+> # H1: Unadjusted prevalence ratios; each arm vs. 
+> # control. PR, CI, MH P-value
+> #----------------------------------------------
+> # Midline
+> trlist=c("Passive Control","Water","Sanitation","Handwashing",
++          "WSH","Nutrition","Nutrition + WSH")
+> 
+> waz_t1_h1_rd_unadj_j=t(sapply(trlist,function(x) washb_ttest(Y=m$waz,tr=m$tr,
++      strat=m$block, contrast=c("Control",x))))
+> 
+> rownames(waz_t1_h1_rd_unadj_j)=c("Passive Control vs C","Water vs C",
++   "Sanitation vs C","Handwashing vs C","WSH vs C","Nutrition vs C",
++   "Nutrition + WSH vs C")
+> 
+> # Endline
+> waz_t2_h1_rd_unadj_j=t(sapply(trlist,function(x) washb_ttest(Y=e$waz,tr=e$tr,
++      strat=e$block, contrast=c("Control",x))))
+> 
+> rownames(waz_t2_h1_rd_unadj_j)=c("Passive Control vs C","Water vs C",
++   "Sanitation vs C","Handwashing vs C","WSH vs C","Nutrition vs C",
++   "Nutrition + WSH vs C")
+> 
+> #----------------------------------------------
+> # H3: H3: Unadjusted difference and 95% CI and 
+> # t-test P-value; WSHN vs. N and WSHN vs. WSH
+> #----------------------------------------------
+> 
+> # Midline
+> trlist=c("Nutrition","WSH")
+> 
+> waz_t1_h3_rd_unadj_j=t(sapply(trlist,function(x) washb_ttest(Y=m$waz,tr=m$tr,
++      strat=m$block, contrast=c(x,"Nutrition + WSH"))))
+> 
+> rownames(waz_t1_h3_rd_unadj_j)=c("Nutrition + WSH vs Nutrition",
++                                    "Nutrition + WSH vs WSH")
+> 
+> # Endline
+> waz_t2_h3_rd_unadj_j=t(sapply(trlist,function(x) washb_ttest(Y=e$waz,tr=e$tr,
++      strat=e$block, contrast=c(x,"Nutrition + WSH"))))
+> 
+> rownames(waz_t2_h3_rd_unadj_j)=c("Nutrition + WSH vs Nutrition",
++                                    "Nutrition + WSH vs WSH")
+> 
+> 
+> save(waz_t1_h1_rd_unadj_j, waz_t1_h3_rd_unadj_j,
++      waz_t2_h1_rd_unadj_j, waz_t2_h3_rd_unadj_j,
++      file="~/Dropbox/WBK-primary-analysis/results/jade/waz_rd_unadj.RData")
+> 
+> 
+> proc.time()
+   user  system elapsed 
+  1.401   0.051   1.509 

@@ -1,0 +1,312 @@
+-----------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/
+> src/primary/dm/6_negcontrol.log
+  log type:  text
+ opened on:   6 Dec 2016, 13:26:28
+
+. 
+. *********************************************
+. * WASH Benefits Kenya
+. 
+. * Make analysis dataset: negative control
+. * Bruise/abrasion
+. 
+. * by Jade (jadebc@berkeley.edu)
+. *********************************************
+. clear all
+
+. set more off
+
+. cd "~/Dropbox/WASHB-Kenya-Data/0-Untouched-Data/1-Main-survey/"
+/Users/jadederong/Dropbox/WASHB-Kenya-Data/0-Untouched-data/1-Mai
+> n-survey
+
+. 
+. 
+. *********************************************
+. * Prep midline child-level variables
+. *********************************************
+. 
+. * ---------------------------------------------
+. * Child diarrhea
+. * ---------------------------------------------
+. use "2_Midline/msP_ml_child_diarr_20161010.dta", clear
+
+. tostring hhid childid, replace
+hhid was double now str7
+childid was double now str10
+
+. 
+. gen bruise2=0
+
+. replace bruise2=1 if bruisea ==1 | bruiseb == 1 | bruisec ==1
+(1,029 real changes made)
+
+. replace bruise2=. if (bruisea ==. | bruisea==99) & (bruiseb ==.
+>  | bruiseb==99) & (bruisec ==. | bruisec==99)
+(67 real changes made, 67 to missing)
+
+. 
+. gen bruise7 = 0
+
+. replace bruise7 = 1 if bruise2==1 | bruised==1
+(1,138 real changes made)
+
+. replace bruise7 = . if bruise2==. & (bruised==. | bruised==99)
+(66 real changes made, 66 to missing)
+
+. 
+. 
+. keep childid hhid clusterid childid bruise2 bruise7 
+
+. 
+. gen time=1
+
+. 
+. 
+. tempfile midline
+
+. save `midline'
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_17028.00
+> 0001 saved
+
+. 
+. 
+. *********************************************
+. * Prep endline child-level variables
+. *********************************************
+. 
+. * ---------------------------------------------
+. * Child diarrhea
+. * ---------------------------------------------
+. use "3_Endline/msP_el_child_diarr_20161010.dta", clear
+
+. tostring childid hhid, replace
+childid was double now str10
+hhid was double now str7
+
+. 
+. 
+. gen bruise2=0
+
+. replace bruise2=1 if bruisea_ad ==1 | bruiseb_ad == 1 | bruisec
+> _ad ==1
+(1,168 real changes made)
+
+. replace bruise2=. if (bruisea_ad ==. | bruisea_ad==99) & (bruis
+> eb_ad ==. | bruiseb_ad==99) & (bruisec_ad ==. | bruisec_ad==99)
+(694 real changes made, 694 to missing)
+
+. 
+. gen bruise7 = 0
+
+. replace bruise7 = 1 if bruise2==1 | bruised==1
+(1,371 real changes made)
+
+. replace bruise7 = . if bruise2==. & (bruised_ad==. | bruised_ad
+> ==99)
+(694 real changes made, 694 to missing)
+
+. 
+. keep childid hhid clusterid childid bruise2 bruise7 
+
+. 
+. gen time =2
+
+. 
+. tempfile endline
+
+. save `endline'
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_17028.00
+> 0002 saved
+
+. 
+. *********************************************
+. * Combine individual-level variables from midline and endline
+. *********************************************
+. use `midline', clear
+
+. append using `endline'
+
+. 
+. tempfile childdata
+
+. save `childdata'
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_17028.00
+> 0003 saved
+
+. 
+. * ---------------------------------------------
+. * Child age and sex
+. * ---------------------------------------------
+. preserve
+
+. use "msP_child_IDchar_20161103.dta", clear
+
+. tostring childid hhid, replace
+childid was double now str10
+hhid was double now str7
+
+. 
+. * indicators for child type
+. gen sibling = (childtype>2)
+
+. gen targetchild= (childtype<=2)
+
+. gen newbirth = (childtype==6)
+
+. 
+. * rename date vars
+. ren ms_bl_date date_base
+
+. ren ms_ml_ad_date date_mid
+
+. ren ms_el_ad_date date_end
+
+. 
+. * calculate age
+. ren DOB dob
+
+. 
+. recode sex (1=0) (2=1) 
+(sex: 12693 changes made)
+
+. label define sexl 0 "Male" 1 "Female"
+
+. label values sex sexl
+
+. 
+. keep clusterid compoundid hhid childid date* sibling targetchil
+> d newbirth date* dob sex
+
+. 
+. tempfile agesex
+
+. save `agesex'
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_17028.00
+> 0005 saved
+
+. restore
+
+. 
+. merge m:1 childid using `agesex'
+(note: variable clusterid was float, now double to accommodate
+       using data's values)
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                         4,639
+        from master                         0  (_merge==1)
+        from using                      4,639  (_merge==2)
+
+    matched                            14,807  (_merge==3)
+    -----------------------------------------
+
+. drop _m
+
+. 
+. * survey date
+. gen date = .
+(19,446 missing values generated)
+
+. replace date=date_base if time==0
+(0 real changes made)
+
+. replace date=date_mid if time==1
+(7,029 real changes made)
+
+. replace date=date_end if time==2
+(7,770 real changes made)
+
+. 
+. format date* %d
+
+. drop date_*
+
+. 
+. drop if bruise2==. & bruise7==. & date==.
+(4,647 observations deleted)
+
+. 
+. gen month=month(date)
+
+. 
+. * create age at each time point
+. gen double aged=(date-dob)
+(178 missing values generated)
+
+. gen double agem=(date-dob)/30.4167
+(178 missing values generated)
+
+. gen double agey=(date-dob)/365.25
+(178 missing values generated)
+
+. 
+. gen dcohort=0
+
+. replace dcohort=1 if agey<3 & targetchild==0 & bruise7!=. & tim
+> e==0
+(0 real changes made)
+
+. replace dcohort=1 if targetchild==1 & bruise7!=. & time==1
+(6,153 real changes made)
+
+. replace dcohort=1 if targetchild==1 & bruise7!=. & time==2
+(6,532 real changes made)
+
+. replace dcohort=0 if agem==.
+(0 real changes made)
+
+. 
+. 
+. * ---------------------------------------------
+. * merge in block
+. * ---------------------------------------------
+. tostring clusterid, replace
+clusterid was double now str5
+
+. merge m:1 clusterid using "~/Dropbox/WASHB-Kenya-Data/0-Untouch
+> ed-Data/0-Treatment-assignments/washb-kenya-tr.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                             0
+    matched                            14,799  (_merge==3)
+    -----------------------------------------
+
+. 
+. * drop if there are no children in that compound
+. * no data for clusterid 11027
+. drop if _m==2
+(0 observations deleted)
+
+. drop _m
+
+. 
+. sort hhid childid time
+
+. order block clusterid compoundid hhid childid time targetchild 
+> tr date 
+
+. 
+. outsheet using "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-da
+> tasets/bruise.csv", replace comma 
+(note: file /Users/jadederong/Dropbox/WASHB-Kenya-Data/1-primary-
+> outcome-datasets/bruise.csv not found)
+
+. save  "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/br
+> uise.dta", replace 
+(note: file /Users/jadederong/Dropbox/WASHB-Kenya-Data/1-primary-
+> outcome-datasets/bruise.dta not found)
+file ~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/bruise
+> .dta saved
+
+. 
+. log close
+      name:  <unnamed>
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/
+> src/primary/dm/6_negcontrol.log
+  log type:  text
+ closed on:   6 Dec 2016, 13:26:30
+-----------------------------------------------------------------

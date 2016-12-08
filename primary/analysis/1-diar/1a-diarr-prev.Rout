@@ -1,0 +1,208 @@
+
+R version 3.2.3 (2015-12-10) -- "Wooden Christmas-Tree"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> ##############################################
+> # WASH Benefits Kenya
+> # Primary outcome analysis 
+> 
+> # Diarrhea 
+> # n, N, prevalence, and 95% CI by arm at
+> # baseline and follow-up
+> 
+> # by Jade (jadebc@berkeley.edu)
+> ##############################################
+> library(washb)
+Welcome to the washb package
+Version: 0.2.0
+Created on 2016-10-12
+
+The package's reference manual and vignette are also online:
+https://ben-arnold.github.io/washb
+
+> 
+> rm(list=ls())
+> source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
+Loading required package: zoo
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+> 
+> d=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/diarrhea.csv")
+> 
+> # keep diarrhea cohort members
+> d=subset(d, d$dcohort==1)
+> 
+> # reorder tr labels
+> reord=function(x){
++   x$tr=factor(x$tr,levels(x$tr)[c(1,5,7,6,2,8,3,4)])
++   return(x)
++ }
+> 
+> d=reord(d)
+> 
+> #----------------------------------------------
+> # n and N by arm and follow-up time point
+> #----------------------------------------------
+> N.0=table(d$tr[!is.na(d$diarr7)& d$time==0])
+> n.0=table(d$diarr7[d$time==0],d$tr[d$time==0])[2,]
+> 
+> diar_t0_n_j=data.frame(cbind(N.0=N.0,n.0=n.0))
+> 
+> N.1=table(d$tr[!is.na(d$diarr7) & d$time==1])
+> n.1=table(d$diarr7[d$time==1],d$tr[d$time==1])[2,]
+> 
+> diar_t1_n_j=data.frame(cbind(N.1=N.1,n.1=n.1))
+> 
+> N.2=table(d$tr[!is.na(d$diarr7) & d$time==2])
+> n.2=table(d$diarr7[d$time==2],d$tr[d$time==2])[2,]
+> 
+> diar_t2_n_j=data.frame(cbind(N.2=N.2,n.2=n.2))
+> 
+> N.12=table(d$tr[!is.na(d$diarr7) & d$time>0])
+> n.12=table(d$diarr7[d$time>0],d$tr[d$time>0])[2,]
+> 
+> diar_t12_n_j=data.frame(cbind(N.12=N.12,n.12=n.12))
+> 
+> names(N.0)=NULL
+> names(N.1)=NULL
+> names(N.2)=NULL
+> names(N.12)=NULL
+> 
+> #----------------------------------------------
+> # prevalence by arm and time point
+> #----------------------------------------------
+> diar_t0_prev_j=t(sapply(levels(d$tr), function(x) washb_mean(
++   Y=d$diarr7[d$tr==x & d$time==0],id=d$clusterid[d$tr==x & d$time==0],print=FALSE)))
+> 
+> diar_t1_prev_j=t(sapply(levels(d$tr), function(x) washb_mean(
++   Y=d$diarr7[d$tr==x & d$time==1],id=d$clusterid[d$tr==x & d$time==1],print=FALSE)))
+> 
+> diar_t2_prev_j=t(sapply(levels(d$tr), function(x) washb_mean(
++   Y=d$diarr7[d$tr==x & d$time==2],id=d$clusterid[d$tr==x & d$time==2],print=FALSE)))
+> 
+> diar_t12_prev_j=t(sapply(levels(d$tr), function(x) washb_mean(
++   Y=d$diarr7[d$tr==x & d$time>=1],id=d$clusterid[d$tr==x & d$time>=1],print=FALSE)))
+> 
+> colnames(diar_t0_prev_j)=c("N","Prev","SD","Robust SE","lb","ub")
+> colnames(diar_t1_prev_j)=c("N","Prev","SD","Robust SE","lb","ub")
+> colnames(diar_t2_prev_j)=c("N","Prev","SD","Robust SE","lb","ub")
+> colnames(diar_t12_prev_j)=c("N","Prev","SD","Robust SE","lb","ub")
+> 
+> # drop columns that aren't needed
+> diar_t0_prev_j=diar_t0_prev_j[,c("Prev","lb","ub")]
+> diar_t1_prev_j=diar_t1_prev_j[,c("Prev","lb","ub")]
+> diar_t2_prev_j=diar_t2_prev_j[,c("Prev","lb","ub")]
+> diar_t12_prev_j=diar_t12_prev_j[,c("Prev","lb","ub")]
+> 
+> diar_t0_n_j
+                 N.0 n.0
+Control         1027 111
+Passive Control  498  52
+Water            449  46
+Sanitation       500  61
+Handwashing      464  47
+WSH              514  64
+Nutrition        462  52
+Nutrition + WSH  509  57
+> diar_t1_n_j
+                 N.1 n.1
+Control         1394 412
+Passive Control  698 198
+Water            672 198
+Sanitation       648 177
+Handwashing      662 179
+WSH              697 191
+Nutrition        647 179
+Nutrition + WSH  716 210
+> diar_t2_n_j
+                 N.2 n.2
+Control         1511 374
+Passive Control  706 184
+Water            716 186
+Sanitation       728 188
+Handwashing      690 174
+WSH              712 177
+Nutrition        680 159
+Nutrition + WSH  751 206
+> diar_t12_n_j
+                N.12 n.12
+Control         2905  786
+Passive Control 1404  382
+Water           1388  384
+Sanitation      1376  365
+Handwashing     1352  353
+WSH             1409  368
+Nutrition       1327  338
+Nutrition + WSH 1467  416
+> 
+> diar_t0_prev_j
+                     Prev         lb        ub
+Control         0.1080818 0.08840888 0.1277547
+Passive Control 0.1044177 0.07608324 0.1327521
+Water           0.1024499 0.07198897 0.1329108
+Sanitation      0.1220000 0.09013957 0.1538604
+Handwashing     0.1012931 0.07273917 0.1298470
+WSH             0.1245136 0.09393646 0.1550908
+Nutrition       0.1125541 0.08160220 0.1435060
+Nutrition + WSH 0.1119843 0.08443322 0.1395353
+> diar_t1_prev_j
+                     Prev        lb        ub
+Control         0.2955524 0.2721523 0.3189524
+Passive Control 0.2836676 0.2536605 0.3136747
+Water           0.2946429 0.2484828 0.3408029
+Sanitation      0.2731481 0.2357299 0.3105664
+Handwashing     0.2703927 0.2340706 0.3067149
+WSH             0.2740316 0.2379904 0.3100728
+Nutrition       0.2766615 0.2355491 0.3177739
+Nutrition + WSH 0.2932961 0.2595981 0.3269941
+> diar_t2_prev_j
+                     Prev        lb        ub
+Control         0.2475182 0.2222664 0.2727700
+Passive Control 0.2606232 0.2278424 0.2934041
+Water           0.2597765 0.2265733 0.2929798
+Sanitation      0.2582418 0.2240937 0.2923898
+Handwashing     0.2521739 0.2193525 0.2849953
+WSH             0.2485955 0.2063738 0.2908173
+Nutrition       0.2338235 0.1974212 0.2702259
+Nutrition + WSH 0.2743009 0.2427795 0.3058223
+> diar_t12_prev_j
+                     Prev        lb        ub
+Control         0.2705680 0.2533277 0.2878083
+Passive Control 0.2720798 0.2501584 0.2940012
+Water           0.2766571 0.2485764 0.3047377
+Sanitation      0.2652616 0.2391095 0.2914137
+Handwashing     0.2610947 0.2342892 0.2879002
+WSH             0.2611781 0.2336387 0.2887176
+Nutrition       0.2547099 0.2276265 0.2817933
+Nutrition + WSH 0.2835719 0.2597765 0.3073673
+> 
+> save(diar_t0_n_j, diar_t1_n_j, diar_t2_n_j, diar_t12_n_j, 
++      diar_t0_prev_j, diar_t1_prev_j, diar_t2_prev_j, diar_t12_prev_j,
++      file="~/Dropbox/WBK-primary-analysis/results/jade/diar_prev.RData")
+> 
+> 
+> proc.time()
+   user  system elapsed 
+  1.984   0.068   2.117 

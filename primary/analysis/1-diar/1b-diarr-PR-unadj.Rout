@@ -1,0 +1,370 @@
+
+R version 3.2.3 (2015-12-10) -- "Wooden Christmas-Tree"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> ##############################################
+> # WASH Benefits Kenya
+> # Primary outcome analysis  
+> 
+> # Diarrhea unadjusted analysis
+> # Pooled midline and endline 
+> 
+> # by Jade (jadebc@berkeley.edu)
+> ##############################################
+> library(washb)
+Welcome to the washb package
+Version: 0.2.0
+Created on 2016-10-12
+
+The package's reference manual and vignette are also online:
+https://ben-arnold.github.io/washb
+
+> 
+> rm(list=ls())
+> data=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/diarrhea.csv")
+> source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
+Loading required package: zoo
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+> 
+> d=preprocess.diarr(data)
+> 
+> # subset to year 1 and 2
+> df = d[d$time>0,]
+>   
+> # subset to columns needed for unadjusted PR
+> df = df[,c("block","clusterid","tr","diarr7")]
+> 
+> #----------------------------------------------
+> # H1: Unadjusted prevalence ratios; each arm vs. 
+> # control. PR, CI, MH P-value
+> #----------------------------------------------
+> trlist=c("Passive Control","Water","Sanitation","Handwashing",
++          "WSH","Nutrition","Nutrition + WSH")
+> 
+> diar_h1_rd_unadj_j=t(sapply(trlist, function(x) washb_mh(Y=df$diarr7,tr=df$tr,
++         strat=df$block,contrast=c("Control",x),measure="RD")))
+Loading required package: metafor
+Loading required package: Matrix
+Loading 'metafor' package (version 1.9-9). For an overview 
+and introduction to the package please type: help(metafor).
+
+----------------------------------------- 
+There were 11 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 40 49 54 56 65 72 85
+----------------------------------------- 
+Starting N:   4309 
+N after dropping incomplete blocks:  4151 
+
+Total of 158 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+----------------------------------------- 
+There were 13 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 33 37 40 49 70 72 80 84 85
+----------------------------------------- 
+Starting N:   4293 
+N after dropping incomplete blocks:  4065 
+
+Total of 228 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+----------------------------------------- 
+There were 13 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 33 40 49 54 61 65 72 80 84 85
+----------------------------------------- 
+Starting N:   4281 
+N after dropping incomplete blocks:  4098 
+
+Total of 183 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+----------------------------------------- 
+There were 12 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 33 40 49 51 54 56 57 65 85
+----------------------------------------- 
+Starting N:   4257 
+N after dropping incomplete blocks:  4093 
+
+Total of 164 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+----------------------------------------- 
+There were 14 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 25 33 40 49 54 56 61 65 72 85
+----------------------------------------- 
+Starting N:   4314 
+N after dropping incomplete blocks:  4070 
+
+Total of 244 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+----------------------------------------- 
+There were 14 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 30 33 40 51 54 56 65 72 84 85
+----------------------------------------- 
+Starting N:   4232 
+N after dropping incomplete blocks:  3944 
+
+Total of 288 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+----------------------------------------- 
+There were 12 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 33 40 49 65 72 80 84 85
+----------------------------------------- 
+Starting N:   4372 
+N after dropping incomplete blocks:  4187 
+
+Total of 185 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+Warning message:
+package ‘metafor’ was built under R version 3.2.5 
+> 
+> diar_h1_pr_unadj_j=t(sapply(trlist, function(x) washb_mh(Y=df$diarr7,tr=df$tr,
++         strat=df$block,contrast=c("Control",x),measure="RR")))
+
+----------------------------------------- 
+There were 11 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 40 49 54 56 65 72 85
+----------------------------------------- 
+Starting N:   4309 
+N after dropping incomplete blocks:  4151 
+
+Total of 158 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+----------------------------------------- 
+There were 13 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 33 37 40 49 70 72 80 84 85
+----------------------------------------- 
+Starting N:   4293 
+N after dropping incomplete blocks:  4065 
+
+Total of 228 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+----------------------------------------- 
+There were 13 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 33 40 49 54 61 65 72 80 84 85
+----------------------------------------- 
+Starting N:   4281 
+N after dropping incomplete blocks:  4098 
+
+Total of 183 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+----------------------------------------- 
+There were 12 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 33 40 49 51 54 56 57 65 85
+----------------------------------------- 
+Starting N:   4257 
+N after dropping incomplete blocks:  4093 
+
+Total of 164 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+----------------------------------------- 
+There were 14 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 25 33 40 49 54 56 61 65 72 85
+----------------------------------------- 
+Starting N:   4314 
+N after dropping incomplete blocks:  4070 
+
+Total of 244 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+----------------------------------------- 
+There were 14 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 30 33 40 51 54 56 65 72 84 85
+----------------------------------------- 
+Starting N:   4232 
+N after dropping incomplete blocks:  3944 
+
+Total of 288 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+----------------------------------------- 
+There were 12 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 33 40 49 65 72 80 84 85
+----------------------------------------- 
+Starting N:   4372 
+N after dropping incomplete blocks:  4187 
+
+Total of 185 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+> 
+> rownames(diar_h1_pr_unadj_j)=c("Passive vs Active C","Water vs C","Sanitation vs C",
++   "Handwashing vs C", "WSH vs C","Nutrition vs C","Nutrition + WSH vs C")
+> 
+> rownames(diar_h1_rd_unadj_j)=c("Passive vs Active C","Water vs C","Sanitation vs C",
++   "Handwashing vs C", "WSH vs C","Nutrition vs C","Nutrition + WSH vs C")
+>   
+> #----------------------------------------------
+> # H2: Unadjusted prevalence ratios; combined WSH vs. 
+> # single arms.  PR, CI, MH P-value
+> #----------------------------------------------
+> trlist=c("Water","Sanitation","Handwashing")
+> 
+> diar_h2_rd_unadj_j=t(sapply(trlist, function(x) washb_mh(Y=df$diarr7,tr=df$tr,
++         strat=df$block,contrast=c(x,"WSH"),measure="RD")))
+
+----------------------------------------- 
+There were 18 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 25 33 37 40 49 54 56 61 65 70 72 80 84 85
+----------------------------------------- 
+Starting N:   2797 
+N after dropping incomplete blocks:  2575 
+
+Total of 222 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+----------------------------------------- 
+There were 15 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 13 20 23 25 33 40 49 54 56 61 65 72 80 84 85
+----------------------------------------- 
+Starting N:   2785 
+N after dropping incomplete blocks:  2696 
+
+Total of 89 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+----------------------------------------- 
+There were 16 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 25 33 40 49 51 54 56 57 61 65 72 85
+----------------------------------------- 
+Starting N:   2761 
+N after dropping incomplete blocks:  2621 
+
+Total of 140 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+> 
+> diar_h2_pr_unadj_j=t(sapply(trlist, function(x) washb_mh(Y=df$diarr7,tr=df$tr,
++         strat=df$block,contrast=c(x,"WSH"),measure="RR")))
+
+----------------------------------------- 
+There were 18 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 25 33 37 40 49 54 56 61 65 70 72 80 84 85
+----------------------------------------- 
+Starting N:   2797 
+N after dropping incomplete blocks:  2575 
+
+Total of 222 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+----------------------------------------- 
+There were 15 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 13 20 23 25 33 40 49 54 56 61 65 72 80 84 85
+----------------------------------------- 
+Starting N:   2785 
+N after dropping incomplete blocks:  2696 
+
+Total of 89 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+
+----------------------------------------- 
+There were 16 Block pairs dropped because they were
+missing at least one treatment level.
+This is the list of their IDs:
+ 11 13 20 23 25 33 40 49 51 54 56 57 61 65 72 85
+----------------------------------------- 
+Starting N:   2761 
+N after dropping incomplete blocks:  2621 
+
+Total of 140 observations dropped
+ because of unmatched pairs. 
+-----------------------------------------
+> 
+> rownames(diar_h2_pr_unadj_j)=c("WSH vs Water","WSH vs Sanitation","WSH vs Handwashing")
+> rownames(diar_h2_rd_unadj_j)=c("WSH vs Water","WSH vs Sanitation","WSH vs Handwashing")
+> 
+> 
+> save(diar_h1_pr_unadj_j, diar_h2_pr_unadj_j,
++      file="~/Dropbox/WBK-primary-analysis/results/jade/diar_pr_unadj.RData")
+> 
+>   save(diar_h1_rd_unadj_j, diar_h2_rd_unadj_j,
++        file="~/Dropbox/WBK-primary-analysis/results/jade/diar_rd_unadj.RData")
+>   
+> 
+> proc.time()
+   user  system elapsed 
+  3.045   0.108   3.290 

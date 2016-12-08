@@ -1,0 +1,698 @@
+
+R version 3.2.3 (2015-12-10) -- "Wooden Christmas-Tree"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> ##############################################
+> # WASH Benefits Kenya
+> # Primary outcome analysis 
+> 
+> # Stunting adjusted analysis
+> # Permutation tests: non-parametric Wilcoxon signed rank test statistic
+> # 2-sided p-values
+> 
+> # Note: this code does not use the washb R package
+> # However, the results are replicated with the washb_permute function
+> 
+> # by Jade (jadebc@berkeley.edu)
+> ##############################################
+> 
+> rm(list=ls())
+> 
+> library(reshape2)
+> library(coin)
+Loading required package: survival
+Warning message:
+package ‘coin’ was built under R version 3.2.5 
+> library(plyr)
+Warning message:
+package ‘plyr’ was built under R version 3.2.5 
+> library(washb)
+Welcome to the washb package
+Version: 0.2.0
+Created on 2016-10-12
+
+The package's reference manual and vignette are also online:
+https://ben-arnold.github.io/washb
+
+> library(SuperLearner)
+Loading required package: nnls
+Super Learner
+Version: 2.0-21
+Package created on 2016-11-11
+
+Warning message:
+package ‘SuperLearner’ was built under R version 3.2.5 
+> 
+> source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
+Loading required package: zoo
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+> 
+> m=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midline-anthro.csv")
+> e=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/endline-anthro.csv")
+> 
+> m1=preprocess.anthro(m, "stunted")
+> e1=preprocess.anthro(e, "stunted")
+> 
+> m2=preprocess.adj(m1,y="stunted",time=1)
+> e2=preprocess.adj(e1,y="stunted",time=2)
+> 
+> # --------------------------------------
+> # select covariates that are associated with the 
+> # outcome
+> # --------------------------------------
+> W=c("month","HHS","aged","sex","mother_age","motherht","mother_edu",
++     "u18","Ncomp","water_time","floor","roof","cow",
++     "goat","chicken","dog","elec","radio","tv","mobilephone",
++     "clock","bicycle","motorcycle","stove","staffid")
+> 
+> W_screen_m=washb_prescreen(Y=m2$stunted, Ws=m2[,W], family="binomial")
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.03834
+HHS         0.28521
+aged        0.00000
+sex         0.00000
+mother_age  0.10261
+motherht    0.00000
+mother_edu  0.00000
+u18         0.00000
+Ncomp       0.06393
+water_time  0.32156
+floor       0.00037
+roof        0.03060
+cow         0.05064
+goat        0.64613
+chicken     0.00926
+dog         0.02757
+elec        0.74662
+radio       0.00029
+tv          0.02628
+mobilephone 0.00001
+clock       0.12151
+bicycle     0.04069
+motorcycle  0.55532
+stove       0.00017
+staffid     0.00001
+
+
+Covariates selected (P<0.2):
+                 P-value
+month       3.834150e-02
+aged        5.304300e-13
+sex         4.391119e-15
+mother_age  1.026134e-01
+motherht    2.615852e-41
+mother_edu  2.461176e-09
+u18         7.913305e-08
+Ncomp       6.392818e-02
+floor       3.724537e-04
+roof        3.060289e-02
+cow         5.064091e-02
+chicken     9.262168e-03
+dog         2.757438e-02
+radio       2.856217e-04
+tv          2.627768e-02
+mobilephone 1.342722e-05
+clock       1.215136e-01
+bicycle     4.069156e-02
+stove       1.656771e-04
+staffid     8.465699e-06
+> W_screen_e=washb_prescreen(Y=e2$stunted, Ws=e2[,W], family="binomial")
+
+Likelihood Ratio Test P-values:
+            P-value
+month       0.00066
+HHS         0.00122
+aged        0.05919
+sex         0.00000
+mother_age  0.00358
+motherht    0.00000
+mother_edu  0.00000
+u18         0.00118
+Ncomp       0.24989
+water_time  0.11481
+floor       0.00001
+roof        0.00001
+cow         0.00000
+goat        0.04147
+chicken     0.00000
+dog         0.00015
+elec        0.00246
+radio       0.00000
+tv          0.00000
+mobilephone 0.00000
+clock       0.00089
+bicycle     0.00876
+motorcycle  0.34257
+stove       0.00000
+staffid     0.05864
+
+
+Covariates selected (P<0.2):
+                 P-value
+month       6.598539e-04
+HHS         1.220144e-03
+aged        5.919206e-02
+sex         1.387260e-15
+mother_age  3.579567e-03
+motherht    3.723822e-68
+mother_edu  6.384109e-22
+u18         1.176141e-03
+water_time  1.148051e-01
+floor       6.561042e-06
+roof        1.009485e-05
+cow         8.681347e-11
+goat        4.146753e-02
+chicken     3.539885e-09
+dog         1.495916e-04
+elec        2.456504e-03
+radio       3.790007e-06
+tv          1.073341e-07
+mobilephone 9.821850e-10
+clock       8.922317e-04
+bicycle     8.756622e-03
+stove       1.495056e-11
+staffid     5.864469e-02
+> 
+> # subset data frame to Ws selected in prescreening
+> mW=m2[,c("block","stunted","clusterid","hhid","childid","tr",W_screen_m)]
+> eW=e2[,c("block","stunted","clusterid","hhid","childid","tr",W_screen_e)]
+> 
+> # ensure relevant covariates are defined as factors, create indicators
+> mW$block=as.factor(mW$block)
+> eW$block=as.factor(eW$block)
+> mW$month=as.factor(mW$month)
+> eW$month=as.factor(eW$month)
+> 
+> # subset to complete cases
+> mW=mW[complete.cases(mW),]
+> eW=eW[complete.cases(eW),]
+> 
+> # reordering datasets
+> mW=mW[order(mW$block,mW$clusterid,mW$hhid,mW$childid),]
+> eW=eW[order(eW$block,eW$clusterid,eW$hhid,eW$childid),]
+> 
+> #-------------------------------------------
+> # run SuperLearner
+> #-------------------------------------------
+> # define SuperLearner libraries
+> SL.library<-list("SL.mean","SL.glm","SL.bayesglm","SL.gam","SL.glmnet")
+> # for adjusted permutation test, fit model of outcome
+> # as a function of covariates excluding treatment assignment
+> 
+> sl.m=sl.prep(mW,y="stunted")
+
+Number of obs in analysis data frame
+[1] 5978
+> sl.e=sl.prep(eW,y="stunted")
+
+Number of obs in analysis data frame
+[1] 6094
+> colnames(sl.m$A)
+ [1] "aged"                       "motherage"                 
+ [3] "motherht"                   "u18"                       
+ [5] "Ncomp"                      "cow"                       
+ [7] "chicken"                    "dog"                       
+ [9] "month2"                     "month3"                    
+[11] "month4"                     "month5"                    
+[13] "month6"                     "month10"                   
+[15] "month11"                    "month12"                   
+[17] "sexMale"                    "mothereduAnysecondary"     
+[19] "mothereduCompleteprimary"   "floorCementconcrete"       
+[21] "floorMissingDK"             "roofIronother"             
+[23] "radioHasradio"              "tvOwnsTV"                  
+[25] "mobilephoneAnymobilephones" "clockHasclock"             
+[27] "bicycleHasbicycle"          "stoveHasstove"             
+[29] "staffid2311"                "staffid2321"               
+[31] "staffid3448"                "staffid3500"               
+[33] "staffid4312"                "staffid4317"               
+[35] "staffid4518"                "staffid4648"               
+[37] "staffid5423"                "staffid7840"               
+> colnames(sl.e$A)
+ [1] "aged"                       "motherage"                 
+ [3] "motherht"                   "u18"                       
+ [5] "watertime"                  "cow"                       
+ [7] "goat"                       "chicken"                   
+ [9] "dog"                        "month2"                    
+[11] "month3"                     "month4"                    
+[13] "month5"                     "month6"                    
+[15] "month7"                     "month8"                    
+[17] "month9"                     "month10"                   
+[19] "month11"                    "month12"                   
+[21] "HHSMissing"                 "HHSModerate"               
+[23] "HHSSevere"                  "sexMale"                   
+[25] "mothereduAnysecondary"      "mothereduCompleteprimary"  
+[27] "floorCementconcrete"        "floorMissingDK"            
+[29] "roofIronother"              "elecHaselectricity"        
+[31] "radioHasradio"              "tvOwnsTV"                  
+[33] "mobilephoneAnymobilephones" "clockHasclock"             
+[35] "bicycleHasbicycle"          "stoveHasstove"             
+[37] "staffid2321"                "staffid3448"               
+[39] "staffid3500"                "staffid4312"               
+[41] "staffid4317"                "staffid4648"               
+[43] "staffid4838"                "staffid5423"               
+[45] "staffid5451"                "staffid5605"               
+[47] "staffid5618"                "staffid7838"               
+[49] "staffid7840"                "staffid8217"               
+[51] "staffid8247"                "staffid8601"               
+[53] "staffid8603"               
+> 
+> # fit model
+> set.seed(67890)
+> sl.m.fit=SuperLearner(Y=sl.m$Y, X=sl.m$A, SL.library=SL.library,
++      id=sl.m$clusterid,family="binomial",method="method.NNLS")
+Loading required package: arm
+Loading required package: MASS
+Loading required package: Matrix
+Loading required package: lme4
+
+arm (Version 1.8-6, built: 2015-7-7)
+
+Working directory is /Users/jadederong/Documents/CRG/wash-benefits/kenya/src/primary/analysis/6-stunting
+
+Loading required package: gam
+Loading required package: splines
+Loading required package: foreach
+Loaded gam 1.12
+
+Loading required package: glmnet
+Loaded glmnet 2.0-2
+
+> sl.m.fit
+
+Call:  
+SuperLearner(Y = sl.m$Y, X = sl.m$A, family = "binomial", SL.library = SL.library,  
+    method = "method.NNLS", id = sl.m$clusterid) 
+
+
+                     Risk       Coef
+SL.mean_All     0.1553384 0.02932193
+SL.glm_All      0.1456853 0.00000000
+SL.bayesglm_All 0.1455565 0.00000000
+SL.gam_All      0.1455985 0.44449322
+SL.glmnet_All   0.1454396 0.52618485
+> 
+> set.seed(67890)
+> sl.e.fit=SuperLearner(Y=sl.e$Y, X=sl.e$A, SL.library=SL.library,
++      id=sl.e$clusterid,family="binomial",method="method.NNLS")
+> sl.e.fit
+
+Call:  
+SuperLearner(Y = sl.e$Y, X = sl.e$A, family = "binomial", SL.library = SL.library,  
+    method = "method.NNLS", id = sl.e$clusterid) 
+
+
+                     Risk      Coef
+SL.mean_All     0.2140759 0.0000000
+SL.glm_All      0.1961889 0.0000000
+SL.bayesglm_All 0.1961292 0.0000000
+SL.gam_All      0.1960389 0.3271581
+SL.glmnet_All   0.1956184 0.6728419
+> 
+> # generate residuals
+> resid.m=sl.m$Y - sl.m.fit$SL.predict
+> resid.e=sl.e$Y - sl.e.fit$SL.predict
+> 
+> # save predicted values and treatment assignments in data frame
+> resid.df.m=data.frame(block=mW$block,tr=mW$tr,stunted=resid.m)
+> resid.df.e=data.frame(block=eW$block,tr=eW$tr,stunted=resid.e)
+> 
+> #----------------------------------------------
+> # H1: P-value from permutation test for adjusted 
+> # differences; each arm vs. control
+> #----------------------------------------------
+> # midline
+> P.t1.df=coin.prep(resid.df.m,tx="Passive Control",cont="Control",y="stunted")
+[1] "Blocks dropped:"
+ [1] "11" "23" "40" "49" "54" "56" "65" "72" "85" "11" "13" "20" "40" "85"
+[1] "N before dropping blocks: 2023"
+[1] "N after dropping blocks: 1953"
+[1] "Number of blocks included: 78"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "40" "49" "54" "56" "65" "72" "85"
+> nrow(P.t1.df)
+[1] 156
+> set.seed(67890)
+> P.t1.permtest=wilcoxsign_test(stunted~tr | block, data=P.t1.df,
++     distribution=approximate(B=100000))
+> P.t1.perm.p=pvalue(P.t1.permtest)
+> 
+> W.t1.df=coin.prep(resid.df.m,tx="Water",cont="Control",y="stunted")
+[1] "Blocks dropped:"
+ [1] "11" "13" "20" "23" "33" "37" "40" "49" "70" "72" "80" "84" "11" "13" "20"
+[16] "40" "85"
+[1] "N before dropping blocks: 2006"
+[1] "N after dropping blocks: 1901"
+[1] "Number of blocks included: 76"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "33" "37" "40" "49" "70" "72" "80" "84" "85"
+> nrow(W.t1.df)
+[1] 152
+> set.seed(67890)
+> W.t1.permtest=wilcoxsign_test(stunted~tr | block, data=W.t1.df,
++       distribution=approximate(B=100000))
+> W.t1.perm.p=pvalue(W.t1.permtest)
+> 
+> S.t1.df=coin.prep(resid.df.m,tx="Sanitation",cont="Control",y="stunted")
+[1] "Blocks dropped:"
+ [1] "13" "20" "33" "40" "49" "54" "61" "65" "72" "80" "84" "85" "11" "13" "20"
+[16] "40" "85"
+[1] "N before dropping blocks: 2004"
+[1] "N after dropping blocks: 1927"
+[1] "Number of blocks included: 76"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "33" "40" "49" "54" "61" "65" "72" "80" "84" "85"
+> nrow(S.t1.df)
+[1] 152
+> set.seed(67890)
+> S.t1.permtest=wilcoxsign_test(stunted~tr | block, data=S.t1.df,
++       distribution=approximate(B=100000))
+> S.t1.perm.p=pvalue(S.t1.permtest)
+> 
+> H.t1.df=coin.prep(resid.df.m,tx="Handwashing",cont="Control",y="stunted")
+[1] "Blocks dropped:"
+ [1] "11" "13" "20" "33" "40" "49" "51" "54" "56" "57" "65" "85" "11" "13" "20"
+[16] "40" "85"
+[1] "N before dropping blocks: 2005"
+[1] "N after dropping blocks: 1931"
+[1] "Number of blocks included: 77"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "33" "40" "49" "51" "54" "56" "57" "65" "85"
+> nrow(H.t1.df)
+[1] 154
+> set.seed(67890)
+> H.t1.permtest=wilcoxsign_test(stunted~tr | block, data=H.t1.df,
++       distribution=approximate(B=100000))
+> H.t1.perm.p=pvalue(H.t1.permtest)
+> 
+> WSH.t1.df=coin.prep(resid.df.m,tx="WSH",cont="Control",y="stunted")
+[1] "Blocks dropped:"
+ [1] "13" "20" "23" "25" "33" "40" "49" "54" "56" "61" "65" "72" "85" "11" "13"
+[16] "20" "40" "85"
+[1] "N before dropping blocks: 2037"
+[1] "N after dropping blocks: 1925"
+[1] "Number of blocks included: 75"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "25" "33" "40" "49" "54" "56" "61" "65" "72" "85"
+> nrow(WSH.t1.df)
+[1] 150
+> set.seed(67890)
+> WSH.t1.permtest=wilcoxsign_test(stunted~tr | block, data=WSH.t1.df,
++       distribution=approximate(B=100000))
+> WSH.t1.perm.p=pvalue(WSH.t1.permtest)
+> 
+> N.t1.df=coin.prep(resid.df.m,tx="Nutrition",cont="Control",y="stunted")
+[1] "Blocks dropped:"
+ [1] "20" "23" "30" "33" "40" "51" "54" "56" "65" "72" "84" "11" "13" "20" "40"
+[16] "85"
+[1] "N before dropping blocks: 1985"
+[1] "N after dropping blocks: 1855"
+[1] "Number of blocks included: 75"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "30" "33" "40" "51" "54" "56" "65" "72" "84" "85"
+> nrow(N.t1.df)
+[1] 150
+> set.seed(67890)
+> N.permtest=wilcoxsign_test(stunted~tr | block, data=N.t1.df,
++       distribution=approximate(B=100000))
+> N.t1.perm.p=pvalue(N.permtest)
+> 
+> WSHN.t1.df=coin.prep(resid.df.m,tx="Nutrition + WSH",cont="Control",y="stunted")
+[1] "Blocks dropped:"
+ [1] "11" "13" "20" "23" "33" "49" "65" "72" "80" "84" "11" "13" "20" "40" "85"
+[1] "N before dropping blocks: 2048"
+[1] "N after dropping blocks: 1965"
+[1] "Number of blocks included: 77"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "33" "40" "49" "65" "72" "80" "84" "85"
+> nrow(WSHN.t1.df)
+[1] 154
+> set.seed(67890)
+> WSHN.t1.permtest=wilcoxsign_test(stunted~tr | block, data=WSHN.t1.df,
++       distribution=approximate(B=100000))
+> WSHN.t1.perm.p=pvalue(WSHN.t1.permtest)
+> 
+> stunt_t1_h1_pval_adj_j=data.frame(perm.pvalue=c(P.t1.perm.p,W.t1.perm.p,S.t1.perm.p,H.t1.perm.p,
++         WSH.t1.perm.p,N.t1.perm.p,WSHN.t1.perm.p))
+> rownames(stunt_t1_h1_pval_adj_j)=c("Passive Control vs. C","Water vs. C",
++     "Sanitation vs. C", "Handwashing vs. C", "WSH vs. C",
++     "Nutrition vs. C", "Nutrition + WSH vs. C")
+> 
+> 
+> # endline
+> P.t2.df=coin.prep(resid.df.e,tx="Passive Control",cont="Control",y="stunted")
+[1] "Blocks dropped:"
+ [1] "11" "23" "40" "49" "54" "56" "65" "72" "85" "11" "13" "20" "40" "85"
+[1] "N before dropping blocks: 2068"
+[1] "N after dropping blocks: 1992"
+[1] "Number of blocks included: 78"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "40" "49" "54" "56" "65" "72" "85"
+> nrow(P.t2.df)
+[1] 156
+> set.seed(67890)
+> P.t2.permtest=wilcoxsign_test(stunted~tr | block, data=P.t2.df,
++       distribution=approximate(B=100000))
+> P.t2.perm.p=pvalue(P.t2.permtest)
+> 
+> W.t2.df=coin.prep(resid.df.e,tx="Water",cont="Control",y="stunted")
+[1] "Blocks dropped:"
+ [1] "11" "13" "20" "23" "33" "37" "40" "49" "70" "72" "80" "84" "11" "13" "20"
+[16] "40" "85"
+[1] "N before dropping blocks: 2077"
+[1] "N after dropping blocks: 1971"
+[1] "Number of blocks included: 76"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "33" "37" "40" "49" "70" "72" "80" "84" "85"
+> nrow(W.t2.df)
+[1] 152
+> set.seed(67890)
+> W.t2.permtest=wilcoxsign_test(stunted~tr | block, data=W.t2.df,
++       distribution=approximate(B=100000))
+> W.t2.perm.p=pvalue(W.t2.permtest)
+> 
+> S.t2.df=coin.prep(resid.df.e,tx="Sanitation",cont="Control",y="stunted")
+[1] "Blocks dropped:"
+ [1] "13" "20" "33" "40" "49" "54" "61" "65" "72" "80" "84" "85" "11" "13" "20"
+[16] "40" "85"
+[1] "N before dropping blocks: 2094"
+[1] "N after dropping blocks: 2005"
+[1] "Number of blocks included: 76"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "33" "40" "49" "54" "61" "65" "72" "80" "84" "85"
+> nrow(S.t2.df)
+[1] 152
+> set.seed(67890)
+> S.t2.permtest=wilcoxsign_test(stunted~tr | block, data=S.t2.df,
++       distribution=approximate(B=100000))
+> S.t2.perm.p=pvalue(S.t2.permtest)
+> 
+> H.t2.df=coin.prep(resid.df.e,tx="Handwashing",cont="Control",y="stunted")
+[1] "Blocks dropped:"
+ [1] "11" "13" "20" "33" "40" "49" "51" "54" "56" "57" "65" "85" "11" "13" "20"
+[16] "40" "85"
+[1] "N before dropping blocks: 2055"
+[1] "N after dropping blocks: 1974"
+[1] "Number of blocks included: 77"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "33" "40" "49" "51" "54" "56" "57" "65" "85"
+> nrow(H.t2.df)
+[1] 154
+> set.seed(67890)
+> H.t2.permtest=wilcoxsign_test(stunted~tr | block, data=H.t2.df,
++       distribution=approximate(B=100000))
+> H.t2.perm.p=pvalue(H.t2.permtest)
+> 
+> WSH.t2.df=coin.prep(resid.df.e,tx="WSH",cont="Control",y="stunted")
+[1] "Blocks dropped:"
+ [1] "13" "20" "23" "25" "33" "40" "49" "54" "56" "61" "65" "72" "85" "11" "13"
+[16] "20" "40" "85"
+[1] "N before dropping blocks: 2077"
+[1] "N after dropping blocks: 1958"
+[1] "Number of blocks included: 75"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "25" "33" "40" "49" "54" "56" "61" "65" "72" "85"
+> nrow(WSH.t2.df)
+[1] 150
+> set.seed(67890)
+> WSH.t2.permtest=wilcoxsign_test(stunted~tr | block, data=WSH.t2.df,
++       distribution=approximate(B=100000))
+> WSH.t2.perm.p=pvalue(WSH.t2.permtest)
+> 
+> N.t2.df=coin.prep(resid.df.e,tx="Nutrition",cont="Control",y="stunted")
+[1] "Blocks dropped:"
+ [1] "20" "23" "30" "33" "40" "51" "54" "56" "65" "72" "84" "11" "13" "20" "40"
+[16] "85"
+[1] "N before dropping blocks: 2045"
+[1] "N after dropping blocks: 1907"
+[1] "Number of blocks included: 75"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "30" "33" "40" "51" "54" "56" "65" "72" "84" "85"
+> nrow(N.t2.df)
+[1] 150
+> set.seed(67890)
+> N.t2.permtest=wilcoxsign_test(stunted~tr | block, data=N.t2.df,
++       distribution=approximate(B=100000))
+> N.t2.perm.p=pvalue(N.t2.permtest)
+> 
+> WSHN.t2.df=coin.prep(resid.df.e,tx="Nutrition + WSH",cont="Control",y="stunted")
+[1] "Blocks dropped:"
+ [1] "11" "13" "20" "23" "33" "49" "65" "72" "80" "84" "11" "13" "20" "40" "85"
+[1] "N before dropping blocks: 2102"
+[1] "N after dropping blocks: 2011"
+[1] "Number of blocks included: 77"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "33" "40" "49" "65" "72" "80" "84" "85"
+> nrow(WSHN.t2.df)
+[1] 154
+> set.seed(67890)
+> WSHN.t2.permtest=wilcoxsign_test(stunted~tr | block, data=WSHN.t2.df,
++       distribution=approximate(B=100000))
+> WSHN.t2.perm.p=pvalue(WSHN.t2.permtest)
+> 
+> stunt_t2_h1_pval_adj_j=data.frame(perm.pvalue=c(P.t2.perm.p,W.t2.perm.p,S.t2.perm.p,H.t2.perm.p,
++         WSH.t2.perm.p,N.t2.perm.p,WSHN.t2.perm.p))
+> rownames(stunt_t2_h1_pval_adj_j)=c("Passive Control vs. C","Water vs. C",
++      "Sanitation vs. C", "Handwashing vs. C", "WSH vs. C",
++      "Nutrition vs. C", "Nutrition + WSH vs. C")
+> 
+> #----------------------------------------------
+> # H3: P-value from permutation test for adjusted 
+> # differences; WSHN vs. N and WSHN vs. WSH
+> #----------------------------------------------
+> # midline
+> WSHN.N.t1.df=coin.prep(resid.df.m,tx="Nutrition + WSH",cont="Nutrition",y="stunted")
+[1] "Blocks dropped:"
+ [1] "11" "13" "20" "23" "33" "49" "65" "72" "80" "84" "20" "23" "30" "33" "40"
+[16] "51" "54" "56" "65" "72" "84"
+[1] "N before dropping blocks: 1323"
+[1] "N after dropping blocks: 1264"
+[1] "Number of blocks included: 74"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "30" "33" "40" "49" "51" "54" "56" "65" "72" "80" "84"
+> nrow(WSHN.N.t1.df)
+[1] 148
+> set.seed(67890)
+> WSHN.N.t1.permtest=wilcoxsign_test(stunted~tr | block, data=WSHN.N.t1.df,
++       distribution=approximate(B=100000))
+> WSHN.N.t1.perm.p=pvalue(WSHN.N.t1.permtest)
+> 
+> WSHN.WSH.t1.df=coin.prep(resid.df.m,tx="Nutrition + WSH",cont="WSH",y="stunted")
+[1] "Blocks dropped:"
+ [1] "11" "13" "20" "23" "33" "49" "65" "72" "80" "84" "13" "20" "23" "25" "33"
+[16] "40" "49" "54" "56" "61" "65" "72" "85"
+[1] "N before dropping blocks: 1375"
+[1] "N after dropping blocks: 1316"
+[1] "Number of blocks included: 73"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "25" "33" "40" "49" "54" "56" "61" "65" "72" "80" "84"
+[16] "85"
+> nrow(WSHN.WSH.t1.df)
+[1] 146
+> set.seed(67890)
+> WSHN.WSH.t1.permtest=wilcoxsign_test(stunted~tr | block, data=WSHN.WSH.t1.df,
++       distribution=approximate(B=100000))
+> WSHN.WSH.t1.perm.p=pvalue(WSHN.WSH.t1.permtest)
+> 
+> stunt_t1_h3_pval_adj_j=data.frame(perm.pvalue=c(WSHN.N.t1.perm.p,WSHN.WSH.t1.perm.p))
+> rownames(stunt_t1_h3_pval_adj_j)=c("Nutrition + WSH vs. Nutrition","Nutrition + WSH vs. WSH")
+> 
+> 
+> # endline
+> WSHN.N.t2.df=coin.prep(resid.df.e,tx="Nutrition + WSH",cont="Nutrition",y="stunted")
+[1] "Blocks dropped:"
+ [1] "11" "13" "20" "23" "33" "49" "65" "72" "80" "84" "20" "23" "30" "33" "40"
+[16] "51" "54" "56" "65" "72" "84"
+[1] "N before dropping blocks: 1339"
+[1] "N after dropping blocks: 1283"
+[1] "Number of blocks included: 74"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "30" "33" "40" "49" "51" "54" "56" "65" "72" "80" "84"
+> nrow(WSHN.N.t2.df)
+[1] 148
+> set.seed(67890)
+> WSHN.N.t2.permtest=wilcoxsign_test(stunted~tr | block, data=WSHN.N.t2.df,
++       distribution=approximate(B=100000))
+> WSHN.N.t2.perm.p=pvalue(WSHN.N.t2.permtest)
+> 
+> WSHN.WSH.t2.df=coin.prep(resid.df.e,tx="Nutrition + WSH",cont="WSH",y="stunted")
+[1] "Blocks dropped:"
+ [1] "11" "13" "20" "23" "33" "49" "65" "72" "80" "84" "13" "20" "23" "25" "33"
+[16] "40" "49" "54" "56" "61" "65" "72" "85"
+[1] "N before dropping blocks: 1371"
+[1] "N after dropping blocks: 1309"
+[1] "Number of blocks included: 73"
+[1] "List of blocks dropped:"
+ [1] "11" "13" "20" "23" "25" "33" "40" "49" "54" "56" "61" "65" "72" "80" "84"
+[16] "85"
+> nrow(WSHN.WSH.t2.df)
+[1] 146
+> set.seed(67890)
+> WSHN.WSH.t2.permtest=wilcoxsign_test(stunted~tr | block, data=WSHN.WSH.t2.df,
++       distribution=approximate(B=100000))
+> WSHN.WSH.t2.perm.p=pvalue(WSHN.WSH.t2.permtest)
+> 
+> stunt_t2_h3_pval_adj_j=data.frame(perm.pvalue=c(WSHN.N.t2.perm.p,WSHN.WSH.t2.perm.p))
+> rownames(stunt_t2_h3_pval_adj_j)=c("Nutrition + WSH vs. Nutrition","Nutrition + WSH vs. WSH")
+> 
+> save(stunt_t1_h1_pval_adj_j,stunt_t1_h3_pval_adj_j,
++      file="~/Dropbox/WBK-primary-analysis/results/jade/stunt_t1_pval_adj.RData")
+> 
+> save(stunt_t2_h1_pval_adj_j,stunt_t2_h3_pval_adj_j,
++      file="~/Dropbox/WBK-primary-analysis/results/jade/stunt_t2_pval_adj.RData")
+> 
+> stunt_t1_h1_pval_adj_j
+                      perm.pvalue
+Passive Control vs. C     0.85903
+Water vs. C               0.68123
+Sanitation vs. C          0.46473
+Handwashing vs. C         0.95592
+WSH vs. C                 0.27569
+Nutrition vs. C           0.19940
+Nutrition + WSH vs. C     0.03548
+> stunt_t1_h3_pval_adj_j
+                              perm.pvalue
+Nutrition + WSH vs. Nutrition     0.21162
+Nutrition + WSH vs. WSH           0.00178
+> stunt_t2_h1_pval_adj_j
+                      perm.pvalue
+Passive Control vs. C     0.69120
+Water vs. C               0.51207
+Sanitation vs. C          0.39799
+Handwashing vs. C         0.64499
+WSH vs. C                 0.86015
+Nutrition vs. C           0.20062
+Nutrition + WSH vs. C     0.02823
+> stunt_t2_h3_pval_adj_j
+                              perm.pvalue
+Nutrition + WSH vs. Nutrition     0.19182
+Nutrition + WSH vs. WSH           0.00459
+> 
+> 
+> proc.time()
+   user  system elapsed 
+ 71.287   2.114  75.269 

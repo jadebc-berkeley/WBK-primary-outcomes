@@ -1,0 +1,8 @@
+analysis/0-archive/
+*.xls
+*.dta
+"/dm/WHO igrowup STATA/"
+"/dm/WHO igrowup workdata/"
+*.RData
+*.pdf
+"/analysis/0-archive"
