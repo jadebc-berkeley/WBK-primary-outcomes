@@ -5,7 +5,13 @@
 # Diarrhea unadjusted analysis
 # Pooled midline and endline 
 
-# by Jade (jadebc@berkeley.edu)
+# calculate unadjusted differences
+# between treatment arms for H1 and H2
+
+# input: diarrhea.csv
+# output: diar_rd_unadj.RData, diar_pr_unadj.RData
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 library(washb)
 

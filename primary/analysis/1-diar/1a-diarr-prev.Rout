@@ -27,7 +27,10 @@ Type 'q()' to quit R.
 > # n, N, prevalence, and 95% CI by arm at
 > # baseline and follow-up
 > 
-> # by Jade (jadebc@berkeley.edu)
+> # input: diarrhea.csv
+> # output: diar_prev.RData
+> 
+> # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 > ##############################################
 > library(washb)
 Welcome to the washb package
@@ -205,4 +208,4 @@ Nutrition + WSH 0.2835719 0.2597765 0.3073673
 > 
 > proc.time()
    user  system elapsed 
-  1.984   0.068   2.117 
+  7.125   0.523   8.104 

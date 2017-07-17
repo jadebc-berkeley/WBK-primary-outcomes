@@ -32,16 +32,22 @@ Type 'q()' to quit R.
 > # Note: this code does not use the washb R package
 > # However, the results are replicated with the washb_permute function
 > 
-> # by Jade (jadebc@berkeley.edu)
+> # input: diarrhea.csv
+> # output: diarr_pval_adj.RData
+> 
+> # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 > ##############################################
 > 
 > rm(list=ls())
 > 
 > library(reshape2)
+Warning message:
+package ‘reshape2’ was built under R version 3.2.5 
 > library(coin)
 Loading required package: survival
-Warning message:
-package ‘coin’ was built under R version 3.2.5 
+Warning messages:
+1: package ‘coin’ was built under R version 3.2.5 
+2: package ‘survival’ was built under R version 3.2.5 
 > library(plyr)
 Warning message:
 package ‘plyr’ was built under R version 3.2.5 
@@ -124,7 +130,7 @@ Covariates selected (P<0.2):
 month       8.079199e-02
 HHS         4.283191e-03
 aged        6.836407e-06
-mother_age  4.236422e-06
+mother_age  4.236428e-06
 motherht    1.288240e-01
 mother_edu  1.086511e-05
 u18         5.666616e-02
@@ -219,264 +225,3 @@ Loaded gam 1.12
 Loading required package: glmnet
 Loaded glmnet 2.0-2
 
-> 
-> sl.fit
-
-Call:  
-SuperLearner(Y = sl.d$Y, X = sl.d$A, family = "binomial", SL.library = SL.library,  
-    method = "method.NNLS", id = sl.d$clusterid) 
-
-
-                     Risk       Coef
-SL.mean_All     0.1969548 0.01334696
-SL.glm_All      0.1902929 0.00000000
-SL.bayesglm_All 0.1902630 0.00000000
-SL.gam_All      0.1902705 0.00000000
-SL.glmnet_All   0.1899157 0.98665304
-> 
-> # generate residuals
-> resid=sl.d$Y - sl.fit$SL.predict
-> 
-> # save predicted values and treatment assignments in data frame
-> resid.df=data.frame(block=dW$block,tr=dW$tr,diarr7=resid)
-> 
-> #----------------------------------------------
-> # H1: P-value from permutation test for adjusted 
-> # differences; each arm vs. control
-> #----------------------------------------------
-> P.df=coin.prep(resid.df,tx="Passive Control",cont="Control",y="diarr7")
-[1] "Blocks dropped:"
- [1] "11" "23" "40" "49" "54" "56" "65" "72" "85" "11" "13" "20" "40" "85"
-[1] "N before dropping blocks: 4057"
-[1] "N after dropping blocks: 3913"
-[1] "Number of blocks included: 78"
-[1] "List of blocks dropped:"
- [1] "11" "13" "20" "23" "40" "49" "54" "56" "65" "72" "85"
-> set.seed(67890)
-> P.permtest=wilcoxsign_test(diarr7~tr | block, data=P.df,
-+     distribution=approximate(B=100000))
-> P.perm.p=pvalue(P.permtest)
-> 
-> W.df=coin.prep(resid.df,tx="Water",cont="Control",y="diarr7")
-[1] "Blocks dropped:"
- [1] "11" "13" "20" "23" "33" "37" "40" "49" "70" "72" "80" "84" "11" "13" "20"
-[16] "40" "85"
-[1] "N before dropping blocks: 4062"
-[1] "N after dropping blocks: 3850"
-[1] "Number of blocks included: 76"
-[1] "List of blocks dropped:"
- [1] "11" "13" "20" "23" "33" "37" "40" "49" "70" "72" "80" "84" "85"
-> set.seed(67890)
-> W.permtest=wilcoxsign_test(diarr7~tr | block, data=W.df,
-+    distribution=approximate(B=100000))
-> W.perm.p=pvalue(W.permtest)
-> 
-> washb_permute(Y=resid.df$diarr7,tr=resid.df$tr,contrast=c("Control","Water"),
-+               pair=resid.df$block,nreps=100000,seed=67890)
-
------------------------------------------
- Starting N:   4062 
-N after block dropping:  3850
------------------------------------------
- Pairs/blocks dropped due to missingness in at least one treatment level:
- 11 13 20 23 33 37 40 49 70 72 80 84 85 
-
-Dropping 212 observations due to missing pairs. 
------------------------------------------
-
-	Approximative Wilcoxon-Pratt Signed-Rank Test
-
-data:  y by x (pos, neg) 
-	 stratified by block
-Z = -0.321, p-value = 0.7512
-alternative hypothesis: true mu is not equal to 0
-
-$p.value
-[1] 0.75122
-
-$Z
-       pos 
--0.3209959 
-
-$Ho
-  [1] -4.25060652 -2.30909928 -2.03987694 -1.87937901 -1.75512255 -1.65157549
-  [7] -1.56356050 -1.48590021 -1.41341727 -1.34611169 -1.28916081 -1.23738728
- [13] -1.18561375 -1.13384023 -1.08724405 -1.04582523 -1.00440641 -0.95781024
- [19] -0.92156877 -0.88532730 -0.84908583 -0.81284436 -0.77660290 -0.74036143
- [25] -0.70929731 -0.67823320 -0.64716908 -0.61610496 -0.58504085 -0.55915409
- [31] -0.52808997 -0.49702585 -0.47113909 -0.44525233 -0.41418821 -0.38830145
- [37] -0.35723733 -0.33135057 -0.30546381 -0.27957704 -0.25369028 -0.22780352
- [43] -0.20191675 -0.17602999 -0.15014323 -0.12425646 -0.10354705 -0.07766029
- [49] -0.05177353 -0.02588676  0.00000000  0.02588676  0.05177353  0.07766029
- [55]  0.10354705  0.12943382  0.15532058  0.18120734  0.20709411  0.23298087
- [61]  0.25886763  0.28475440  0.31064116  0.33652792  0.36241468  0.38830145
- [67]  0.41418821  0.44007497  0.47113909  0.49702585  0.52808997  0.55915409
- [73]  0.59021820  0.61610496  0.64716908  0.67823320  0.70929731  0.74036143
- [79]  0.77660290  0.80766701  0.84390848  0.88014995  0.91639142  0.95263289
- [85]  0.99922906  1.04064788  1.08206670  1.12866288  1.17008170  1.22185522
- [91]  1.27362875  1.33575698  1.39788521  1.47036815  1.55320579  1.64122079
- [97]  1.74476784  1.87420166  2.05540900  2.31427663  4.51465150
-
-$W
-
-	Approximative Wilcoxon-Pratt Signed-Rank Test
-
-data:  y by x (pos, neg) 
-	 stratified by block
-Z = -0.321, p-value = 0.7512
-alternative hypothesis: true mu is not equal to 0
-
-
-> 
-> S.df=coin.prep(resid.df,tx="Sanitation",cont="Control",y="diarr7")
-[1] "Blocks dropped:"
- [1] "13" "20" "33" "40" "49" "54" "61" "65" "72" "80" "84" "85" "11" "13" "20"
-[16] "40" "85"
-[1] "N before dropping blocks: 4044"
-[1] "N after dropping blocks: 3878"
-[1] "Number of blocks included: 76"
-[1] "List of blocks dropped:"
- [1] "11" "13" "20" "33" "40" "49" "54" "61" "65" "72" "80" "84" "85"
-> set.seed(67890)
-> S.permtest=wilcoxsign_test(diarr7~tr | block, data=S.df,
-+    distribution=approximate(B=100000))
-> S.perm.p=pvalue(S.permtest)
-> 
-> H.df=coin.prep(resid.df,tx="Handwashing",cont="Control",y="diarr7")
-[1] "Blocks dropped:"
- [1] "11" "13" "20" "33" "40" "49" "51" "54" "56" "57" "65" "85" "11" "13" "20"
-[16] "40" "85"
-[1] "N before dropping blocks: 4017"
-[1] "N after dropping blocks: 3863"
-[1] "Number of blocks included: 77"
-[1] "List of blocks dropped:"
- [1] "11" "13" "20" "33" "40" "49" "51" "54" "56" "57" "65" "85"
-> set.seed(67890)
-> H.permtest=wilcoxsign_test(diarr7~tr | block, data=H.df,
-+    distribution=approximate(B=100000))
-> H.perm.p=pvalue(H.permtest)
-> 
-> WSH.df=coin.prep(resid.df,tx="WSH",cont="Control",y="diarr7")
-[1] "Blocks dropped:"
- [1] "13" "20" "23" "25" "33" "40" "49" "54" "56" "61" "65" "72" "85" "11" "13"
-[16] "20" "40" "85"
-[1] "N before dropping blocks: 4087"
-[1] "N after dropping blocks: 3857"
-[1] "Number of blocks included: 75"
-[1] "List of blocks dropped:"
- [1] "11" "13" "20" "23" "25" "33" "40" "49" "54" "56" "61" "65" "72" "85"
-> set.seed(67890)
-> WSH.permtest=wilcoxsign_test(diarr7~tr | block, data=WSH.df,
-+    distribution=approximate(B=100000))
-> WSH.perm.p=pvalue(WSH.permtest)
-> 
-> N.df=coin.prep(resid.df,tx="Nutrition",cont="Control",y="diarr7")
-[1] "Blocks dropped:"
- [1] "20" "23" "30" "33" "40" "51" "54" "56" "65" "72" "84" "11" "13" "20" "40"
-[16] "85"
-[1] "N before dropping blocks: 3983"
-[1] "N after dropping blocks: 3713"
-[1] "Number of blocks included: 75"
-[1] "List of blocks dropped:"
- [1] "11" "13" "20" "23" "30" "33" "40" "51" "54" "56" "65" "72" "84" "85"
-> set.seed(67890)
-> N.permtest=wilcoxsign_test(diarr7~tr | block, data=N.df,
-+    distribution=approximate(B=100000))
-> N.perm.p=pvalue(N.permtest)
-> 
-> WSHN.df=coin.prep(resid.df,tx="Nutrition + WSH",cont="Control",y="diarr7")
-[1] "Blocks dropped:"
- [1] "11" "13" "20" "23" "33" "49" "65" "72" "80" "84" "11" "13" "20" "40" "85"
-[1] "N before dropping blocks: 4113"
-[1] "N after dropping blocks: 3940"
-[1] "Number of blocks included: 77"
-[1] "List of blocks dropped:"
- [1] "11" "13" "20" "23" "33" "40" "49" "65" "72" "80" "84" "85"
-> set.seed(67890)
-> WSHN.permtest=wilcoxsign_test(diarr7~tr | block, data=WSHN.df,
-+    distribution=approximate(B=100000))
-> WSHN.perm.p=pvalue(WSHN.permtest)
-> 
-> diar_h1_pval_adj_j=data.frame(perm.pvalue=c(P.perm.p,W.perm.p,S.perm.p,H.perm.p,
-+                          WSH.perm.p,N.perm.p,WSHN.perm.p))
-> rownames(diar_h1_pval_adj_j)=c("Passive Control vs. C","Water vs. C",
-+    "Sanitation vs. C", "Handwashing vs. C", "WSH vs. C",
-+    "Nutrition vs. C", "Nutrition + WSH vs. C")
-> 
-> #----------------------------------------------
-> # H2: P-value from permutation test for adjusted 
-> # differences; WSHN vs. single arms
-> #----------------------------------------------
-> WSH.W.df=coin.prep(resid.df,tx="WSH",cont="Water",y="diarr7")
-[1] "Blocks dropped:"
- [1] "13" "20" "23" "25" "33" "40" "49" "54" "56" "61" "65" "72" "85" "11" "13"
-[16] "20" "23" "33" "37" "40" "49" "70" "72" "80" "84"
-[1] "N before dropping blocks: 2685"
-[1] "N after dropping blocks: 2474"
-[1] "Number of blocks included: 71"
-[1] "List of blocks dropped:"
- [1] "11" "13" "20" "23" "25" "33" "37" "40" "49" "54" "56" "61" "65" "70" "72"
-[16] "80" "84" "85"
-> set.seed(67890)
-> WSH.W.permtest=wilcoxsign_test(diarr7~tr | block, data=WSH.W.df,
-+    distribution=approximate(B=100000))
-> WSH.W.perm.p=pvalue(WSH.W.permtest)
-> 
-> WSH.S.df=coin.prep(resid.df,tx="WSH",cont="Sanitation",y="diarr7")
-[1] "Blocks dropped:"
- [1] "13" "20" "23" "25" "33" "40" "49" "54" "56" "61" "65" "72" "85" "13" "20"
-[16] "33" "40" "49" "54" "61" "65" "72" "80" "84" "85"
-[1] "N before dropping blocks: 2667"
-[1] "N after dropping blocks: 2585"
-[1] "Number of blocks included: 74"
-[1] "List of blocks dropped:"
- [1] "13" "20" "23" "25" "33" "40" "49" "54" "56" "61" "65" "72" "80" "84" "85"
-> set.seed(67890)
-> WSH.S.permtest=wilcoxsign_test(diarr7~tr | block, data=WSH.S.df,
-+    distribution=approximate(B=100000))
-> WSH.S.perm.p=pvalue(WSH.S.permtest)
-> 
-> WSH.H.df=coin.prep(resid.df,tx="WSH",cont="Handwashing",y="diarr7")
-[1] "Blocks dropped:"
- [1] "13" "20" "23" "25" "33" "40" "49" "54" "56" "61" "65" "72" "85" "11" "13"
-[16] "20" "33" "40" "49" "51" "54" "56" "57" "65" "85"
-[1] "N before dropping blocks: 2640"
-[1] "N after dropping blocks: 2510"
-[1] "Number of blocks included: 73"
-[1] "List of blocks dropped:"
- [1] "11" "13" "20" "23" "25" "33" "40" "49" "51" "54" "56" "57" "61" "65" "72"
-[16] "85"
-> set.seed(67890)
-> WSH.H.permtest=wilcoxsign_test(diarr7~tr | block, data=WSH.H.df,
-+     distribution=approximate(B=100000))
-> WSH.H.perm.p=pvalue(WSH.H.permtest)
-> 
-> diar_h2_pval_adj_j=data.frame(perm.pvalue=c(WSH.W.perm.p,WSH.S.perm.p,WSH.H.perm.p))
-> rownames(diar_h2_pval_adj_j)=c("WSH vs. Water",
-+                                  "WSH vs. Sanitation", "WSH vs. Handwashing")
-> 
-> save(diar_h1_pval_adj_j,diar_h2_pval_adj_j,
-+      file="~/Dropbox/WBK-primary-analysis/results/jade/diarr_pval_adj.RData")
-> 
-> 
-> diar_h1_pval_adj_j
-                      perm.pvalue
-Passive Control vs. C     0.88077
-Water vs. C               0.75122
-Sanitation vs. C          0.88002
-Handwashing vs. C         0.39052
-WSH vs. C                 0.49950
-Nutrition vs. C           0.65104
-Nutrition + WSH vs. C     0.99589
-> diar_h2_pval_adj_j
-                    perm.pvalue
-WSH vs. Water           0.29264
-WSH vs. Sanitation      0.82896
-WSH vs. Handwashing     0.42665
-> 
-> 
-> 
-> 
-> proc.time()
-   user  system elapsed 
-119.763   3.797 163.591 

@@ -8,7 +8,10 @@
 # H1: Adjusted prevalence ratios; each arm vs. control
 # H2: Adjusted prevalence ratios; combined WSH vs. single arms
 
-# by Jade (jadebc@berkeley.edu)
+# input: diarrhea.csv
+# output: diarr-y1-PR-adj.RData
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 library(devtools)
 library(washb)

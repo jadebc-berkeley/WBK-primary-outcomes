@@ -3,9 +3,15 @@
 # Primary outcome analysis  
 
 # Diarrhea unadjusted analysis
-# Midline data
+# Midline data only
 
-# by Jade (jadebc@berkeley.edu)
+# calculate unadjusted differences
+# between treatment arms for H1 and H2
+
+# input: diarrhea.csv
+# output: diar_y1_rd_unadj.RData, diar_y1_pr_unadj.RData
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 library(washb)
 

@@ -26,7 +26,13 @@ Type 'q()' to quit R.
 > # Diarrhea unadjusted analysis
 > # Pooled midline and endline 
 > 
-> # by Jade (jadebc@berkeley.edu)
+> # calculate unadjusted differences
+> # between treatment arms for H1 and H2
+> 
+> # input: diarrhea.csv
+> # output: diar_rd_unadj.RData, diar_pr_unadj.RData
+> 
+> # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 > ##############################################
 > library(washb)
 Welcome to the washb package
@@ -367,4 +373,4 @@ Total of 140 observations dropped
 > 
 > proc.time()
    user  system elapsed 
-  3.045   0.108   3.290 
+  3.549   0.169   4.126 

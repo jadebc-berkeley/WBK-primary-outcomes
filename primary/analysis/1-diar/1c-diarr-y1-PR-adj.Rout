@@ -29,7 +29,10 @@ Type 'q()' to quit R.
 > # H1: Adjusted prevalence ratios; each arm vs. control
 > # H2: Adjusted prevalence ratios; combined WSH vs. single arms
 > 
-> # by Jade (jadebc@berkeley.edu)
+> # input: diarrhea.csv
+> # output: diarr-y1-PR-adj.RData
+> 
+> # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 > ##############################################
 > library(devtools)
 Warning message:
@@ -165,7 +168,7 @@ Covariates selected (P<0.2):
                 P-value
 aged       3.680332e-02
 sex        3.340982e-02
-mother_age 4.690193e-02
+mother_age 4.690198e-02
 tv         1.560726e-01
 staffid    1.000171e-08
 
@@ -197,10 +200,10 @@ Estimation Results:
 		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
 
 	 Coefficients: 
-	     SL.mean_All    0.3482932 
+	     SL.mean_All    0.3482931 
 	      SL.glm_All    0 
-	 SL.bayesglm_All    0.04294431 
-	      SL.gam_All    0.6087625 
+	 SL.bayesglm_All    0.04294471 
+	      SL.gam_All    0.6087622 
 	   SL.glmnet_All    0 
 
  Estimation of g (treatment mechanism)
@@ -572,7 +575,7 @@ Covariates selected (P<0.2):
 month      3.084661e-02
 aged       9.095814e-03
 sex        2.248621e-02
-mother_age 6.288539e-02
+mother_age 6.288544e-02
 goat       1.296873e-01
 tv         1.413286e-01
 clock      1.703993e-01
@@ -607,7 +610,7 @@ Estimation Results:
 	      SL.glm_All    0 
 	 SL.bayesglm_All    0.2702656 
 	      SL.gam_All    0 
-	   SL.glmnet_All    0.06075784 
+	   SL.glmnet_All    0.06075781 
 
  Estimation of g.Z (intermediate variable assignment mechanism)
 	 Procedure: No intermediate variable 
@@ -839,7 +842,7 @@ Covariates selected (P<0.2):
                 P-value
 HHS        1.778789e-01
 sex        2.681806e-02
-mother_age 3.096259e-02
+mother_age 3.096264e-02
 u18        4.041388e-02
 floor      9.544891e-02
 cow        1.147782e-01
@@ -860,9 +863,9 @@ Estimation Results:
 	 Coefficients: 
 	     SL.mean_All    0.2742807 
 	      SL.glm_All    0 
-	 SL.bayesglm_All    0.7134123 
+	 SL.bayesglm_All    0.7134122 
 	      SL.gam_All    0 
-	   SL.glmnet_All    0.01230702 
+	   SL.glmnet_All    0.01230712 
 
  Estimation of g (treatment mechanism)
 	 Procedure: SuperLearner 
@@ -1125,7 +1128,7 @@ staffid     0.00032
 Covariates selected (P<0.2):
                  P-value
 month       0.0018911354
-mother_age  0.1860623144
+mother_age  0.1860624018
 mother_edu  0.1439226436
 Ncomp       0.0555479774
 floor       0.1047284368
@@ -1162,7 +1165,7 @@ Estimation Results:
 	     SL.mean_All    0.9168911 
 	      SL.glm_All    0 
 	 SL.bayesglm_All    0 
-	      SL.gam_All    0.08310892 
+	      SL.gam_All    0.08310889 
 	   SL.glmnet_All    0 
 
  Estimation of g.Z (intermediate variable assignment mechanism)
@@ -1261,7 +1264,7 @@ Covariates selected (P<0.2):
                 P-value
 month      1.707651e-03
 HHS        1.370718e-01
-mother_age 1.682183e-01
+mother_age 1.682185e-01
 mother_edu 9.310162e-03
 Ncomp      1.759552e-01
 roof       1.581041e-01
@@ -1395,7 +1398,7 @@ staffid     0.00000
 Covariates selected (P<0.2):
                 P-value
 aged       4.979629e-03
-mother_age 3.460378e-02
+mother_age 3.460376e-02
 mother_edu 6.309027e-02
 floor      7.269123e-02
 roof       8.716925e-02
@@ -1415,9 +1418,9 @@ Estimation Results:
 		 Y ~  SL.mean_All + SL.glm_All + SL.bayesglm_All + SL.gam_All + SL.glmnet_All
 
 	 Coefficients: 
-	     SL.mean_All    0.4706564 
+	     SL.mean_All    0.4706565 
 	      SL.glm_All    0 
-	 SL.bayesglm_All    0.5293436 
+	 SL.bayesglm_All    0.5293435 
 	      SL.gam_All    0 
 	   SL.glmnet_All    0 
 
@@ -1476,7 +1479,7 @@ Estimation Results:
 > ######################################################
 > diar_y1_h1_pr_adj_j
                              rr        lb       ub
-Passive Control vs. C 0.9540700 0.8392438 1.084607
+Passive Control vs. C 0.9540700 0.8392437 1.084607
 Water vs. C           1.0318087 0.8729243 1.219612
 Sanitation vs. C      0.9829081 0.8554152 1.129403
 Handwashing vs. C     0.9189631 0.7983869 1.057749
@@ -1499,7 +1502,7 @@ Nutrition vs. C       -0.011396034 -0.06331595 0.04052388
 Nutrition + WSH vs. C -0.004939281 -0.04984788 0.03996931
 > diar_y1_h2_rd_adj_j
                               rd          lb         ub
-WSH vs. Water       -0.028443189 -0.08459532 0.02770895
+WSH vs. Water       -0.028443188 -0.08459532 0.02770895
 WSH vs. Sanitation  -0.005061378 -0.05227452 0.04215176
 WSH vs. Handwashing  0.012180033 -0.03328175 0.05764182
 > 
@@ -1510,4 +1513,4 @@ WSH vs. Handwashing  0.012180033 -0.03328175 0.05764182
 > 
 > proc.time()
    user  system elapsed 
-110.530   3.417 120.613 
+104.718   3.461 111.885 

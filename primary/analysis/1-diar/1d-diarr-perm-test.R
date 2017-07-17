@@ -11,7 +11,10 @@
 # Note: this code does not use the washb R package
 # However, the results are replicated with the washb_permute function
 
-# by Jade (jadebc@berkeley.edu)
+# input: diarrhea.csv
+# output: diarr_pval_unadj.RData
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 
 rm(list=ls())
