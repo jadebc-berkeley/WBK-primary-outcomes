@@ -9,7 +9,10 @@
 # Note: this code does not use the washb R package
 # However, the results are replicated with the washb_permute function
 
-# by Jade (jadebc@berkeley.edu)
+# input: midline-anthro.csv, endline-anthro.csv
+# output: sstunt_t1_pval_adj.RData, sstunt_t2_pval_adj.RData
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 
 rm(list=ls())

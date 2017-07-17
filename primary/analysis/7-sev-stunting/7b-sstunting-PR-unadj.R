@@ -3,8 +3,13 @@
 # Primary outcome analysis  
 
 # Severe stunting unadjusted analysis
+# calculate unadjusted differences
+# between treatment arms for H1 and H3
 
-# by Jade (jadebc@berkeley.edu)
+# input: midline-anthro.csv, endline-anthro.csv
+# output: sstunt_pr_unadj.RData, sstunt_rd_unadj.RData
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 library(washb)
 
