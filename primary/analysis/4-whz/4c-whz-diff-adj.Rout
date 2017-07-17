@@ -24,8 +24,13 @@ Type 'q()' to quit R.
 > # Primary outcome analysis 
 > 
 > # WHZ adjusted analysis
+> # calculate adjusted differences
+> # between treatment arms for H1 and H3
 > 
-> # by Jade (jadebc@berkeley.edu)
+> # input: midline-anthro.csv, endline-anthro.csv
+> # output: whz_rd_adj.RData
+> 
+> # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 > ##############################################
 > library(devtools)
 Warning message:
@@ -2342,4 +2347,4 @@ Nutrition + WSH vs WSH       0.10871816  0.003534891 0.2139014
 > 
 > proc.time()
    user  system elapsed 
-130.554   3.700 138.828 
+118.671   3.631 127.004 

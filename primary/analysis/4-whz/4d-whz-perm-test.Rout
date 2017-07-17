@@ -30,14 +30,20 @@ Type 'q()' to quit R.
 > # Note: this code does not use the washb R package
 > # However, the results are replicated with the washb_permute function
 > 
-> # by Jade (jadebc@berkeley.edu)
+> # input: midline-anthro.csv, endline-anthro.csv
+> # output: whz_t1_pval_unadj.RData, whz_t2_pval_unadj.RData
+> 
+> # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 > ##############################################
 > 
 > library(coin)
 Loading required package: survival
-Warning message:
-package ‘coin’ was built under R version 3.2.5 
+Warning messages:
+1: package ‘coin’ was built under R version 3.2.5 
+2: package ‘survival’ was built under R version 3.2.5 
 > library(reshape2)
+Warning message:
+package ‘reshape2’ was built under R version 3.2.5 
 > 
 > rm(list=ls())
 > m=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midline-anthro.csv")
@@ -362,4 +368,4 @@ Nutrition + WSH vs. WSH           0.05914
 > 
 > proc.time()
    user  system elapsed 
- 16.750   0.464  18.105 
+ 10.847   0.179  11.406 
