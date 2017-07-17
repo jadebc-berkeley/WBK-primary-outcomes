@@ -26,7 +26,10 @@ Type 'q()' to quit R.
 > # Length-for-age 
 > # N, mean, SD by arm
 > 
-> # by Jade (jadebc@berkeley.edu)
+> # input: midline-anthro.csv, endline-anthro.csv
+> # output: laz_mean.RData
+> 
+> # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 > ##############################################
 > 
 > rm(list=ls())
@@ -104,4 +107,4 @@ Nutrition + WSH  760 -1.392289 1.046505
 > 
 > proc.time()
    user  system elapsed 
-  8.899   0.517  10.135 
+  5.885   0.374   6.412 

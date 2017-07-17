@@ -9,7 +9,10 @@
 # Note: this code does not use the washb R package
 # However, the results are replicated with the washb_permute function
 
-# by Jade (jadebc@berkeley.edu)
+# input: midline-anthro.csv, endline-anthro.csv
+# output: laz_t1_pval_unadj.RData, laz_t2_pval_unadj.RData
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 
 library(coin)
