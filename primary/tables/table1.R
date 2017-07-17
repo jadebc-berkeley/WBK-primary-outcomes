@@ -1,9 +1,10 @@
 ##############################################
 # WASH Benefits Kenya
+# Primary outcome analysis 
 
 # Table 1
 
-# by Jade
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 
 rm(list=ls())
@@ -11,8 +12,8 @@ library(reshape2)
 
 setwd("")
 
-data=read.csv("C:/Users/andre/Dropbox/WBK-primary-analysis/Data/Final/Jade/table1.csv")
-#data=read.csv("~/Dropbox/WBK-primary-analysis/Data/final/jade/table1.csv")
+# data=read.csv("C:/Users/andre/Dropbox/WBK-primary-analysis/Data/Final/Jade/table1.csv")
+data=read.csv("~/Dropbox/WBK-primary-analysis/Data/final/jade/table1.csv")
 
 
 # reorder tr labels

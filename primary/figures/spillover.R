@@ -6,7 +6,7 @@
 # the proportion of treated households within
 # 2km of each control compound for sets of treatments
 # 
-# by Jade (jadebc@berkeley.edu)
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 rm(list=ls())
 library(ggplot2)

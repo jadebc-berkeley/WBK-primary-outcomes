@@ -1,3 +1,11 @@
+##############################################
+# WASH Benefits Kenya
+# Primary outcome analysis 
+
+# Table with mortality results
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
+##############################################
 rm(list=ls())
 load("~/Dropbox/WBK-primary-analysis/results/jade/mort_prev.RData")
 load("~/Dropbox/WBK-primary-analysis/results/jade/mort_rd_unadj.RData")

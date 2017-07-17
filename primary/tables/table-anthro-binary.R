@@ -1,10 +1,10 @@
 ##############################################
 # WASH Benefits Kenya
+# Primary outcome analysis 
 
 # Table with binary anthropometry results
 
-# by Jade
-
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 
 rm(list=ls())

@@ -1,4 +1,11 @@
+##############################################
+# WASH Benefits Kenya
+# Primary outcomes analysis
+
 # Table functions
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
+##############################################
 
 
 pt.est.n.f=function(obj,decimals,scale){

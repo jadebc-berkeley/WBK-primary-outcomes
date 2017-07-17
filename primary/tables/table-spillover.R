@@ -5,7 +5,7 @@
 # Table of between cluster spillover p-values
 # from permutation test
 
-# by Jade
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 
 rm(list=ls())

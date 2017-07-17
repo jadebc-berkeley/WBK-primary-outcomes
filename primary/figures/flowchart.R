@@ -5,7 +5,7 @@
 # CONSORT flow chart
 # Prepare data for the figure
 
-# by Jade (jadebc@berkeley.edu)
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 rm(list=ls())
 library(plyr)

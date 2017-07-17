@@ -1,9 +1,10 @@
 ##############################################
 # WASH Benefits Kenya
+# Primary outcome analysis 
 
 # Table with adjusted and unadjusted anthro continuous results
 
-# by Jade
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 
 rm(list=ls())

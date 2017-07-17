@@ -1,10 +1,11 @@
 ##############################################
 # WASH Benefits Kenya
+# Primary outcome analysis 
 # Uptake figure
 
 # prepare data for plotting in the uptake figure
 
-# by Jade (jadebc@berkeley.edu)
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 library(washb)
 

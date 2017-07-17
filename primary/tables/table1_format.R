@@ -1,19 +1,14 @@
-
 ##############################################
 # WASH Benefits Kenya
+# Primary outcome analysis 
 
 # Table 1 formatting
 
-# by Jade
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 rm(list=ls())
 
 load("~/Dropbox/WBK-primary-analysis/Results/jade/table1.RData")
-
-# n.comp.f=matrix(NA,1,8)
-# for(i in 1:length(n.comp)){
-#   n.comp.f[i]=paste("(N=",n.comp[i],")",sep="")
-# }
 
 n.hh.f=matrix(NA,1,8)
 for(i in 1:length(n.hh)){
