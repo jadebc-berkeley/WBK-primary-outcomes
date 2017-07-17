@@ -18,7 +18,7 @@ For all analysis scripts, you will need to change directory statements within th
 
 ### Directory structure
 
-`*adherence*` : intervention adherence measures at enrollment, year 1, and year 2
+*`adherence`* : intervention adherence measures at enrollment, year 1, and year 2
 
 balance : enrollment characteristics by arm
 
