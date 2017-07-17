@@ -24,8 +24,13 @@ Type 'q()' to quit R.
 > # Primary outcome analysis 
 > 
 > # WAZ unadjusted analysis
+> # calculate unadjusted differences
+> # between treatment arms for H1 and H3
 > 
-> # by Jade (jadebc@berkeley.edu)
+> # input: midline-anthro.csv, endline-anthro.csv
+> # output: hcz_rd_unadj.RData
+> 
+> # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 > ##############################################
 > 
 > library(washb)
@@ -106,4 +111,4 @@ The following objects are masked from ‘package:base’:
 > 
 > proc.time()
    user  system elapsed 
-  1.377   0.047   1.471 
+  1.167   0.050   1.249 

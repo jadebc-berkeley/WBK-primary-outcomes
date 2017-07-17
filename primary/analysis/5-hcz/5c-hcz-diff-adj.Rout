@@ -24,8 +24,13 @@ Type 'q()' to quit R.
 > # Primary outcome analysis 
 > 
 > # HCZ adjusted analysis
+> # calculate adjusted differences
+> # between treatment arms for H1 and H3
 > 
-> # by Jade (jadebc@berkeley.edu)
+> # input: midline-anthro.csv, endline-anthro.csv
+> # output: hcz-PR-adj.RData
+> 
+> # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 > ##############################################
 > library(devtools)
 Warning message:
@@ -2432,4 +2437,9 @@ Nutrition + WSH vs WSH       0.11720414  0.001368253 0.2330400
 > 
 > proc.time()
    user  system elapsed 
-134.890   3.794 140.974 
+144.517   4.978 154.863 
+zfile
+In addition: Warning message:
+In gzfile(file, "wb") :
+  cannot open compressed file '/Users/jadederong/opbox/WBK-primary-analysis/Results/jade/hcz-PR-adj.RData', probable reason 'No such file or directory'
+Execution halted

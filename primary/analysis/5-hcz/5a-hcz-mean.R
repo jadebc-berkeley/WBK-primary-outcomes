@@ -5,7 +5,10 @@
 # Head circumference z-score 
 # N, mean, SD by arm
 
-# by Jade (jadebc@berkeley.edu)
+# input: midline-anthro.csv, endline-anthro.csv
+# output: hcz_mean.RData
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 
 rm(list=ls())
