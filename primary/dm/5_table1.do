@@ -3,10 +3,15 @@ log using "~/documents/crg/wash-benefits/Kenya/src/primary/dm/5_table1.log", rep
 
 *********************************************
 * WASH Benefits Kenya
+* Primary outcome analysis
 
-* Make table 1 dataset
+* Make table 1 dataset (baseline balance table)
 
-* by Jade (jadebc@berkeley.edu)
+* Reads in raw data
+* Outputs 1 dataset with input for baseline
+* balance table
+
+* by Jade Benjamin-Chung (jadebc@berkeley.edu)
 *********************************************
 clear all
 set more off

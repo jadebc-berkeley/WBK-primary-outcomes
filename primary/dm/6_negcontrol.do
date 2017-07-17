@@ -3,11 +3,16 @@ log using "~/documents/crg/wash-benefits/Kenya/src/primary/dm/6_negcontrol.log",
 
 *********************************************
 * WASH Benefits Kenya
+* Primary outcome analysis
 
 * Make analysis dataset: negative control
 * Bruise/abrasion
 
-* by Jade (jadebc@berkeley.edu)
+* Reads in raw data
+* Outputs 1 dataset with individual level data
+* for midline and endline 
+
+* by Jade Benjamin-Chung (jadebc@berkeley.edu)
 *********************************************
 clear all
 set more off

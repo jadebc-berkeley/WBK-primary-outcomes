@@ -3,10 +3,15 @@ log using "~/documents/crg/wash-benefits/Kenya/src/primary/dm/4_uptake.log", rep
 
 *********************************************
 * WASH Benefits Kenya
+* Primary outcome analysis
 
 * Make uptake dataset
 
-* by Jade
+* Reads in raw data
+* Outputs 3 datasets with data for baseline, midline
+* and endline  
+
+* by Jade Benjamin-Chung (jadebc@berkeley.edu)
 *********************************************
 clear all
 set more off

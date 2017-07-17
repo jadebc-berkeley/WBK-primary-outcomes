@@ -13,7 +13,7 @@
 * each line similar to:	"local string "xxx\lenanthro.dta"
 * with a forward slash instead of backward slash
 
-* by Jade
+* by Jade Benjamin-Chung (jadebc@berkeley.edu)
 *********************************************
 
 *clear all

@@ -3,10 +3,15 @@ log using "~/documents/crg/wash-benefits/Kenya/src/primary/dm/7_mortality.log", 
 
 *********************************************
 * WASH Benefits Kenya
+* Primary outcome analysis
 
 * Make analysis dataset: mortality
 
-* by Jade
+* Reads in raw data
+* Outputs 1 dataset with individual level data
+* from endline
+
+* by Jade Benjamin-Chung (jadebc@berkeley.edu)
 *********************************************
 clear all
 set more off

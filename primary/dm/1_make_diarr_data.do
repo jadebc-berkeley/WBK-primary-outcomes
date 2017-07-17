@@ -3,10 +3,17 @@ log using "~/documents/crg/wash-benefits/Kenya/src/primary/dm/1_make_diarr_data.
 
 *********************************************
 * WASH Benefits Kenya
+* Primary outcome analysis
 
 * Make analysis dataset: diarrhea
 
-* by Jade
+* Reads in raw data
+* Outputs 1 dataset with individual level data
+* for baseline, midline, and endline 
+* including variables for covariate adjusted 
+* analyses 
+
+* by Jade Benjamin-Chung (jadebc@berkeley.edu)
 *********************************************
 clear all
 set more off

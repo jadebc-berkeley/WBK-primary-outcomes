@@ -7,7 +7,12 @@ log using "~/documents/crg/wash-benefits/Kenya/src/primary/dm/2_make_anthro_data
 
 * Make analysis dataset for anthropometry variables
 
-* by Jade
+* Reads in raw data
+* Outputs 2 datasets with individual level data
+* for midline and endline including variables 
+* for covariate adjusted analyses 
+
+* by Jade Benjamin-Chung (jadebc@berkeley.edu)
 *********************************************
 clear all
 set maxvar 10000
