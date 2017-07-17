@@ -20,7 +20,7 @@ For all analysis scripts, you will need to change directory statements within th
 
 **`analysis`** : data management scripts
 
-	* `1-diar': diarrhea analyses
+* `1-diar': diarrhea analyses
 
 **`dm`** : data management scripts
 
