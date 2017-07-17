@@ -18,15 +18,17 @@ For all analysis scripts, you will need to change directory statements within th
 
 ### Directory structure
 
-**`adherence`** : intervention adherence measures at enrollment, year 1, and year 2
+**`analysis`** : data management scripts
+
+	* `1-diar': diarrhea analyses
+
+**`dm`** : data management scripts
 
 balance : enrollment characteristics by arm
 
 basefns : base functions used in the analysis
 
 consort : CONSORT population flow diagram
-
-diar : diarrhea analyses
 
 dm : data management scripts
 
