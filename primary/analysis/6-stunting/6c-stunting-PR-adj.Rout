@@ -24,8 +24,13 @@ Type 'q()' to quit R.
 > # Primary outcome analysis 
 > 
 > # stunted adjusted analysis
+> # calculate adjusted differences
+> # between treatment arms for H1 and H3
 > 
-> # by Jade (jadebc@berkeley.edu)
+> # input: midline-anthro.csv, endline-anthro.csv
+> # output: stunt_pr_adj.RData, stunt_rd_adj.RData
+> 
+> # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 > ##############################################
 > library(devtools)
 Warning message:
@@ -2709,4 +2714,4 @@ Estimation Results:
 > 
 > proc.time()
    user  system elapsed 
-165.452   3.950 172.157 
+171.976   4.905 183.828 

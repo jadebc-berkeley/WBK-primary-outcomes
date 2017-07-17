@@ -27,7 +27,10 @@ Type 'q()' to quit R.
 > # n, N, prevalence, and 95% CI by arm at
 > # baseline and follow-up
 > 
-> # by Jade (jadebc@berkeley.edu)
+> # input: midline-anthro.csv, endline-anthro.csv
+> # output: stunt_prev.RData
+> 
+> # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 > ##############################################
 > library(washb)
 Welcome to the washb package
@@ -135,4 +138,4 @@ Nutrition + WSH 0.2671053 0.2302615 0.3039490
 > 
 > proc.time()
    user  system elapsed 
-  1.477   0.044   1.574 
+   6.28    0.45    6.90 

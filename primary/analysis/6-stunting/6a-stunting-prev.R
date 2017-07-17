@@ -6,7 +6,10 @@
 # n, N, prevalence, and 95% CI by arm at
 # baseline and follow-up
 
-# by Jade (jadebc@berkeley.edu)
+# input: midline-anthro.csv, endline-anthro.csv
+# output: stunt_prev.RData
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 library(washb)
 
