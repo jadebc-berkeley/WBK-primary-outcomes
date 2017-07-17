@@ -3,8 +3,13 @@
 # Primary outcome analysis 
 
 # underwted adjusted analysis
+# calculate adjusted differences
+# between treatment arms for H1 and H3
 
-# by Jade (jadebc@berkeley.edu)
+# input: midline-anthro.csv, endline-anthro.csv
+# output: underwted-PR-adj.RData
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 library(devtools)
 library(washb)

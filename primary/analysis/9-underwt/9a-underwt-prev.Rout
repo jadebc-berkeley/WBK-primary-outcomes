@@ -17,6 +17,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
+[Previously saved workspace restored]
+
 > ##############################################
 > # WASH Benefits Kenya
 > # Primary outcome analysis 
@@ -25,7 +27,10 @@ Type 'q()' to quit R.
 > # n, N, prevalence, and 95% CI by arm at
 > # baseline and follow-up
 > 
-> # by Jade (jadebc@berkeley.edu)
+> # input: midline-anthro.csv, endline-anthro.csv
+> # output: underwt_prev.RData
+> 
+> # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 > ##############################################
 > library(washb)
 Welcome to the washb package
@@ -133,4 +138,4 @@ Nutrition + WSH 0.06797386 0.04794853 0.08799918
 > 
 > proc.time()
    user  system elapsed 
-  1.393   0.044   1.482 
+  5.085   0.276   5.445 
