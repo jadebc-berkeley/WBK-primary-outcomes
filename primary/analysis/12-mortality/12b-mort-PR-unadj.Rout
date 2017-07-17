@@ -17,13 +17,20 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
+[Previously saved workspace restored]
+
 > ##############################################
 > # WASH Benefits Kenya
 > # Primary outcome analysis  
 > 
 > # Mortality unadjusted analysis
+> # calculate unadjusted differences
+> # between treatment arms for H1 and H2
 > 
-> # by Jade (jadebc@berkeley.edu)
+> # input: mortality.csv
+> # output: mort_pr_unadj.RData, mort_rd_unadj.RData
+> 
+> # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 > ##############################################
 > library(washb)
 Welcome to the washb package
@@ -358,4 +365,4 @@ Total of 93 observations dropped
 > 
 > proc.time()
    user  system elapsed 
-  1.719   0.078   1.891 
+  1.602   0.080   1.731 

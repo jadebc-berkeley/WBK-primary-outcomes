@@ -8,7 +8,10 @@
 # HAZ: endline data
 # diarrhea: midline and endline data
 
-# by Jade (jadebc@berkeley.edu)
+# input: washb-dist-sub.RData, endline-anthro.csv, diarrhea.csv
+# output: spill-dist-adj.RData
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 #####################################################
 library(SuperLearner)
 

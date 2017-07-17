@@ -5,7 +5,10 @@
 # between-cluster spillover test
 # get distance matrix for compounds
 
-# by Jade (jadebc@berkeley.edu)
+# input: msP_household_tracking_20161006.csv
+# output: washb-dist.RData
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 
 rm(list=ls())

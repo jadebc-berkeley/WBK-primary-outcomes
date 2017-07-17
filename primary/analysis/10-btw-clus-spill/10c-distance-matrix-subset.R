@@ -5,10 +5,13 @@
 # subset distance matrix to distance from control compounds
 # to each treatment arm
 
-# want to know : distribution of distances between
+# obtain distribution of distances between
 # compound in C and each T arm
 
-# by Jade (jadebc@berkeley.edu)
+# input: washb-dist.RData, washb-kenya-tr.csv, msP_household_tracking_20160909.csv
+# output: washb-dist-sub.RData, washb-dist-km.csv, washb-dist-quant.csv
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 #####################################################
 
 source("~/Documents/CRG/wash-benefits/kenya/src/primary/analysis/10-btw-clus-spill/10a-distance-functions.R")

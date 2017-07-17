@@ -6,7 +6,10 @@
 
 # Permutation test - primary outcomes
 
-# by Jade (jadebc@berkeley.edu)
+# input: washb-dist-sub.RData, endline-anthro.csv, diarrhea.csv
+# output: spill-dist-unadj.RData
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 #####################################################
 
 rm(list=ls())

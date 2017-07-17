@@ -25,7 +25,10 @@ Type 'q()' to quit R.
 > 
 > # All-cause mortality
 > 
-> # by Jade (jadebc@berkeley.edu)
+> # input: mortality.csv
+> # output: mort_prev.RData
+> 
+> # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 > ##############################################
 > library(washb)
 Welcome to the washb package
@@ -99,4 +102,4 @@ Nutrition + WSH  897 0.02787068 0.1646941 0.006217684 0.01568402 0.04005734
 > 
 > proc.time()
    user  system elapsed 
-  0.527   0.036   0.625 
+  0.460   0.038   0.527 

@@ -4,8 +4,13 @@
 
 # Negative control analysis 
 # Bruising unadjusted analysis
+# calculate unadjusted differences
+# between treatment arms for H1 and H2
 
-# by Jade (jadebc@berkeley.edu)
+# input: bruise.csv
+# output: bruise_pr_unadj.RData, bruise_rd_unadj.RData
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 library(washb)
 

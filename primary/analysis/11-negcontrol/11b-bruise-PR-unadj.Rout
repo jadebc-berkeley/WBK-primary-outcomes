@@ -25,8 +25,13 @@ Type 'q()' to quit R.
 > 
 > # Negative control analysis 
 > # Bruising unadjusted analysis
+> # calculate unadjusted differences
+> # between treatment arms for H1 and H2
 > 
-> # by Jade (jadebc@berkeley.edu)
+> # input: bruise.csv
+> # output: bruise_pr_unadj.RData, bruise_rd_unadj.RData
+> 
+> # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 > ##############################################
 > library(washb)
 Welcome to the washb package
@@ -376,4 +381,4 @@ Total of 140 observations dropped
 > 
 > proc.time()
    user  system elapsed 
-  2.524   0.098   2.841 
+  1.893   0.085   2.044 

@@ -4,7 +4,10 @@
 
 # All-cause mortality
 
-# by Jade (jadebc@berkeley.edu)
+# input: mortality.csv
+# output: mort_prev.RData
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 library(washb)
 

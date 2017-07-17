@@ -4,7 +4,7 @@
 
 # functions for between-cluster spillover test
 
-# by Jade (jadebc@berkeley.edu)
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 
 

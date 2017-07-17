@@ -6,7 +6,10 @@
 # n, N, prevalence, and 95% CI by arm at
 # baseline and follow-up
 
-# by Jade (jadebc@berkeley.edu)
+# input: bruise.csv
+# output: bruise_prev.RData
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 library(washb)
 
@@ -29,11 +32,6 @@ d=reord(d)
 #----------------------------------------------
 # n and N by arm and follow-up time point
 #----------------------------------------------
-# N.0=table(d$tr[!is.na(d$bruise7)& d$time==0])
-# n.0=table(d$bruise7[d$time==0],d$tr[d$time==0])[2,]
-# 
-# bruise_t0_n_j=data.frame(cbind(N.0=N.0,n.0=n.0))
-
 N.1=table(d$tr[!is.na(d$bruise7) & d$time==1])
 n.1=table(d$bruise7[d$time==1],d$tr[d$time==1])[2,]
 
@@ -49,7 +47,6 @@ n.12=table(d$bruise7[d$time>0],d$tr[d$time>0])[2,]
 
 bruise_t12_n_j=data.frame(cbind(N.12=N.12,n.12=n.12))
 
-# names(N.0)=NULL
 names(N.1)=NULL
 names(N.2)=NULL
 names(N.12)=NULL
@@ -57,9 +54,6 @@ names(N.12)=NULL
 #----------------------------------------------
 # prevalence by arm and time point
 #----------------------------------------------
-# bruise_t0_prev_j=t(sapply(levels(d$tr), function(x) washb_mean(
-#   Y=d$bruise7[d$tr==x & d$time==0],id=d$clusterid[d$tr==x & d$time==0],print=FALSE)))
-
 bruise_t1_prev_j=t(sapply(levels(d$tr), function(x) washb_mean(
   Y=d$bruise7[d$tr==x & d$time==1],id=d$clusterid[d$tr==x & d$time==1],print=FALSE)))
 
@@ -69,31 +63,25 @@ bruise_t2_prev_j=t(sapply(levels(d$tr), function(x) washb_mean(
 bruise_t12_prev_j=t(sapply(levels(d$tr), function(x) washb_mean(
   Y=d$bruise7[d$tr==x & d$time>=1],id=d$clusterid[d$tr==x & d$time>=1],print=FALSE)))
 
-# colnames(bruise_t0_prev_j)=c("N","Prev","SD","Robust SE","lb","ub")
 colnames(bruise_t1_prev_j)=c("N","Prev","SD","Robust SE","lb","ub")
 colnames(bruise_t2_prev_j)=c("N","Prev","SD","Robust SE","lb","ub")
 colnames(bruise_t12_prev_j)=c("N","Prev","SD","Robust SE","lb","ub")
 
 # drop columns that aren't needed
-# bruise_t0_prev_j=bruise_t0_prev_j[,c("Prev","lb","ub")]
 bruise_t1_prev_j=bruise_t1_prev_j[,c("Prev","lb","ub")]
 bruise_t2_prev_j=bruise_t2_prev_j[,c("Prev","lb","ub")]
 bruise_t12_prev_j=bruise_t12_prev_j[,c("Prev","lb","ub")]
 
-# bruise_t0_n_j
 bruise_t1_n_j
 bruise_t2_n_j
 bruise_t12_n_j
 
-# bruise_t0_prev_j
 bruise_t1_prev_j
 bruise_t2_prev_j
 bruise_t12_prev_j
 
 save(
-  # bruise_t0_n_j, 
   bruise_t1_n_j, bruise_t2_n_j, bruise_t12_n_j, 
-     # bruise_t0_prev_j, 
   bruise_t1_prev_j, bruise_t2_prev_j, bruise_t12_prev_j,
      file="~/Dropbox/WBK-primary-analysis/results/jade/bruise_prev.RData")
 
