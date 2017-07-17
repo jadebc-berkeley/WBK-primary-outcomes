@@ -35,22 +35,7 @@ For all analysis scripts, you will need to change directory statements within th
 
 **`dm`** : data management scripts
 
-hcz : head circumference analyses
+**`figures`** : scripts to make figures
 
-laz : length for age analyses
+**`tables`** : scripts to make tables
 
-lazminus2 : stunting analyses
-
-lazminus3 : severe stunting analyses
-
-mortality : all cause mortality analyses
-
-negcontrols : negative control (bruising/abrasion) analyses
-
-waz : weight for age analyses
-
-wazminus2 : underweight analyses
-
-whz : weight for height analyses
-
-whzminus2 : wasting analyses
