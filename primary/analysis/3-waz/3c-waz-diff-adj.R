@@ -3,8 +3,13 @@
 # Primary outcome analysis 
 
 # WAZ adjusted analysis
+# calculate adjusted differences
+# between treatment arms for H1 and H3
 
-# by Jade (jadebc@berkeley.edu)
+# input: midline-anthro.csv, endline-anthro.csv
+# output: waz_rd_adj.RData
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 library(devtools)
 library(washb)

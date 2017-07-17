@@ -17,6 +17,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
+[Previously saved workspace restored]
+
 > ##############################################
 > # WASH Benefits Kenya
 > # Primary outcome analysis 
@@ -24,7 +26,10 @@ Type 'q()' to quit R.
 > # Weight-for-age 
 > # N, mean, SD by arm
 > 
-> # by Jade (jadebc@berkeley.edu)
+> # input: midline-anthro.csv, endline-anthro.csv
+> # output: waz_mean.RData
+> 
+> # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 > ##############################################
 > 
 > rm(list=ls())
@@ -102,4 +107,4 @@ Nutrition + WSH  765 -0.5950850 0.9610755
 > 
 > proc.time()
    user  system elapsed 
-  1.437   0.059   1.625 
+  5.907   0.413   6.434 
