@@ -1,3 +1,11 @@
+#----------------------------------------
+# 0-base-functions.R
+#
+# Base functions for the WASH Benefits Kenya
+# intention to treat (ITT) analyses
+#
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
+#----------------------------------------
 
 library(lmtest)
 
