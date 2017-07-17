@@ -81,7 +81,8 @@ gen lns=0
 * merge in tr
 * ---------------------------------------------
 tostring clusterid, replace
-merge m:1 clusterid using "~/Dropbox/WBK-primary-analysis/Data/Untouched/tr/washb-kenya-tr.dta"
+merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr.dta"
+
 drop _m
 
 keep hhid clusterid tr promoter chlorine imp_lat feces_disp hws lns
@@ -190,7 +191,7 @@ replace lns=. if agem <6 | agem >24
 * merge in tr
 * ---------------------------------------------
 tostring clusterid, replace
-merge m:1 clusterid using "~/Dropbox/WBK-primary-analysis/Data/Untouched/tr/washb-kenya-tr.dta"
+merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr.dta"
 
 drop if _m==2
 drop _m
@@ -306,7 +307,8 @@ replace lns=. if agem <6 | agem >24
 * merge in tr
 * ---------------------------------------------
 tostring clusterid, replace
-merge m:1 clusterid using "~/Dropbox/WBK-primary-analysis/Data/Untouched/tr/washb-kenya-tr.dta"
+merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr.dta"
+
 
 drop if _m==2
 drop _m

@@ -1,25 +1,29 @@
------------------------------------------------------------------
+----------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/
-> src/primary/dm/5_table1.log
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary
+> /dm/4_table1.log
   log type:  text
- opened on:   6 Dec 2016, 13:33:15
+ opened on:  17 Jul 2017, 15:12:39
 
 . 
 . *********************************************
 . * WASH Benefits Kenya
+. * Primary outcome analysis
 . 
-. * Make table 1 dataset
+. * Make table 1 dataset (baseline balance table)
 . 
-. * by Jade (jadebc@berkeley.edu)
+. * Reads in raw data
+. * Outputs 1 dataset with input for baseline
+. * balance table
+. 
+. * by Jade Benjamin-Chung (jadebc@berkeley.edu)
 . *********************************************
 . clear all
 
 . set more off
 
 . cd "~/Dropbox/WASHB-Kenya-Data/0-Untouched-data/1-Main-survey/"
-/Users/jadederong/Dropbox/WASHB-Kenya-Data/0-Untouched-data/1-Mai
-> n-survey
+/Users/jadederong/Dropbox/WASHB-Kenya-Data/0-Untouched-data/1-Main-survey
 
 . 
 . use "1_Baseline/msP_bl_append_ID_clean_20161010.dta", clear
@@ -35,8 +39,7 @@
 . replace b6_day=1 if b6_day==99 & b6_month!=99
 (1,109 real changes made)
 
-. replace b6_month=month(date_baseline) if b6_month==99 & b6_day!
-> =99
+. replace b6_month=month(date_baseline) if b6_month==99 & b6_day!=99
 (41 real changes made)
 
 . 
@@ -70,12 +73,9 @@
 
 . sum mother_age
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-  mother_age |      8,172    25.90161    6.343542   14.48597   50
-> .00137
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+  mother_age |      8,172    25.90161    6.343542   14.48597   50.00137
 
 . 
 . gen mother_edu = 0
@@ -146,11 +146,9 @@
 . * -----------------------------------
 . * water
 . * -----------------------------------
-. label variable d8c_drink "Drink water from primary water source
-> "
+. label variable d8c_drink "Drink water from primary water source"
 
-. label variable d8c2_drink "Drink water from secondary water sou
-> rce"
+. label variable d8c2_drink "Drink water from secondary water source"
 
 . 
 . ren d2 pws
@@ -172,8 +170,8 @@
 
 . gen prim_water_imp = 0
 
-. replace prim_water_imp = 1 if (pws==1 | pws==4 | pws==6 | pws==
-> 7 | pws==11 | pws==12) & (drink_pws==1 | youdrink_pws==1)
+. replace prim_water_imp = 1 if (pws==1 | pws==4 | pws==6 | pws==7 | pws==11
+>  | pws==12) & (drink_pws==1 | youdrink_pws==1)
 (5,285 real changes made)
 
 . replace prim_water_imp = . if drink_pws==2 & youdrink_pws==2
@@ -186,8 +184,8 @@
 . * if they drink from secondary water source, is it improved
 . gen sec_water_imp = 0
 
-. replace sec_water_imp = 1 if (sws==1 | sws==4 | sws==6 | sws==7
->  | sws==11 | sws==12) & (drink_sws==1 | youdrink_sws==1)
+. replace sec_water_imp = 1 if (sws==1 | sws==4 | sws==6 | sws==7 | sws==11 
+> | sws==12) & (drink_sws==1 | youdrink_sws==1)
 (1,227 real changes made)
 
 . replace sec_water_imp = . if drink_sws==2 & youdrink_sws==2
@@ -197,12 +195,12 @@
 (5,143 real changes made, 5,143 to missing)
 
 . 
-. * if they drink from neither water source, is source for stored
->  water improved
+. * if they drink from neither water source, is source for stored water impr
+> oved
 . gen store_water_imp = 0
 
-. replace store_water_imp = 1 if (c1023==1 | c1023==4 | c1023==6 
-> | c1023==7 | c1023==11 | c1023==12)
+. replace store_water_imp = 1 if (c1023==1 | c1023==4 | c1023==6 | c1023==7 
+> | c1023==11 | c1023==12)
 (5,199 real changes made)
 
 . replace store_water_imp = . if c1023==. 
@@ -215,16 +213,15 @@
 . replace prim_drink_ws = 1 if prim_water_imp==1 
 (5,285 real changes made)
 
-. replace prim_drink_ws = 1 if prim_water_imp==. & sec_water_imp=
-> =1 
+. replace prim_drink_ws = 1 if prim_water_imp==. & sec_water_imp==1 
 (808 real changes made)
 
-. replace prim_drink_ws = 1 if prim_water_imp==. & sec_water_imp=
-> =. & store_water_imp==1
+. replace prim_drink_ws = 1 if prim_water_imp==. & sec_water_imp==. & store_
+> water_imp==1
 (38 real changes made)
 
-. replace prim_drink_ws = . if prim_water_imp==. & sec_water_imp=
-> =. & store_water_imp==.
+. replace prim_drink_ws = . if prim_water_imp==. & sec_water_imp==. & store_
+> water_imp==.
 (31 real changes made, 31 to missing)
 
 . 
@@ -245,13 +242,12 @@
 . * reported treating currently stored water
 . gen tr_storedwt = 0
 
-. replace tr_storedwt = 1 if c1005==1 & (c100601!=4 & c100601!=7 
-> & c100601!=.) |  (c100602!=4 & c100602!=7 & c100602!=.) |(c1006
-> 03!=4 & c100603!=7 & c100603!=.)
+. replace tr_storedwt = 1 if c1005==1 & (c100601!=4 & c100601!=7 & c100601!=
+> .) |  (c100602!=4 & c100602!=7 & c100602!=.) |(c100603!=4 & c100603!=7 & c
+> 100603!=.)
 (841 real changes made)
 
-. replace tr_storedwt = . if c100601==. & c100602==. & c100603==.
->  
+. replace tr_storedwt = . if c100601==. & c100602==. & c100603==. 
 (7,313 real changes made, 7,313 to missing)
 
 . replace tr_storedwt = 0 if c1005==2
@@ -330,8 +326,7 @@
 . replace implat = 1 if c806_7==1 | c806_5==1 
 (1,322 real changes made)
 
-. replace implat = . if (c806_7==. & c806_5==.) | (c806_7==99 & c
-> 806_5==.)
+. replace implat = . if (c806_7==. & c806_5==.) | (c806_7==99 & c806_5==.)
 (684 real changes made, 684 to missing)
 
 . replace implat = . if to1b==2 | to1b==3
@@ -344,12 +339,12 @@
 . * human feces observed in the compound
 . gen feces = 0
 
-. replace feces = 1 if (c827> 0 & c827<99) | (c828> 0 & c828<99) 
-> | (c830> 0 & c830<99 )
+. replace feces = 1 if (c827> 0 & c827<99) | (c828> 0 & c828<99) | (c830> 0 
+> & c830<99 )
 (697 real changes made)
 
-. replace feces = . if (c827==. | c827==99) & (c828==. | c828==99
-> )  * (c830==. | c830==99)
+. replace feces = . if (c827==. | c827==99) & (c828==. | c828==99)  * (c830=
+> =. | c830==99)
 (36 real changes made, 36 to missing)
 
 . 
@@ -370,16 +365,16 @@
 delimiter now ;
 . gen soap2m = 0;
 
-. replace soap2m =1 if (c702c_scentbar==1 | c702c_unscentbar==1 |
->  c702c_powder==1 | c702c_soapywat==1) | 
->                                          (c703c_scentbar==1 | c
-> 703c_unscentbar==1 | c703c_powder==1 | c703c_soapywat==1);
+. replace soap2m =1 if (c702c_scentbar==1 | c702c_unscentbar==1 | c702c_powd
+> er==1 | c702c_soapywat==1) | 
+>                                          (c703c_scentbar==1 | c703c_unscen
+> tbar==1 | c703c_powder==1 | c703c_soapywat==1);
 (799 real changes made)
 
-.         replace soap2m=. if  (c702c_scentbar==. & c702c_unscent
-> bar==. & c702c_powder==. & c702c_soapywat==.) &
->                                          (c703c_scentbar==. &c7
-> 03c_unscentbar==. & c703c_powder==. & c703c_soapywat==.);
+.         replace soap2m=. if  (c702c_scentbar==. & c702c_unscentbar==. & c7
+> 02c_powder==. & c702c_soapywat==.) &
+>                                          (c703c_scentbar==. &c703c_unscent
+> bar==. & c703c_powder==. & c703c_soapywat==.);
 (18 real changes made, 18 to missing)
 
 . #delimit cr
@@ -507,12 +502,11 @@ delimiter now cr
 
 . label variable HHS "Hunger score"
 
-. label variable HHS_bi "Hunger dichotimized (little none (HHS=1)
->  vs. moderate(HHS=2) and severe (HHS=3)"
+. label variable HHS_bi "Hunger dichotimized (little none (HHS=1) vs. modera
+> te(HHS=2) and severe (HHS=3)"
 
 . 
-. label define HHSl 1 "Little to none" 2 "Moderate" 3 "Severe" 9 
-> "Missing"
+. label define HHSl 1 "Little to none" 2 "Moderate" 3 "Severe" 9 "Missing"
 
 . label values HHS HHSl 
 
@@ -523,8 +517,8 @@ delimiter now cr
 . tostring clusterid, replace
 clusterid was double now str5
 
-. merge m:1 clusterid using "~/Dropbox/WASHB-Kenya-Data/0-Untouch
-> ed-data/0-Treatment-assignments/washb-kenya-tr.dta"
+. merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr
+> .dta"
 
     Result                           # of obs.
     -----------------------------------------
@@ -538,10 +532,10 @@ clusterid was double now str5
 . 
 . #delimit; 
 delimiter now ;
-. keep hhid compoundid clusterid tr mother_age mother_edu father_
-> edu father_agri Nhh Nppl u18 elec cement roof 
-> prim_drink_ws wat_time tr_storedwt toilet_men toilet_women od_c
-> hild38 od_child03
+. keep hhid compoundid clusterid tr mother_age mother_edu father_edu father_
+> agri Nhh Nppl u18 elec cement roof 
+> prim_drink_ws wat_time tr_storedwt toilet_men toilet_women od_child38 od_c
+> hild03
 > ownlat implat feces water2m soap2m HHS_bi;
 
 . #delimit cr
@@ -550,16 +544,14 @@ delimiter now cr
 . order clusterid hhid tr
 
 . 
-. outsheet using "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-da
-> tasets/table1.csv", replace comma 
-(note: file /Users/jadederong/Dropbox/WASHB-Kenya-Data/1-primary-
-> outcome-datasets/table1.csv not found)
+. outsheet using "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/tabl
+> e1.csv", replace comma 
 
 . 
 . log close 
       name:  <unnamed>
-       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/
-> src/primary/dm/5_table1.log
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary
+> /dm/4_table1.log
   log type:  text
- closed on:   6 Dec 2016, 13:33:16
------------------------------------------------------------------
+ closed on:  17 Jul 2017, 15:12:40
+----------------------------------------------------------------------------

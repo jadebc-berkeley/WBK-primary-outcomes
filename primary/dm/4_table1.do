@@ -250,7 +250,7 @@ label values HHS HHSl
 * merge in tr
 * ---------------------------------------------
 tostring clusterid, replace
-merge m:1 clusterid using "~/Dropbox/WASHB-Kenya-Data/0-Untouched-data/0-Treatment-assignments/washb-kenya-tr.dta"
+merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr.dta"
 drop _m
 
 

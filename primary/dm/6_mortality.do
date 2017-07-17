@@ -31,7 +31,7 @@ keep childid hhid clusterid childtype pregloss childdeath
 tostring clusterid, replace
 
 * merge in treatment info
-merge m:1 clusterid using "~/Dropbox/WASHB-Kenya-Data/0-Untouched-Data/0-Treatment-assignments/washb-kenya-tr.dta"
+merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr.dta"
 
 drop _m
 

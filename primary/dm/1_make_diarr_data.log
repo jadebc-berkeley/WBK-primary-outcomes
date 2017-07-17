@@ -1,25 +1,31 @@
------------------------------------------------------------------
+----------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/
-> src/primary/dm/1_make_diarr_data.log
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary
+> /dm/1_make_diarr_data.log
   log type:  text
- opened on:   6 Dec 2016, 13:10:16
+ opened on:  17 Jul 2017, 15:01:56
 
 . 
 . *********************************************
 . * WASH Benefits Kenya
+. * Primary outcome analysis
 . 
 . * Make analysis dataset: diarrhea
 . 
-. * by Jade
+. * Reads in raw data
+. * Outputs 1 dataset with individual level data
+. * for baseline, midline, and endline 
+. * including variables for covariate adjusted 
+. * analyses 
+. 
+. * by Jade Benjamin-Chung (jadebc@berkeley.edu)
 . *********************************************
 . clear all
 
 . set more off
 
 . cd "~/Dropbox/WASHB-Kenya-Data/0-Untouched-data/1-Main-survey/"
-/Users/jadederong/Dropbox/WASHB-Kenya-Data/0-Untouched-data/1-Mai
-> n-survey
+/Users/jadederong/Dropbox/WASHB-Kenya-Data/0-Untouched-data/1-Main-survey
 
 . 
 . 
@@ -44,8 +50,7 @@ clusterid was double now str5
 . replace b6_day=1 if b6_day==99 & b6_month!=99
 (1,109 real changes made)
 
-. replace b6_month=month(date_baseline) if b6_month==99 & b6_day!
-> =99
+. replace b6_month=month(date_baseline) if b6_month==99 & b6_day!=99
 (41 real changes made)
 
 . 
@@ -79,12 +84,9 @@ clusterid was double now str5
 
 . sum mother_age
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-  mother_age |      8,172    25.90161    6.343542   14.48597   50
-> .00137
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+  mother_age |      8,172    25.90161    6.343542   14.48597   50.00137
 
 . 
 . gen mother_edu = 0 if b13_school==1 | b13_school==2
@@ -99,14 +101,13 @@ clusterid was double now str5
 . replace mother_edu = 9 if mother_edu ==. 
 (13 real changes made)
 
-. label define mother_edul 0 "Incomplete primary" 1 "Complete pri
-> mary" 2 "Any secondary" 9 "Dont know"
+. label define mother_edul 0 "Incomplete primary" 1 "Complete primary" 2 "An
+> y secondary" 9 "Dont know"
 
 . label values mother_edu mother_edul 
 
 . 
-. * primary water source, regardless of whether it is for drinkin
-> g
+. * primary water source, regardless of whether it is for drinking
 . replace d7_hrs=0 if d7_hrs==. & d7_min!=. 
 (8,105 real changes made)
 
@@ -118,12 +119,9 @@ clusterid was double now str5
 
 . sum water_time
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-  water_time |      8,173    11.11257    15.47861          0     
->    600
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+  water_time |      8,173    11.11257    15.47861          0        600
 
 . 
 . gen roof=0
@@ -134,8 +132,7 @@ clusterid was double now str5
 . replace roof=9 if b2_roof==.
 (6 real changes made)
 
-. label define roofl 0 "Thatch/leaf" 1 "Iron/other" 9 "Missing/DK
-> "
+. label define roofl 0 "Thatch/leaf" 1 "Iron/other" 9 "Missing/DK"
 
 . label values roof roofl
 
@@ -213,8 +210,7 @@ clusterid was double now str5
 (0 real changes made)
 
 . 
-. label define wallsl 0 "Bamboo/mud/cane" 1 "Concrete" 9 "Missing
-> /DK"
+. label define wallsl 0 "Bamboo/mud/cane" 1 "Concrete" 9 "Missing/DK"
 
 . label values walls wallsl
 
@@ -240,8 +236,7 @@ clusterid was double now str5
 . replace elec=9 if b22a==. 
 (14 real changes made)
 
-. label define elecl 0 "No electricity" 1 "Has electricity" 9 "Mi
-> ssing/DK"
+. label define elecl 0 "No electricity" 1 "Has electricity" 9 "Missing/DK"
 
 . label values elec elecl
 
@@ -280,8 +275,8 @@ clusterid was double now str5
 . replace mobilephone=9 if b22d==.
 (14 real changes made)
 
-. label define mobilephonel 0 "No mobile phone" 1 "Any mobile pho
-> nes" 9 "Missing/DK"
+. label define mobilephonel 0 "No mobile phone" 1 "Any mobile phones" 9 "Mis
+> sing/DK"
 
 . label values mobilephone mobilephonel
 
@@ -307,8 +302,7 @@ clusterid was double now str5
 . replace bicycle=9 if b22f==.
 (14 real changes made)
 
-. label define bicyclel 0 "No bicycle" 1 "Has bicycle" 9 "Missing
-> /DK"
+. label define bicyclel 0 "No bicycle" 1 "Has bicycle" 9 "Missing/DK"
 
 . label values bicycle bicyclel
 
@@ -321,8 +315,8 @@ clusterid was double now str5
 . replace motorcycle=9 if b22g==.
 (14 real changes made)
 
-. label define motorcyclel 0 "No motorcycle" 1 "Has motorcycle" 9
->  "Missing/DK"
+. label define motorcyclel 0 "No motorcycle" 1 "Has motorcycle" 9 "Missing/D
+> K"
 
 . label values motorcycle motorcyclel
 
@@ -348,8 +342,7 @@ clusterid was double now str5
 . replace cooker=9 if b22i==.
 (14 real changes made)
 
-. label define cookerl 0 "No gas cooker" 1 "Has gas cooker" 9 "Mi
-> ssing/DK"
+. label define cookerl 0 "No gas cooker" 1 "Has gas cooker" 9 "Missing/DK"
 
 . label values cooker cookerl
 
@@ -514,12 +507,11 @@ clusterid was double now str5
 
 . label variable HHS "Hunger score"
 
-. label variable HHS_bi "Hunger dichotimized (little none (HHS=1)
->  vs. moderate(HHS=2) and severe (HHS=3)"
+. label variable HHS_bi "Hunger dichotimized (little none (HHS=1) vs. modera
+> te(HHS=2) and severe (HHS=3)"
 
 . 
-. label define HHSl 1 "Little to none" 2 "Moderate" 3 "Severe" 9 
-> "Missing"
+. label define HHSl 1 "Little to none" 2 "Moderate" 3 "Severe" 9 "Missing"
 
 . label values HHS HHSl 
 
@@ -527,12 +519,11 @@ clusterid was double now str5
 .         
 . #delimit;
 delimiter now ;
-. keep hhid clusterid compoundid date_baseline date_baseline moth
-> er_age mother_edu
-> roof walls floor water_time roof walls floor elec radio tv mobi
-> lephone clock
-> bicycle motorcycle stove cooker car cow goat dog chicken Ncomp 
-> u18 HHS;
+. keep hhid clusterid compoundid date_baseline date_baseline mother_age moth
+> er_edu
+> roof walls floor water_time roof walls floor elec radio tv mobilephone clo
+> ck
+> bicycle motorcycle stove cooker car cow goat dog chicken Ncomp u18 HHS;
 
 . #delimit cr
 delimiter now cr
@@ -545,8 +536,7 @@ delimiter now cr
 . tempfile compounddata
 
 . save `compounddata'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
-> 0001 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000001 saved
 
 . 
 . 
@@ -554,8 +544,7 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
 . * Mother height
 . * ---------------------------------------------
 . * midline
-. use "2_Midline/msP_ml_append_ID_clean_anthropometry_20160909.dt
-> a", clear
+. use "2_Midline/msP_ml_append_ID_clean_anthropometry_20160909.dta", clear
 
 . tostring hhid, replace
 hhid was float now str7
@@ -575,8 +564,7 @@ hhid was float now str7
 . * endline
 . preserve
 
-. use "3_Endline/msP_el_append_ID_clean_anthropometry_20160909.dt
-> a", clear
+. use "3_Endline/msP_el_append_ID_clean_anthropometry_20160909.dta", clear
 
 . tostring hhid, replace
 hhid was float now str7
@@ -597,8 +585,7 @@ hhid was float now str7
 . tempfile endlinemomht
 
 . save `endlinemomht'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
-> 0003 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000003 saved
 
 . restore
 
@@ -622,61 +609,37 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
   2.         sum `var'
   3. }
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-       c422m |      5,913    160.2433    6.367442       52.3     
->  180.5
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+       c422m |      5,913    160.2433    6.367442       52.3      180.5
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-       c423m |      5,913     160.241    6.371578       52.5     
->  180.4
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+       c423m |      5,913     160.241    6.371578       52.5      180.4
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-       c424m |      5,913    160.1946    6.860722       15.3     
->  185.9
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+       c424m |      5,913    160.1946    6.860722       15.3      185.9
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-  resp_hairm |      4,284    1.129552    .3358489          1     
->      2
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+  resp_hairm |      4,284    1.129552    .3358489          1          2
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-resp_hair_~m |        555    2.029009    1.165883         .1     
->      6
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+resp_hair_~m |        555    2.029009    1.165883         .1          6
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-       c422e |        846    160.7898    6.156612      138.1     
->  177.6
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+       c422e |        846    160.7898    6.156612      138.1      177.6
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-       c423e |        846     160.779    6.154872      138.1     
->  177.5
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+       c423e |        846     160.779    6.154872      138.1      177.5
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-       c424e |        846    160.7944    6.160126      138.1     
->  177.6
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+       c424e |        846    160.7944    6.160126      138.1      177.6
 
 . 
 . replace c422m = c422m - resp_hair_heightm if resp_hairm==2
@@ -699,8 +662,7 @@ resp_hair_~m |        555    2.029009    1.165883         .1
 (61 real changes made)
 
 . 
-. egen float med_momht_6 = rowmedian(c422m c423m c424m c422e c423
-> e c424e)
+. egen float med_momht_6 = rowmedian(c422m c423m c424m c422e c423e c424e)
 (1348 missing values generated)
 
 . egen float med_momht_m = rowmedian(c422m c423m c424m)
@@ -713,8 +675,8 @@ resp_hair_~m |        555    2.029009    1.165883         .1
 . gen float motherht = med_momht_6
 (1,348 missing values generated)
 
-. replace motherht = med_momht_m if abs(med_momht_m - med_momht_e
-> ) > 3 & abs(med_momht_m - med_momht_e)<.
+. replace motherht = med_momht_m if abs(med_momht_m - med_momht_e) > 3 & abs
+> (med_momht_m - med_momht_e)<.
 (1 real change made)
 
 . 
@@ -724,8 +686,7 @@ resp_hair_~m |        555    2.029009    1.165883         .1
 . tempfile motherht
 
 . save `motherht'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
-> 0004 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000004 saved
 
 . 
 . 
@@ -855,9 +816,8 @@ in the last |
       Total |      5,471      100.00
 
 . 
-. foreach var of varlist threedefa_1 threedefb_1 threedefc_1 thre
-> edefd_1 softa_1 softb_1 softc_1 softd blooda_1 bloodb_1 bloodc_
-> 1 bloodd_1{
+. foreach var of varlist threedefa_1 threedefb_1 threedefc_1 threedefd_1 sof
+> ta_1 softb_1 softc_1 softd blooda_1 bloodb_1 bloodc_1 bloodd_1{
   2.         replace `var' = . if `var'==9
   3.         replace `var' = . if `var'==99
   4.         tab `var'
@@ -1059,19 +1019,16 @@ in the last |
       Total |      5,395      100.00
 
 . 
-. * WHO diarrhea definition: 3+ loose or watery stools in 24 hour
-> s 
+. * WHO diarrhea definition: 3+ loose or watery stools in 24 hours 
 . * OR one or more stools with blood
 . 
 . * 3+ stools in last 2 days
 . gen plus3stool=0
 
-. replace plus3stool=1 if threedefa_1 ==1 | threedefb_1==1 | thre
-> edefc_1==1
+. replace plus3stool=1 if threedefa_1 ==1 | threedefb_1==1 | threedefc_1==1
 (1,283 real changes made)
 
-. replace plus3stool=. if threedefa_1 ==. & threedefb_1==. & thre
-> edefc_1==.
+. replace plus3stool=. if threedefa_1 ==. & threedefb_1==. & threedefc_1==.
 (73 real changes made, 73 to missing)
 
 . 
@@ -1113,15 +1070,14 @@ in the last |
 . 
 . codebook diarr2
 
------------------------------------------------------------------
-diarr2                                                (unlabeled)
------------------------------------------------------------------
+----------------------------------------------------------------------------
+diarr2                                                           (unlabeled)
+----------------------------------------------------------------------------
 
-                  type:  numeric (double)
+                  type:  numeric (float)
 
                  range:  [0,1]                        units:  1
-         unique values:  2                        missing .:  80/
-> 5,471
+         unique values:  2                        missing .:  80/5,471
 
             tabulation:  Freq.  Value
                          4,657  0
@@ -1132,20 +1088,17 @@ diarr2                                                (unlabeled)
 . * 7-day diarrhea
 . gen diarr7 = 0
 
-. replace diarr7 = 1 if diarr2==1 | ((threedefd_1==1 & softd_1==1
-> ) | bloodd_1==1)
+. replace diarr7 = 1 if diarr2==1 | ((threedefd_1==1 & softd_1==1) | bloodd_
+> 1==1)
 (820 real changes made)
 
-. replace diarr7 = . if ((threedefd_1==. | softd_1==.) & bloodd_1
-> !=1)
+. replace diarr7 = . if ((threedefd_1==. | softd_1==.) & bloodd_1!=1)
 (97 real changes made, 97 to missing)
 
-. replace diarr7 = . if ((threedefd_1!=1 | softd_1!=1) & bloodd_1
-> ==.)
+. replace diarr7 = . if ((threedefd_1!=1 | softd_1!=1) & bloodd_1==.)
 (2 real changes made, 2 to missing)
 
-. replace diarr7 = . if (threedefd_1==. & softd_1==. & bloodd_1==
-> .)
+. replace diarr7 = . if (threedefd_1==. & softd_1==. & bloodd_1==.)
 (0 real changes made)
 
 . replace diarr7 = 1 if diarr2==1
@@ -1154,15 +1107,14 @@ diarr2                                                (unlabeled)
 . 
 . codebook diarr7
 
------------------------------------------------------------------
-diarr7                                                (unlabeled)
------------------------------------------------------------------
+----------------------------------------------------------------------------
+diarr7                                                           (unlabeled)
+----------------------------------------------------------------------------
 
-                  type:  numeric (double)
+                  type:  numeric (float)
 
                  range:  [0,1]                        units:  1
-         unique values:  2                        missing .:  99/
-> 5,471
+         unique values:  2                        missing .:  99/5,471
 
             tabulation:  Freq.  Value
                          4,552  0
@@ -1202,8 +1154,7 @@ diarr7                                                (unlabeled)
 . tempfile baseline
 
 . save `baseline'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
-> 0005 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000005 saved
 
 . 
 . *********************************************
@@ -1220,8 +1171,8 @@ hhid was double now str7
 childid was double now str10
 
 . 
-. foreach var of varlist threedefa threedefb threedefc threedefd 
-> softa softb softc softd blooda bloodb bloodc bloodd{
+. foreach var of varlist threedefa threedefb threedefc threedefd softa softb
+>  softc softd blooda bloodb bloodc bloodd{
   2.         replace `var' = . if `var'==9
   3.         replace `var' = . if `var'==99
   4.         tab `var'
@@ -1383,19 +1334,16 @@ in the last |
       Total |      6,946      100.00
 
 . 
-. * WHO diarrhea definition: 3+ loose or watery stools in 24 hour
-> s 
+. * WHO diarrhea definition: 3+ loose or watery stools in 24 hours 
 . * OR one or more stools with blood
 . 
 . * 3+ stools in last 2 days
 . gen plus3stool=0
 
-. replace plus3stool=1 if threedefa ==1 | threedefb==1 | threedef
-> c==1
+. replace plus3stool=1 if threedefa ==1 | threedefb==1 | threedefc==1
 (2,679 real changes made)
 
-. replace plus3stool=. if threedefa ==. & threedefb==. & threedef
-> c==.
+. replace plus3stool=. if threedefa ==. & threedefb==. & threedefc==.
 (73 real changes made, 73 to missing)
 
 . 
@@ -1437,15 +1385,14 @@ in the last |
 . 
 . codebook diarr2
 
------------------------------------------------------------------
-diarr2                                                (unlabeled)
------------------------------------------------------------------
+----------------------------------------------------------------------------
+diarr2                                                           (unlabeled)
+----------------------------------------------------------------------------
 
-                  type:  numeric (double)
+                  type:  numeric (float)
 
                  range:  [0,1]                        units:  1
-         unique values:  2                        missing .:  92/
-> 7,029
+         unique values:  2                        missing .:  92/7,029
 
             tabulation:  Freq.  Value
                          5,231  0
@@ -1456,8 +1403,7 @@ diarr2                                                (unlabeled)
 . * 7-day diarrhea
 . gen diarr7 = 0
 
-. replace diarr7 = 1 if diarr2==1 | ((threedefd==1 & softd==1) | 
-> bloodd==1)
+. replace diarr7 = 1 if diarr2==1 | ((threedefd==1 & softd==1) | bloodd==1)
 (1,912 real changes made)
 
 . replace diarr7 = . if ((threedefd==. | softd==.) & bloodd!=1)
@@ -1476,15 +1422,14 @@ diarr2                                                (unlabeled)
 . 
 . codebook diarr7
 
------------------------------------------------------------------
-diarr7                                                (unlabeled)
------------------------------------------------------------------
+----------------------------------------------------------------------------
+diarr7                                                           (unlabeled)
+----------------------------------------------------------------------------
 
-                  type:  numeric (double)
+                  type:  numeric (float)
 
                  range:  [0,1]                        units:  1
-         unique values:  2                        missing .:  100
-> /7,029
+         unique values:  2                        missing .:  100/7,029
 
             tabulation:  Freq.  Value
                          5,017  0
@@ -1526,8 +1471,7 @@ diarr7                                                (unlabeled)
 . tempfile midline
 
 . save `midline'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
-> 0006 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000006 saved
 
 . 
 . 
@@ -1545,9 +1489,9 @@ childid was double now str10
 hhid was double now str7
 
 . 
-. foreach var of varlist threedefa_ad threedefb_ad threedefc_ad t
-> hreedefd_ad softa_ad softb_ad softc_ad softd_ad blooda_ad blood
-> b_ad bloodc_ad bloodd_ad{
+. foreach var of varlist threedefa_ad threedefb_ad threedefc_ad threedefd_ad
+>  softa_ad softb_ad softc_ad softd_ad blooda_ad bloodb_ad bloodc_ad bloodd_
+> ad{
   2.         replace `var' = . if `var'==9
   3.         replace `var' = . if `var'==99
   4.         tab `var'
@@ -1687,19 +1631,18 @@ in the last |
 . * at the uptake measurement.
 . * Using the anthro day measure 
 . 
-. * WHO diarrhea definition: 3+ loose or watery stools in 24 hour
-> s 
+. * WHO diarrhea definition: 3+ loose or watery stools in 24 hours 
 . * OR one or more stools with blood
 . 
 . * 3+ stools in last 2 days
 . gen plus3stool=0
 
-. replace plus3stool=1 if threedefa_ad ==1 | threedefb_ad==1 | th
-> reedefc_ad==1
+. replace plus3stool=1 if threedefa_ad ==1 | threedefb_ad==1 | threedefc_ad=
+> =1
 (2,873 real changes made)
 
-. replace plus3stool=. if threedefa_ad ==. & threedefb_ad==. & th
-> reedefc_ad==.
+. replace plus3stool=. if threedefa_ad ==. & threedefb_ad==. & threedefc_ad=
+> =.
 (697 real changes made, 697 to missing)
 
 . 
@@ -1742,15 +1685,14 @@ in the last |
 . 
 . codebook diarr2
 
------------------------------------------------------------------
-diarr2                                                (unlabeled)
------------------------------------------------------------------
+----------------------------------------------------------------------------
+diarr2                                                           (unlabeled)
+----------------------------------------------------------------------------
 
-                  type:  numeric (double)
+                  type:  numeric (float)
 
                  range:  [0,1]                        units:  1
-         unique values:  2                        missing .:  701
-> /7,778
+         unique values:  2                        missing .:  701/7,778
 
             tabulation:  Freq.  Value
                          5,585  0
@@ -1761,20 +1703,17 @@ diarr2                                                (unlabeled)
 . * 7-day diarrhea
 . gen diarr7 = 0
 
-. replace diarr7 = 1 if diarr2==1 | ((threedefd_ad==1 & softd_ad=
-> =1) | bloodd_ad==1)
+. replace diarr7 = 1 if diarr2==1 | ((threedefd_ad==1 & softd_ad==1) | blood
+> d_ad==1)
 (1,850 real changes made)
 
-. replace diarr7 = . if ((threedefd_ad==. | softd_ad==.) & bloodd
-> _ad!=1)
+. replace diarr7 = . if ((threedefd_ad==. | softd_ad==.) & bloodd_ad!=1)
 (731 real changes made, 731 to missing)
 
-. replace diarr7 = . if ((threedefd_ad!=1 | softd_ad!=1) & bloodd
-> _ad==.)
+. replace diarr7 = . if ((threedefd_ad!=1 | softd_ad!=1) & bloodd_ad==.)
 (4 real changes made, 4 to missing)
 
-. replace diarr7 = . if (threedefd_ad==. & softd_ad==. & bloodd_a
-> d==.)
+. replace diarr7 = . if (threedefd_ad==. & softd_ad==. & bloodd_ad==.)
 (0 real changes made)
 
 . replace diarr7 = 1 if diarr2==1
@@ -1812,8 +1751,7 @@ diarr2                                                (unlabeled)
 . tempfile endline
 
 . save `endline'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
-> 0007 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000007 saved
 
 . 
 . *********************************************
@@ -1822,8 +1760,8 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
 . use `baseline', clear
 
 . append using `midline'
-(note: variable childid was str9, now str10 to accommodate
-       using data's values)
+(note: variable childid was str9, now str10 to accommodate using data's
+       values)
 
 . append using `endline'
 
@@ -1831,8 +1769,7 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
 . tempfile childdata
 
 . save `childdata'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
-> 0008 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000008 saved
 
 . 
 . * ---------------------------------------------
@@ -1875,15 +1812,13 @@ hhid was double now str7
 . label values sex sexl
 
 . 
-. keep hhid childid date* sibling targetchild newbirth date* dob 
-> sex
+. keep hhid childid date* sibling targetchild newbirth date* dob sex
 
 . 
 . tempfile agesex
 
 . save `agesex'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
-> 000a saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.00000a saved
 
 . restore
 
@@ -1941,8 +1876,7 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
 . 
 . gen dcohort=0
 
-. replace dcohort=1 if agey<3 & targetchild==0 & diarr7!=. & time
-> ==0
+. replace dcohort=1 if agey<3 & targetchild==0 & diarr7!=. & time==0
 (4,423 real changes made)
 
 . replace dcohort=1 if targetchild==1 & diarr7!=. & time==1
@@ -1980,8 +1914,8 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
 . * ---------------------------------------------
 . * merge in block
 . * ---------------------------------------------
-. merge m:1 clusterid using "~/Dropbox/WASHB-Kenya-Data/0-Untouch
-> ed-data/0-Treatment-assignments/washb-kenya-tr.dta"
+. merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr
+> .dta"
 
     Result                           # of obs.
     -----------------------------------------
@@ -2000,23 +1934,22 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
 . 
 . sort hhid childid time
 
-. order block clusterid compoundid hhid childid time targetchild 
-> tr date 
+. order block clusterid compoundid hhid childid time targetchild tr date 
 
 . 
-. outsheet using "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-da
-> tasets/diarrhea.csv", replace comma 
+. outsheet using "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/diar
+> rhea.csv", replace comma 
 
-. save  "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/di
-> arrhea.dta", replace 
-file ~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/diarrh
-> ea.dta saved
+. save  "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/diarrhea.dta"
+> , replace 
+file ~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/diarrhea.dta save
+> d
 
 . 
 . log close
       name:  <unnamed>
-       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/
-> src/primary/dm/1_make_diarr_data.log
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary
+> /dm/1_make_diarr_data.log
   log type:  text
- closed on:   6 Dec 2016, 13:10:19
------------------------------------------------------------------
+ closed on:  17 Jul 2017, 15:01:58
+----------------------------------------------------------------------------

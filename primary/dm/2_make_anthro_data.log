@@ -1,9 +1,9 @@
------------------------------------------------------------------
+----------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/
-> src/primary/dm/2_make_anthro_data.log
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary
+> /dm/2_make_anthro_data.log
   log type:  text
- opened on:   6 Dec 2016, 13:07:01
+ opened on:  17 Jul 2017, 15:07:57
 
 . 
 . *********************************************
@@ -12,7 +12,12 @@
 . 
 . * Make analysis dataset for anthropometry variables
 . 
-. * by Jade
+. * Reads in raw data
+. * Outputs 2 datasets with individual level data
+. * for midline and endline including variables 
+. * for covariate adjusted analyses 
+. 
+. * by Jade Benjamin-Chung (jadebc@berkeley.edu)
 . *********************************************
 . clear all
 
@@ -23,8 +28,7 @@
 . set more off
 
 . cd "~/Dropbox/WASHB-Kenya-Data/0-Untouched-data/1-Main-survey/"
-/Users/jadederong/Dropbox/WASHB-Kenya-Data/0-Untouched-data/1-Mai
-> n-survey
+/Users/jadederong/Dropbox/WASHB-Kenya-Data/0-Untouched-data/1-Main-survey
 
 . 
 . 
@@ -49,8 +53,7 @@ clusterid was double now str5
 . replace b6_day=1 if b6_day==99 & b6_month!=99
 (1,109 real changes made)
 
-. replace b6_month=month(date_baseline) if b6_month==99 & b6_day!
-> =99
+. replace b6_month=month(date_baseline) if b6_month==99 & b6_day!=99
 (41 real changes made)
 
 . 
@@ -84,12 +87,9 @@ clusterid was double now str5
 
 . sum mother_age
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-  mother_age |      8,172    25.90161    6.343542   14.48597   50
-> .00137
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+  mother_age |      8,172    25.90161    6.343542   14.48597   50.00137
 
 . 
 . gen mother_edu = 0 if b13_school==1 | b13_school==2
@@ -104,14 +104,13 @@ clusterid was double now str5
 . replace mother_edu = 9 if mother_edu ==. 
 (13 real changes made)
 
-. label define mother_edul 0 "Incomplete primary" 1 "Complete pri
-> mary" 2 "Any secondary" 9 "Don't know"
+. label define mother_edul 0 "Incomplete primary" 1 "Complete primary" 2 "An
+> y secondary" 9 "Don't know"
 
 . label values mother_edu mother_edul 
 
 . 
-. * primary water source, regardless of whether it is for drinkin
-> g
+. * primary water source, regardless of whether it is for drinking
 . replace d7_hrs=0 if d7_hrs==. & d7_min!=. 
 (8,105 real changes made)
 
@@ -123,12 +122,9 @@ clusterid was double now str5
 
 . sum water_time
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-  water_time |      8,173    11.11257    15.47861          0     
->    600
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+  water_time |      8,173    11.11257    15.47861          0        600
 
 . 
 . gen roof=0
@@ -139,8 +135,7 @@ clusterid was double now str5
 . replace roof=9 if b2_roof==.
 (6 real changes made)
 
-. label define roofl 0 "Thatch/leaf" 1 "Iron/other" 9 "Missing/DK
-> "
+. label define roofl 0 "Thatch/leaf" 1 "Iron/other" 9 "Missing/DK"
 
 . label values roof roofl
 
@@ -218,8 +213,7 @@ clusterid was double now str5
 (0 real changes made)
 
 . 
-. label define wallsl 0 "Bamboo/mud/cane" 1 "Concrete" 9 "Missing
-> /DK"
+. label define wallsl 0 "Bamboo/mud/cane" 1 "Concrete" 9 "Missing/DK"
 
 . label values walls wallsl
 
@@ -232,8 +226,7 @@ clusterid was double now str5
 . replace floor = 9 if b1_floor==.
 (18 real changes made)
 
-. label define floorl 0 "Earth/dung" 1 "Cement/concrete" 9 "Missi
-> ng/DK"
+. label define floorl 0 "Earth/dung" 1 "Cement/concrete" 9 "Missing/DK"
 
 . label values floor floorl
 
@@ -246,8 +239,7 @@ clusterid was double now str5
 . replace elec=9 if b22a==. 
 (14 real changes made)
 
-. label define elecl 0 "No electricity" 1 "Has electricity" 9 "Mi
-> ssing/DK"
+. label define elecl 0 "No electricity" 1 "Has electricity" 9 "Missing/DK"
 
 . label values elec elecl
 
@@ -286,8 +278,8 @@ clusterid was double now str5
 . replace mobilephone=9 if b22d==.
 (14 real changes made)
 
-. label define mobilephonel 0 "No mobile phone" 1 "Any mobile pho
-> nes" 9 "Missing/DK"
+. label define mobilephonel 0 "No mobile phone" 1 "Any mobile phones" 9 "Mis
+> sing/DK"
 
 . label values mobilephone mobilephonel
 
@@ -313,8 +305,7 @@ clusterid was double now str5
 . replace bicycle=9 if b22f==.
 (14 real changes made)
 
-. label define bicyclel 0 "No bicycle" 1 "Has bicycle" 9 "Missing
-> /DK"
+. label define bicyclel 0 "No bicycle" 1 "Has bicycle" 9 "Missing/DK"
 
 . label values bicycle bicyclel
 
@@ -327,8 +318,8 @@ clusterid was double now str5
 . replace motorcycle=9 if b22g==.
 (14 real changes made)
 
-. label define motorcyclel 0 "No motorcycle" 1 "Has motorcycle" 9
->  "Missing/DK"
+. label define motorcyclel 0 "No motorcycle" 1 "Has motorcycle" 9 "Missing/D
+> K"
 
 . label values motorcycle motorcyclel
 
@@ -354,8 +345,7 @@ clusterid was double now str5
 . replace cooker=9 if b22i==.
 (14 real changes made)
 
-. label define cookerl 0 "No gas cooker" 1 "Has gas cooker" 9 "Mi
-> ssing/DK"
+. label define cookerl 0 "No gas cooker" 1 "Has gas cooker" 9 "Missing/DK"
 
 . label values cooker cookerl
 
@@ -520,24 +510,22 @@ clusterid was double now str5
 
 . label variable HHS "Hunger score"
 
-. label variable HHS_bi "Hunger dichotimized (little none (HHS=1)
->  vs. moderate(HHS=2) and severe (HHS=3)"
+. label variable HHS_bi "Hunger dichotimized (little none (HHS=1) vs. modera
+> te(HHS=2) and severe (HHS=3)"
 
 . 
-. label define HHSl 1 "Little to none" 2 "Moderate" 3 "Severe" 9 
-> "Missing"
+. label define HHSl 1 "Little to none" 2 "Moderate" 3 "Severe" 9 "Missing"
 
 . label values HHS HHSl 
 
 .         
 . #delimit;
 delimiter now ;
-. keep hhid clusterid compoundid date_baseline date_baseline moth
-> er_age mother_edu
-> roof walls floor water_time roof walls floor elec radio tv mobi
-> lephone clock
-> bicycle motorcycle stove cooker car cow goat dog chicken Ncomp 
-> u18 HHS;
+. keep hhid clusterid compoundid date_baseline date_baseline mother_age moth
+> er_edu
+> roof walls floor water_time roof walls floor elec radio tv mobilephone clo
+> ck
+> bicycle motorcycle stove cooker car cow goat dog chicken Ncomp u18 HHS;
 
 . #delimit cr
 delimiter now cr
@@ -549,8 +537,7 @@ delimiter now cr
 . tempfile compounddata
 
 . save `compounddata'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
-> 0001 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000001 saved
 
 . 
 . *********************************************
@@ -597,8 +584,7 @@ hhid was double now str7
 . tempfile childagesex
 
 . save `childagesex'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
-> 0002 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000002 saved
 
 . 
 . 
@@ -611,8 +597,7 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
 . * Mother height
 . * ---------------------------------------------
 . * midline
-. use "2_Midline/msP_ml_append_ID_clean_anthropometry_20160909.dt
-> a", clear
+. use "2_Midline/msP_ml_append_ID_clean_anthropometry_20160909.dta", clear
 
 . tostring hhid, replace
 hhid was float now str7
@@ -632,8 +617,7 @@ hhid was float now str7
 . * endline
 . preserve
 
-. use "3_Endline/msP_el_append_ID_clean_anthropometry_20160909.dt
-> a", clear
+. use "3_Endline/msP_el_append_ID_clean_anthropometry_20160909.dta", clear
 
 . tostring hhid, replace
 hhid was float now str7
@@ -654,8 +638,7 @@ hhid was float now str7
 . tempfile endlinemomht
 
 . save `endlinemomht'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
-> 0004 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000004 saved
 
 . restore
 
@@ -679,61 +662,37 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
   2.         sum `var'
   3. }
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-       c422m |      5,913    160.2433    6.367442       52.3     
->  180.5
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+       c422m |      5,913    160.2433    6.367442       52.3      180.5
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-       c423m |      5,913     160.241    6.371578       52.5     
->  180.4
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+       c423m |      5,913     160.241    6.371578       52.5      180.4
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-       c424m |      5,913    160.1946    6.860722       15.3     
->  185.9
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+       c424m |      5,913    160.1946    6.860722       15.3      185.9
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-  resp_hairm |      4,284    1.129552    .3358489          1     
->      2
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+  resp_hairm |      4,284    1.129552    .3358489          1          2
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-resp_hair_~m |        555    2.029009    1.165883         .1     
->      6
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+resp_hair_~m |        555    2.029009    1.165883         .1          6
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-       c422e |        846    160.7898    6.156612      138.1     
->  177.6
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+       c422e |        846    160.7898    6.156612      138.1      177.6
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-       c423e |        846     160.779    6.154872      138.1     
->  177.5
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+       c423e |        846     160.779    6.154872      138.1      177.5
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-       c424e |        846    160.7944    6.160126      138.1     
->  177.6
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+       c424e |        846    160.7944    6.160126      138.1      177.6
 
 . 
 . replace c422m = c422m - resp_hair_heightm if resp_hairm==2
@@ -756,8 +715,7 @@ resp_hair_~m |        555    2.029009    1.165883         .1
 (61 real changes made)
 
 . 
-. egen float med_momht_6 = rowmedian(c422m c423m c424m c422e c423
-> e c424e)
+. egen float med_momht_6 = rowmedian(c422m c423m c424m c422e c423e c424e)
 (1348 missing values generated)
 
 . egen float med_momht_m = rowmedian(c422m c423m c424m)
@@ -770,8 +728,8 @@ resp_hair_~m |        555    2.029009    1.165883         .1
 . gen float motherht = med_momht_6
 (1,348 missing values generated)
 
-. replace motherht = med_momht_m if abs(med_momht_m - med_momht_e
-> ) > 3 & abs(med_momht_m - med_momht_e)<.
+. replace motherht = med_momht_m if abs(med_momht_m - med_momht_e) > 3 & abs
+> (med_momht_m - med_momht_e)<.
 (1 real change made)
 
 . 
@@ -781,8 +739,7 @@ resp_hair_~m |        555    2.029009    1.165883         .1
 . tempfile motherht
 
 . save `motherht'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
-> 0005 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000005 saved
 
 . 
 . * ---------------------------------------------
@@ -792,8 +749,8 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
 
 . 
 . * merge in mother anthro data
-. merge m:1 hhid using "2_Midline/msP_ml_append_ID_clean_anthropo
-> metry_20160909.dta"
+. merge m:1 hhid using "2_Midline/msP_ml_append_ID_clean_anthropometry_20160
+> 909.dta"
 
     Result                           # of obs.
     -----------------------------------------
@@ -817,73 +774,46 @@ childid was double now str10
 
 . 
 . * check values for child anthro
-. foreach var of varlist weight1 weight2 weight3 length1 length2 
-> length3 headc1 headc2 headc3{
+. foreach var of varlist weight1 weight2 weight3 length1 length2 length3 hea
+> dc1 headc2 headc3{
   2.         sum `var'
   3. }
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-     weight1 |      6,331    9.012275    1.255031          0     
->  16.65
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     weight1 |      6,331    9.012275    1.255031          0      16.65
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-     weight2 |      6,331     9.00946    1.253126          0     
->   15.3
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     weight2 |      6,331     9.00946    1.253126          0       15.3
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-     weight3 |      6,331    9.011062    1.257718          0     
->  15.25
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     weight3 |      6,331    9.011062    1.257718          0      15.25
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-     length1 |      6,284    72.19245    3.861035          0     
->     86
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     length1 |      6,284    72.19245    3.861035          0         86
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-     length2 |      6,284    72.19472     3.86326          0     
->     86
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     length2 |      6,284    72.19472     3.86326          0         86
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-     length3 |      6,284    72.20268    3.867109          0     
->   92.2
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     length3 |      6,284    72.20268    3.867109          0       92.2
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-      headc1 |      6,323    45.07429    1.975041          0     
->   52.9
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+      headc1 |      6,323    45.07429    1.975041          0       52.9
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-      headc2 |      6,323    45.07923    1.975993          0     
->   52.9
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+      headc2 |      6,323    45.07923    1.975993          0       52.9
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-      headc3 |      6,323    45.08119    1.977717          0     
->   52.9
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+      headc3 |      6,323    45.08119    1.977717          0       52.9
 
 . 
 . * check values for mother antrho
@@ -891,52 +821,34 @@ childid was double now str10
   2.         sum `var'
   3. }
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-        c404 |      6,028    57.34162    9.319401       34.6     
->  116.9
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+        c404 |      6,028    57.34162    9.319401       34.6      116.9
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-        c405 |      6,028    57.32579    9.341983          7     
->  116.9
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+        c405 |      6,028    57.32579    9.341983          7      116.9
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-        c406 |      6,028    57.33354    9.351344        1.5     
->    117
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+        c406 |      6,028    57.33354    9.351344        1.5        117
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-        c422 |      6,020    160.2451     6.34696       52.3     
->  180.5
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+        c422 |      6,020    160.2451     6.34696       52.3      180.5
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-        c423 |      6,020    160.2426    6.350943       52.5     
->  180.4
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+        c423 |      6,020    160.2426    6.350943       52.5      180.4
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-        c424 |      6,020    160.1972    6.833198       15.3     
->  185.9
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+        c424 |      6,020    160.1972    6.833198       15.3      185.9
 
 . 
 . * round to 0.01
-. foreach var of varlist headc1 headc2 headc3 muac1 muac2 muac3 w
-> eight1 weight2 weight3 length1 length2 length3 c422 c423 c424{
+. foreach var of varlist headc1 headc2 headc3 muac1 muac2 muac3 weight1 weig
+> ht2 weight3 length1 length2 length3 c422 c423 c424{
   2.         replace `var' = round(`var',0.01)
   3. }
 (1,337 real changes made)
@@ -8433,14 +8345,12 @@ Duplicates in terms of hhid childid
 (sex: 6347 changes made)
 
 . 
-. zscore06, a(agem) s(sex) h(childht) w(childwt) measure(length_m
-> )
+. zscore06, a(agem) s(sex) h(childht) w(childwt) measure(length_m)
 
 Z-scores (haz06, waz06, bmiz06 and whz06) succesfully calculated
-*** note 1: 99 indicates that height, weight or age were out of t
-> he reference value range
-*** note 2: no zscores are calculated for children with missing a
-> ge
+*** note 1: 99 indicates that height, weight or age were out of the referenc
+> e value range
+*** note 2: no zscores are calculated for children with missing age
 
 . 
 . * make flags for outlier z-scores
@@ -8598,8 +8508,7 @@ Z-scores (haz06, waz06, bmiz06 and whz06) succesfully calculated
 . * ---------------------------------------------
 . * WHO anthro z-scores
 . * ---------------------------------------------
-. do "~/Documents/CRG/wash-benefits/kenya/src/primary/dm/2b_who_a
-> nthro.do"
+. do "~/Documents/CRG/wash-benefits/kenya/src/primary/dm/2b_who_anthro.do"
 
 . *********************************************
 . * WASH Benefits Kenya
@@ -8616,7 +8525,7 @@ Z-scores (haz06, waz06, bmiz06 and whz06) succesfully calculated
 . * each line similar to: "local string "xxx\lenanthro.dta"
 . * with a forward slash instead of backward slash
 . 
-. * by Jade
+. * by Jade Benjamin-Chung (jadebc@berkeley.edu)
 . *********************************************
 . 
 . *clear all
@@ -8626,36 +8535,33 @@ Z-scores (haz06, waz06, bmiz06 and whz06) succesfully calculated
 . *set memory 20m
 . *set maxvar 10000
 . 
-. /* Indicate to the Stata compiler where the igrowup_standard.ad
-> o file is stored*/
-. adopath + "~/documents/crg/wash-benefits/kenya/src/primary/dm/W
-> HO igrowup STATA/"
+. /* Indicate to the Stata compiler where the igrowup_standard.ado file is s
+> tored*/
+. adopath + "~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO igrowup 
+> STATA/"
   [1]  (BASE)      "/Applications/Stata/ado/base/"
   [2]  (SITE)      "/Applications/Stata/ado/site/"
   [3]              "."
-  [4]  (PERSONAL)  "~/Library/Application Support/Stata/ado/perso
-> nal/"
-  [5]  (PLUS)      "~/Library/Application Support/Stata/ado/plus/
-> "
+  [4]  (PERSONAL)  "~/Library/Application Support/Stata/ado/personal/"
+  [5]  (PLUS)      "~/Library/Application Support/Stata/ado/plus/"
   [6]  (OLDPLACE)  "~/ado/"
-  [7]              "~/documents/crg/wash-benefits/kenya/src/prima
-> ry/dm/WHO igrowup STATA/"
+  [7]              "~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO i
+> growup STATA/"
 
 . 
 . /* Load the data file */
-. *use "~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO ig
-> rowup workdata/midline-headc-prep.dta"
+. *use "~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO igrowup workd
+> ata/midline-headc-prep.dta"
 . 
-. /*generate the first three parameters reflib, datalib & datalab
->  */
-. gen str200 reflib="~/documents/crg/wash-benefits/kenya/src/prim
-> ary/dm/WHO igrowup STATA"
+. /*generate the first three parameters reflib, datalib & datalab */
+. gen str200 reflib="~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO 
+> igrowup STATA"
 
 . lab var reflib "Directory of reference tables"
 
 . 
-. gen str200 datalib="~/documents/crg/wash-benefits/kenya/src/pri
-> mary/dm/WHO igrowup workdata"
+. gen str200 datalib="~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO
+>  igrowup workdata"
 
 . lab var datalib "Directory for datafiles"
 
@@ -8707,15 +8613,15 @@ Z-scores (haz06, waz06, bmiz06 and whz06) succesfully calculated
 (6,356 missing values generated)
 
 . 
-. save "~/dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/tem
-> p-anthro.dta", replace 
-file ~/dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/temp-a
-> nthro.dta saved
+. save "~/dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/temp-anthro.dt
+> a", replace 
+file ~/dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/temp-anthro.dta s
+> aved
 
 . 
 . * calculate z-scores
-. igrowup_standard reflib datalib datalab whosex aged ageunit chi
-> ldwt childht measure headc muac tri sub oedema sw
+. igrowup_standard reflib datalib datalab whosex aged ageunit childwt childh
+> t measure headc muac tri sub oedema sw
 
 Please wait, programme is running.............
 
@@ -8731,16 +8637,16 @@ Note: z-scores are flagged according to the following rules:
                             _zts  = . if (_zts  < -5 or _zts  >5)
                             _zss  = . if (_zss  < -5 or _zss  >5)
                             
-file ~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO igrow
-> up workdata/mysurvey_z_st.dta saved
+file ~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO igrowup workdata
+> /mysurvey_z_st.dta saved
 Note 1:     Original data plus z-scores are written to
-            ~/documents/crg/wash-benefits/kenya/src/primary/dm/WH
-> O igrowup workdata/mysurvey_z_st.dta
+            ~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO igrowup w
+> orkdata/mysurvey_z_st.dta
                             
                             
 Note 2:     Original data plus z-scores are written to
-            ~/documents/crg/wash-benefits/kenya/src/primary/dm/WH
-> O igrowup workdata/mysurvey_z_st.xls
+            ~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO igrowup w
+> orkdata/mysurvey_z_st.xls
                             
 
 Please wait, programme is calculating prevalences.............
@@ -8751,34 +8657,63 @@ Set 1:            Sexes combined
 
 Age groups        Weight-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI     Mean
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-         Mean      SD
-Total     -69       0
-  0-5     -69       0
- 6-11     -69       0
-12-23     -69       0
-24-35     -69     -69
-36-47     -69     -69
-48-60     -69     -69
+           SD
+Total       0
+  0-5       0
+ 6-11       0
+12-23       0
+24-35     -69
+36-47     -69
+48-60     -69
 
 Age groups        Length/height-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI     Mean
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
+
+           SD
+Total       0
+  0-5       0
+ 6-11       0
+12-23       0
+24-35     -69
+36-47     -69
+48-60     -69
+
+Age groups        Weight-for-length/height
+
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
+
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  0-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
          Mean      SD
 Total     -69       0
@@ -8789,96 +8724,96 @@ Total     -69       0
 36-47     -69     -69
 48-60     -69     -69
 
-Age groups        Weight-for-length/height
-
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
-
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  0-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
-
-          95%     CI     Mean      SD
-Total     -69     -69     -69       0
-  0-5     -69     -69     -69       0
- 6-11     -69     -69     -69       0
-12-23     -69     -69     -69       0
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
-
 Age groups        BMI-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  0-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  0-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69       0
-  0-5     -69     -69     -69       0
- 6-11     -69     -69     -69       0
-12-23     -69     -69     -69       0
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69       0
+  0-5     -69       0
+ 6-11     -69       0
+12-23     -69       0
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Set 2:            Males
 
 Age groups        Weight-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI     Mean
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-         Mean      SD
-Total     -69       0
-  0-5     -69       0
- 6-11     -69       0
-12-23     -69       0
-24-35     -69     -69
-36-47     -69     -69
-48-60     -69     -69
+           SD
+Total       0
+  0-5       0
+ 6-11       0
+12-23       0
+24-35     -69
+36-47     -69
+48-60     -69
 
 Age groups        Length/height-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI     Mean
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
+
+           SD
+Total       0
+  0-5       0
+ 6-11       0
+12-23       0
+24-35     -69
+36-47     -69
+48-60     -69
+
+Age groups        Weight-for-length/height
+
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
+
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  0-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
          Mean      SD
 Total     -69       0
@@ -8889,96 +8824,96 @@ Total     -69       0
 36-47     -69     -69
 48-60     -69     -69
 
-Age groups        Weight-for-length/height
-
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
-
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  0-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
-
-          95%     CI     Mean      SD
-Total     -69     -69     -69       0
-  0-5     -69     -69     -69       0
- 6-11     -69     -69     -69       0
-12-23     -69     -69     -69       0
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
-
 Age groups        BMI-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  0-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  0-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69       0
-  0-5     -69     -69     -69       0
- 6-11     -69     -69     -69       0
-12-23     -69     -69     -69       0
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69       0
+  0-5     -69       0
+ 6-11     -69       0
+12-23     -69       0
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Set 3:            Females
 
 Age groups        Weight-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI     Mean
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-         Mean      SD
-Total     -69       0
-  0-5     -69       0
- 6-11     -69       0
-12-23     -69       0
-24-35     -69     -69
-36-47     -69     -69
-48-60     -69     -69
+           SD
+Total       0
+  0-5       0
+ 6-11       0
+12-23       0
+24-35     -69
+36-47     -69
+48-60     -69
 
 Age groups        Length/height-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI     Mean
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
+
+           SD
+Total       0
+  0-5       0
+ 6-11       0
+12-23       0
+24-35     -69
+36-47     -69
+48-60     -69
+
+Age groups        Weight-for-length/height
+
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
+
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  0-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
          Mean      SD
 Total     -69       0
@@ -8989,421 +8924,392 @@ Total     -69       0
 36-47     -69     -69
 48-60     -69     -69
 
-Age groups        Weight-for-length/height
-
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
-
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  0-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
-
-          95%     CI     Mean      SD
-Total     -69     -69     -69       0
-  0-5     -69     -69     -69       0
- 6-11     -69     -69     -69       0
-12-23     -69     -69     -69       0
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
-
 Age groups        BMI-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  0-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  0-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69       0
-  0-5     -69     -69     -69       0
- 6-11     -69     -69     -69       0
-12-23     -69     -69     -69       0
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69       0
+  0-5     -69       0
+ 6-11     -69       0
+12-23     -69       0
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Set 1:            Sexes combined
 
 Age groups        Head circumference-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  0-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  0-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69       0
-  0-5     -69     -69     -69       0
- 6-11     -69     -69     -69       0
-12-23     -69     -69     -69       0
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69       0
+  0-5     -69       0
+ 6-11     -69       0
+12-23     -69       0
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Age groups        MUAC-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  3-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  3-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  3-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69
-12-23     -69     -69     -69     -69
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69     -69
+  3-5     -69     -69
+ 6-11     -69     -69
+12-23     -69     -69
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Age groups        Triceps skinfold-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  3-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  3-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  3-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69
-12-23     -69     -69     -69     -69
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69     -69
+  3-5     -69     -69
+ 6-11     -69     -69
+12-23     -69     -69
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Age groups        Subscapular skinfold-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  3-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  3-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  3-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69
-12-23     -69     -69     -69     -69
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69     -69
+  3-5     -69     -69
+ 6-11     -69     -69
+12-23     -69     -69
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Set 2:            Males
 
 Age groups        Head circumference-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  0-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  0-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69       0
-  0-5     -69     -69     -69       0
- 6-11     -69     -69     -69       0
-12-23     -69     -69     -69       0
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69       0
+  0-5     -69       0
+ 6-11     -69       0
+12-23     -69       0
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Age groups        MUAC-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  3-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  3-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  3-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69
-12-23     -69     -69     -69     -69
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69     -69
+  3-5     -69     -69
+ 6-11     -69     -69
+12-23     -69     -69
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Age groups        Triceps skinfold-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  3-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  3-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  3-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69
-12-23     -69     -69     -69     -69
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69     -69
+  3-5     -69     -69
+ 6-11     -69     -69
+12-23     -69     -69
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Age groups        Subscapular skinfold-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  3-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  3-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  3-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69
-12-23     -69     -69     -69     -69
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69     -69
+  3-5     -69     -69
+ 6-11     -69     -69
+12-23     -69     -69
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Set 3:            Females
 
 Age groups        Head circumference-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  0-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  0-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69       0
-  0-5     -69     -69     -69       0
- 6-11     -69     -69     -69       0
-12-23     -69     -69     -69       0
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69       0
+  0-5     -69       0
+ 6-11     -69       0
+12-23     -69       0
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Age groups        MUAC-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  3-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  3-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  3-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69
-12-23     -69     -69     -69     -69
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69     -69
+  3-5     -69     -69
+ 6-11     -69     -69
+12-23     -69     -69
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Age groups        Triceps skinfold-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  3-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  3-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  3-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69
-12-23     -69     -69     -69     -69
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69     -69
+  3-5     -69     -69
+ 6-11     -69     -69
+12-23     -69     -69
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Age groups        Subscapular skinfold-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  3-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  3-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  3-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69
-12-23     -69     -69     -69     -69
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69     -69
+  3-5     -69     -69
+ 6-11     -69     -69
+12-23     -69     -69
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
  
 Note:       Prevalences are written to
-            ~/documents/crg/wash-benefits/kenya/src/primary/dm/WH
-> O igrowup workdata\mysurvey_prev_st.xls
+            ~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO igrowup w
+> orkdata\mysurvey_prev_st.xls
 
 . 
 . 
@@ -9415,13 +9321,12 @@ Note:       Prevalences are written to
 . *
 . * merge back to the main anthro dataset
 . *---------------------------------------------
-. use "~/dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/temp
-> -anthro.dta", clear
+. use "~/dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/temp-anthro.dta
+> ", clear
 
 . 
-. merge 1:1 hhid childid using "/Users/jadederong/Documents/CRG/w
-> ash-benefits/kenya/src/primary/dm/WHO igrowup workdata/mysurvey
-> _z_st.dta"
+. merge 1:1 hhid childid using "/Users/jadederong/Documents/CRG/wash-benefit
+> s/kenya/src/primary/dm/WHO igrowup workdata/mysurvey_z_st.dta"
 (label sexl already defined)
 (label cn1417 already defined)
 
@@ -9436,8 +9341,8 @@ Note:       Prevalences are written to
 . drop _m
 
 . 
-. *keep dataid childid _zwei _zlen _zbmi _zwfl _zhc _fwei _flen _
-> fbmi _fwfl _fhc
+. *keep dataid childid _zwei _zlen _zbmi _zwfl _zhc _fwei _flen _fbmi _fwfl 
+> _fhc
 . sort hhid childid
 
 . 
@@ -9496,15 +9401,13 @@ end of do-file
 . drop _*
 
 . 
-. drop reflib-measure childwt whosex muac-sw  *_flag length_metho
-> d miss*
+. drop reflib-measure childwt whosex muac-sw  *_flag length_method miss*
 
 . 
 . tempfile midline_anthro
 
 . save `midline_anthro'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
-> 0006 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000006 saved
 
 . 
 . 
@@ -9521,8 +9424,8 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
 
 . 
 . * merge in mother anthro data
-. merge m:1 hhid using "3_Endline/msP_el_append_ID_clean_anthropo
-> metry_20160909.dta"
+. merge m:1 hhid using "3_Endline/msP_el_append_ID_clean_anthropometry_20160
+> 909.dta"
 
     Result                           # of obs.
     -----------------------------------------
@@ -9546,78 +9449,51 @@ childid was double now str10
 
 . 
 . * check values 
-. foreach var of varlist weight1 weight2 weight3 length1 length2 
-> length3 headc1 headc2 headc3{
+. foreach var of varlist weight1 weight2 weight3 length1 length2 length3 hea
+> dc1 headc2 headc3{
   2.         sum `var'
   3. }
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-     weight1 |      6,972    10.81297    1.610603       3.15     
->  18.25
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     weight1 |      6,972    10.81297    1.610603       3.15      18.25
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-     weight2 |      6,972    10.81099    1.609292       3.15     
->  16.55
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     weight2 |      6,972    10.81099    1.609292       3.15      16.55
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-     weight3 |      6,972    10.81062    1.613219       3.15     
->  16.55
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     weight3 |      6,972    10.81062    1.613219       3.15      16.55
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-     length1 |      6,811    81.63236    4.821204       51.1     
->   96.5
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     length1 |      6,811    81.63236    4.821204       51.1       96.5
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-     length2 |      6,811    81.63118    4.831761       51.2     
->   96.6
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     length2 |      6,811    81.63118    4.831761       51.2       96.6
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-     length3 |      6,811    81.62258     4.84866       51.1     
->   96.6
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     length3 |      6,811    81.62258     4.84866       51.1       96.6
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-      headc1 |      6,959    47.10754    2.008294       32.8     
->     55
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+      headc1 |      6,959    47.10754    2.008294       32.8         55
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-      headc2 |      6,959    47.10661    2.008761       32.8     
->     55
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+      headc2 |      6,959    47.10661    2.008761       32.8         55
 
-    Variable |        Obs        Mean    Std. Dev.       Min     
->    Max
--------------+---------------------------------------------------
-> ------
-      headc3 |      6,959    47.10998    2.011104       32.8     
->     55
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+      headc3 |      6,959    47.10998    2.011104       32.8         55
 
 . 
 . * round to 0.01
-. foreach var of varlist headc1 headc2 headc3 muac1 muac2 muac3 w
-> eight1 weight2 weight3 length1 length2 length3 c422 c423 c424{
+. foreach var of varlist headc1 headc2 headc3 muac1 muac2 muac3 weight1 weig
+> ht2 weight3 length1 length2 length3 c422 c423 c424{
   2.         replace `var' = round(`var',0.01)
   3. }
 (0 real changes made)
@@ -16236,14 +16112,12 @@ Duplicates in terms of hhid childid
 
 . 
 . 
-. zscore06, a(agem) s(sex) h(childht) w(childwt) measure(length_m
-> )
+. zscore06, a(agem) s(sex) h(childht) w(childwt) measure(length_m)
 
 Z-scores (haz06, waz06, bmiz06 and whz06) succesfully calculated
-*** note 1: 99 indicates that height, weight or age were out of t
-> he reference value range
-*** note 2: no zscores are calculated for children with missing a
-> ge
+*** note 1: 99 indicates that height, weight or age were out of the referenc
+> e value range
+*** note 2: no zscores are calculated for children with missing age
 
 . 
 . * make flags for outlier z-scores
@@ -16392,8 +16266,7 @@ Z-scores (haz06, waz06, bmiz06 and whz06) succesfully calculated
 . * ---------------------------------------------
 . * WHO anthro z-scores
 . * ---------------------------------------------
-. do "~/Documents/CRG/wash-benefits/kenya/src/primary/dm/2b_who_a
-> nthro.do"
+. do "~/Documents/CRG/wash-benefits/kenya/src/primary/dm/2b_who_anthro.do"
 
 . *********************************************
 . * WASH Benefits Kenya
@@ -16410,7 +16283,7 @@ Z-scores (haz06, waz06, bmiz06 and whz06) succesfully calculated
 . * each line similar to: "local string "xxx\lenanthro.dta"
 . * with a forward slash instead of backward slash
 . 
-. * by Jade
+. * by Jade Benjamin-Chung (jadebc@berkeley.edu)
 . *********************************************
 . 
 . *clear all
@@ -16420,36 +16293,33 @@ Z-scores (haz06, waz06, bmiz06 and whz06) succesfully calculated
 . *set memory 20m
 . *set maxvar 10000
 . 
-. /* Indicate to the Stata compiler where the igrowup_standard.ad
-> o file is stored*/
-. adopath + "~/documents/crg/wash-benefits/kenya/src/primary/dm/W
-> HO igrowup STATA/"
+. /* Indicate to the Stata compiler where the igrowup_standard.ado file is s
+> tored*/
+. adopath + "~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO igrowup 
+> STATA/"
   [1]  (BASE)      "/Applications/Stata/ado/base/"
   [2]  (SITE)      "/Applications/Stata/ado/site/"
   [3]              "."
-  [4]  (PERSONAL)  "~/Library/Application Support/Stata/ado/perso
-> nal/"
-  [5]  (PLUS)      "~/Library/Application Support/Stata/ado/plus/
-> "
+  [4]  (PERSONAL)  "~/Library/Application Support/Stata/ado/personal/"
+  [5]  (PLUS)      "~/Library/Application Support/Stata/ado/plus/"
   [6]  (OLDPLACE)  "~/ado/"
-  [7]              "~/documents/crg/wash-benefits/kenya/src/prima
-> ry/dm/WHO igrowup STATA/"
+  [7]              "~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO i
+> growup STATA/"
 
 . 
 . /* Load the data file */
-. *use "~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO ig
-> rowup workdata/midline-headc-prep.dta"
+. *use "~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO igrowup workd
+> ata/midline-headc-prep.dta"
 . 
-. /*generate the first three parameters reflib, datalib & datalab
->  */
-. gen str200 reflib="~/documents/crg/wash-benefits/kenya/src/prim
-> ary/dm/WHO igrowup STATA"
+. /*generate the first three parameters reflib, datalib & datalab */
+. gen str200 reflib="~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO 
+> igrowup STATA"
 
 . lab var reflib "Directory of reference tables"
 
 . 
-. gen str200 datalib="~/documents/crg/wash-benefits/kenya/src/pri
-> mary/dm/WHO igrowup workdata"
+. gen str200 datalib="~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO
+>  igrowup workdata"
 
 . lab var datalib "Directory for datafiles"
 
@@ -16501,15 +16371,15 @@ Z-scores (haz06, waz06, bmiz06 and whz06) succesfully calculated
 (7,240 missing values generated)
 
 . 
-. save "~/dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/tem
-> p-anthro.dta", replace 
-file ~/dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/temp-a
-> nthro.dta saved
+. save "~/dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/temp-anthro.dt
+> a", replace 
+file ~/dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/temp-anthro.dta s
+> aved
 
 . 
 . * calculate z-scores
-. igrowup_standard reflib datalib datalab whosex aged ageunit chi
-> ldwt childht measure headc muac tri sub oedema sw
+. igrowup_standard reflib datalib datalab whosex aged ageunit childwt childh
+> t measure headc muac tri sub oedema sw
 
 Please wait, programme is running.............
 
@@ -16525,16 +16395,16 @@ Note: z-scores are flagged according to the following rules:
                             _zts  = . if (_zts  < -5 or _zts  >5)
                             _zss  = . if (_zss  < -5 or _zss  >5)
                             
-file ~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO igrow
-> up workdata/mysurvey_z_st.dta saved
+file ~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO igrowup workdata
+> /mysurvey_z_st.dta saved
 Note 1:     Original data plus z-scores are written to
-            ~/documents/crg/wash-benefits/kenya/src/primary/dm/WH
-> O igrowup workdata/mysurvey_z_st.dta
+            ~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO igrowup w
+> orkdata/mysurvey_z_st.dta
                             
                             
 Note 2:     Original data plus z-scores are written to
-            ~/documents/crg/wash-benefits/kenya/src/primary/dm/WH
-> O igrowup workdata/mysurvey_z_st.xls
+            ~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO igrowup w
+> orkdata/mysurvey_z_st.xls
                             
 
 Please wait, programme is calculating prevalences.............
@@ -16545,34 +16415,63 @@ Set 1:            Sexes combined
 
 Age groups        Weight-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI     Mean
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-         Mean      SD
-Total     -69       0
-  0-5     -69       0
- 6-11     -69       0
-12-23     -69       0
-24-35     -69       0
-36-47     -69     -69
-48-60     -69     -69
+           SD
+Total       0
+  0-5       0
+ 6-11       0
+12-23       0
+24-35       0
+36-47     -69
+48-60     -69
 
 Age groups        Length/height-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI     Mean
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
+
+           SD
+Total       0
+  0-5       0
+ 6-11       0
+12-23       0
+24-35       0
+36-47     -69
+48-60     -69
+
+Age groups        Weight-for-length/height
+
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
+
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  0-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
          Mean      SD
 Total     -69       0
@@ -16583,96 +16482,96 @@ Total     -69       0
 36-47     -69     -69
 48-60     -69     -69
 
-Age groups        Weight-for-length/height
-
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
-
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  0-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
-
-          95%     CI     Mean      SD
-Total     -69     -69     -69       0
-  0-5     -69     -69     -69       0
- 6-11     -69     -69     -69       0
-12-23     -69     -69     -69       0
-24-35     -69     -69     -69       0
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
-
 Age groups        BMI-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  0-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  0-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69       0
-  0-5     -69     -69     -69       0
- 6-11     -69     -69     -69       0
-12-23     -69     -69     -69       0
-24-35     -69     -69     -69       0
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69       0
+  0-5     -69       0
+ 6-11     -69       0
+12-23     -69       0
+24-35     -69       0
+36-47     -69     -69
+48-60     -69     -69
 
 Set 2:            Males
 
 Age groups        Weight-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI     Mean
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-         Mean      SD
-Total     -69       0
-  0-5     -69       0
- 6-11     -69       0
-12-23     -69       0
-24-35     -69       0
-36-47     -69     -69
-48-60     -69     -69
+           SD
+Total       0
+  0-5       0
+ 6-11       0
+12-23       0
+24-35       0
+36-47     -69
+48-60     -69
 
 Age groups        Length/height-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI     Mean
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
+
+           SD
+Total       0
+  0-5       0
+ 6-11       0
+12-23       0
+24-35       0
+36-47     -69
+48-60     -69
+
+Age groups        Weight-for-length/height
+
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
+
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  0-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
          Mean      SD
 Total     -69       0
@@ -16683,96 +16582,96 @@ Total     -69       0
 36-47     -69     -69
 48-60     -69     -69
 
-Age groups        Weight-for-length/height
-
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
-
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  0-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
-
-          95%     CI     Mean      SD
-Total     -69     -69     -69       0
-  0-5     -69     -69     -69       0
- 6-11     -69     -69     -69       0
-12-23     -69     -69     -69       0
-24-35     -69     -69     -69       0
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
-
 Age groups        BMI-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  0-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  0-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69       0
-  0-5     -69     -69     -69       0
- 6-11     -69     -69     -69       0
-12-23     -69     -69     -69       0
-24-35     -69     -69     -69       0
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69       0
+  0-5     -69       0
+ 6-11     -69       0
+12-23     -69       0
+24-35     -69       0
+36-47     -69     -69
+48-60     -69     -69
 
 Set 3:            Females
 
 Age groups        Weight-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI     Mean
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-         Mean      SD
-Total     -69       0
-  0-5     -69       0
- 6-11     -69       0
-12-23     -69       0
-24-35     -69       0
-36-47     -69     -69
-48-60     -69     -69
+           SD
+Total       0
+  0-5       0
+ 6-11       0
+12-23       0
+24-35       0
+36-47     -69
+48-60     -69
 
 Age groups        Length/height-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI     Mean
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
+
+           SD
+Total       0
+  0-5       0
+ 6-11       0
+12-23       0
+24-35       0
+36-47     -69
+48-60     -69
+
+Age groups        Weight-for-length/height
+
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
+
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  0-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
          Mean      SD
 Total     -69       0
@@ -16783,421 +16682,392 @@ Total     -69       0
 36-47     -69     -69
 48-60     -69     -69
 
-Age groups        Weight-for-length/height
-
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
-
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  0-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
-
-          95%     CI     Mean      SD
-Total     -69     -69     -69       0
-  0-5     -69     -69     -69       0
- 6-11     -69     -69     -69       0
-12-23     -69     -69     -69       0
-24-35     -69     -69     -69       0
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
-
 Age groups        BMI-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  0-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  0-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69       0
-  0-5     -69     -69     -69       0
- 6-11     -69     -69     -69       0
-12-23     -69     -69     -69       0
-24-35     -69     -69     -69       0
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69       0
+  0-5     -69       0
+ 6-11     -69       0
+12-23     -69       0
+24-35     -69       0
+36-47     -69     -69
+48-60     -69     -69
 
 Set 1:            Sexes combined
 
 Age groups        Head circumference-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  0-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  0-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69       0
-  0-5     -69     -69     -69       0
- 6-11     -69     -69     -69       0
-12-23     -69     -69     -69       0
-24-35     -69     -69     -69       0
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69       0
+  0-5     -69       0
+ 6-11     -69       0
+12-23     -69       0
+24-35     -69       0
+36-47     -69     -69
+48-60     -69     -69
 
 Age groups        MUAC-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  3-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  3-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  3-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69
-12-23     -69     -69     -69     -69
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69     -69
+  3-5     -69     -69
+ 6-11     -69     -69
+12-23     -69     -69
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Age groups        Triceps skinfold-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  3-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  3-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  3-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69
-12-23     -69     -69     -69     -69
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69     -69
+  3-5     -69     -69
+ 6-11     -69     -69
+12-23     -69     -69
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Age groups        Subscapular skinfold-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  3-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  3-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  3-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69
-12-23     -69     -69     -69     -69
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69     -69
+  3-5     -69     -69
+ 6-11     -69     -69
+12-23     -69     -69
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Set 2:            Males
 
 Age groups        Head circumference-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  0-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  0-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69       0
-  0-5     -69     -69     -69       0
- 6-11     -69     -69     -69       0
-12-23     -69     -69     -69       0
-24-35     -69     -69     -69       0
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69       0
+  0-5     -69       0
+ 6-11     -69       0
+12-23     -69       0
+24-35     -69       0
+36-47     -69     -69
+48-60     -69     -69
 
 Age groups        MUAC-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  3-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  3-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  3-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69
-12-23     -69     -69     -69     -69
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69     -69
+  3-5     -69     -69
+ 6-11     -69     -69
+12-23     -69     -69
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Age groups        Triceps skinfold-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  3-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  3-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  3-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69
-12-23     -69     -69     -69     -69
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69     -69
+  3-5     -69     -69
+ 6-11     -69     -69
+12-23     -69     -69
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Age groups        Subscapular skinfold-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  3-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  3-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  3-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69
-12-23     -69     -69     -69     -69
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69     -69
+  3-5     -69     -69
+ 6-11     -69     -69
+12-23     -69     -69
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Set 3:            Females
 
 Age groups        Head circumference-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  0-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  0-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  0-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  0-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69       0
-  0-5     -69     -69     -69       0
- 6-11     -69     -69     -69       0
-12-23     -69     -69     -69       0
-24-35     -69     -69     -69       0
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69       0
+  0-5     -69       0
+ 6-11     -69       0
+12-23     -69       0
+24-35     -69       0
+36-47     -69     -69
+48-60     -69     -69
 
 Age groups        MUAC-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  3-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  3-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  3-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69
-12-23     -69     -69     -69     -69
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69     -69
+  3-5     -69     -69
+ 6-11     -69     -69
+12-23     -69     -69
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Age groups        Triceps skinfold-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  3-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  3-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  3-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69
-12-23     -69     -69     -69     -69
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69     -69
+  3-5     -69     -69
+ 6-11     -69     -69
+12-23     -69     -69
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
 
 Age groups        Subscapular skinfold-for-age
 
-            N  %<-3SD     95%     CI   %<-2SD     95%     CI 
-Total       0     -69     -69     -69     -69     -69     -69
-  3-5       0     -69     -69     -69     -69     -69     -69
- 6-11       0     -69     -69     -69     -69     -69     -69
-12-23       0     -69     -69     -69     -69     -69     -69
-24-35       0     -69     -69     -69     -69     -69     -69
-36-47       0     -69     -69     -69     -69     -69     -69
-48-60       0     -69     -69     -69     -69     -69     -69
+            N  %<-3SD     95%     CI   %<-2SD     95%     CI    %>1SD
+Total       0     -69     -69     -69     -69     -69     -69     -69
+  3-5       0     -69     -69     -69     -69     -69     -69     -69
+ 6-11       0     -69     -69     -69     -69     -69     -69     -69
+12-23       0     -69     -69     -69     -69     -69     -69     -69
+24-35       0     -69     -69     -69     -69     -69     -69     -69
+36-47       0     -69     -69     -69     -69     -69     -69     -69
+48-60       0     -69     -69     -69     -69     -69     -69     -69
 
-        %>1SD     95%     CI    %>2SD     95%     CI    %>3SD
-Total     -69     -69     -69     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69     -69     -69     -69
-12-23     -69     -69     -69     -69     -69     -69     -69
-24-35     -69     -69     -69     -69     -69     -69     -69
-36-47     -69     -69     -69     -69     -69     -69     -69
-48-60     -69     -69     -69     -69     -69     -69     -69
+          95%     CI    %>2SD     95%     CI    %>3SD     95%     CI 
+Total     -69     -69     -69     -69     -69     -69     -69     -69
+  3-5     -69     -69     -69     -69     -69     -69     -69     -69
+ 6-11     -69     -69     -69     -69     -69     -69     -69     -69
+12-23     -69     -69     -69     -69     -69     -69     -69     -69
+24-35     -69     -69     -69     -69     -69     -69     -69     -69
+36-47     -69     -69     -69     -69     -69     -69     -69     -69
+48-60     -69     -69     -69     -69     -69     -69     -69     -69
 
-          95%     CI     Mean      SD
-Total     -69     -69     -69     -69
-  3-5     -69     -69     -69     -69
- 6-11     -69     -69     -69     -69
-12-23     -69     -69     -69     -69
-24-35     -69     -69     -69     -69
-36-47     -69     -69     -69     -69
-48-60     -69     -69     -69     -69
+         Mean      SD
+Total     -69     -69
+  3-5     -69     -69
+ 6-11     -69     -69
+12-23     -69     -69
+24-35     -69     -69
+36-47     -69     -69
+48-60     -69     -69
  
 Note:       Prevalences are written to
-            ~/documents/crg/wash-benefits/kenya/src/primary/dm/WH
-> O igrowup workdata\mysurvey_prev_st.xls
+            ~/documents/crg/wash-benefits/kenya/src/primary/dm/WHO igrowup w
+> orkdata\mysurvey_prev_st.xls
 
 . 
 . 
@@ -17209,13 +17079,12 @@ Note:       Prevalences are written to
 . *
 . * merge back to the main anthro dataset
 . *---------------------------------------------
-. use "~/dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/temp
-> -anthro.dta", clear
+. use "~/dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/temp-anthro.dta
+> ", clear
 
 . 
-. merge 1:1 hhid childid using "/Users/jadederong/Documents/CRG/w
-> ash-benefits/kenya/src/primary/dm/WHO igrowup workdata/mysurvey
-> _z_st.dta"
+. merge 1:1 hhid childid using "/Users/jadederong/Documents/CRG/wash-benefit
+> s/kenya/src/primary/dm/WHO igrowup workdata/mysurvey_z_st.dta"
 (label sexl already defined)
 (label cn2417 already defined)
 
@@ -17230,8 +17099,8 @@ Note:       Prevalences are written to
 . drop _m
 
 . 
-. *keep dataid childid _zwei _zlen _zbmi _zwfl _zhc _fwei _flen _
-> fbmi _fwfl _fhc
+. *keep dataid childid _zwei _zlen _zbmi _zwfl _zhc _fwei _flen _fbmi _fwfl 
+> _fhc
 . sort hhid childid
 
 . 
@@ -17288,16 +17157,14 @@ end of do-file
 . 
 . drop _*
 
-. drop reflib-measure childwt whosex muac-sw *_flag length_method
->  miss*
+. drop reflib-measure childwt whosex muac-sw *_flag length_method miss*
 
 . 
 . 
 . tempfile endline_anthro
 
 . save `endline_anthro'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
-> 0007 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000007 saved
 
 . 
 . 
@@ -17330,8 +17197,8 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
 . * ---------------------------------------------
 . * merge in block
 . * ---------------------------------------------
-. merge m:1 clusterid using "~/Dropbox/WASHB-Kenya-Data/0-Untouch
-> ed-data/0-Treatment-assignments/washb-kenya-tr.dta"
+. merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr
+> .dta"
 
     Result                           # of obs.
     -----------------------------------------
@@ -17339,6 +17206,7 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
     matched                             6,356  (_merge==3)
     -----------------------------------------
 
+. 
 . * drop if there are no children in that compound
 . drop if _m==2
 (0 observations deleted)
@@ -17349,16 +17217,15 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_13583.00
 . gen time=1
 
 . 
-. order block clusterid compoundid hhid childid tr time date targ
-> etchild
+. order block clusterid compoundid hhid childid tr time date targetchild
 
-. outsheet using "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-da
-> tasets/midline-anthro.csv", replace comma 
+. outsheet using "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midl
+> ine-anthro.csv", replace comma 
 
-. save "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/mid
-> line-anthro.dta", replace 
-file ~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midlin
-> e-anthro.dta saved
+. save "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midline-anthro
+> .dta", replace 
+file ~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midline-anthro.dt
+> a saved
 
 . 
 . 
@@ -17392,8 +17259,8 @@ file ~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midlin
 . * ---------------------------------------------
 . * merge in block
 . * ---------------------------------------------
-. merge m:1 clusterid using "~/Dropbox/WASHB-Kenya-Data/0-Untouch
-> ed-data/0-Treatment-assignments/washb-kenya-tr.dta"
+. merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr
+> .dta"
 
     Result                           # of obs.
     -----------------------------------------
@@ -17411,24 +17278,23 @@ file ~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midlin
 . gen time=2
 
 . 
-. order block clusterid compoundid hhid childid tr time date targ
-> etchild
+. order block clusterid compoundid hhid childid tr time date targetchild
 
 . 
-. outsheet using "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-da
-> tasets/endline-anthro.csv", replace comma 
+. outsheet using "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/endl
+> ine-anthro.csv", replace comma 
 
-. save "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/end
-> line-anthro.dta", replace 
-file ~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/endlin
-> e-anthro.dta saved
+. save "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/endline-anthro
+> .dta", replace 
+file ~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/endline-anthro.dt
+> a saved
 
 . 
 . 
 . log close
       name:  <unnamed>
-       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/
-> src/primary/dm/2_make_anthro_data.log
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary
+> /dm/2_make_anthro_data.log
   log type:  text
- closed on:   6 Dec 2016, 13:09:28
------------------------------------------------------------------
+ closed on:  17 Jul 2017, 15:10:25
+----------------------------------------------------------------------------

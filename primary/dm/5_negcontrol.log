@@ -1,26 +1,30 @@
------------------------------------------------------------------
+----------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/
-> src/primary/dm/6_negcontrol.log
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary
+> /dm/5_negcontrol.log
   log type:  text
- opened on:   6 Dec 2016, 13:26:28
+ opened on:  17 Jul 2017, 15:12:51
 
 . 
 . *********************************************
 . * WASH Benefits Kenya
+. * Primary outcome analysis
 . 
 . * Make analysis dataset: negative control
 . * Bruise/abrasion
 . 
-. * by Jade (jadebc@berkeley.edu)
+. * Reads in raw data
+. * Outputs 1 dataset with individual level data
+. * for midline and endline 
+. 
+. * by Jade Benjamin-Chung (jadebc@berkeley.edu)
 . *********************************************
 . clear all
 
 . set more off
 
 . cd "~/Dropbox/WASHB-Kenya-Data/0-Untouched-Data/1-Main-survey/"
-/Users/jadederong/Dropbox/WASHB-Kenya-Data/0-Untouched-data/1-Mai
-> n-survey
+/Users/jadederong/Dropbox/WASHB-Kenya-Data/0-Untouched-data/1-Main-survey
 
 . 
 . 
@@ -43,8 +47,8 @@ childid was double now str10
 . replace bruise2=1 if bruisea ==1 | bruiseb == 1 | bruisec ==1
 (1,029 real changes made)
 
-. replace bruise2=. if (bruisea ==. | bruisea==99) & (bruiseb ==.
->  | bruiseb==99) & (bruisec ==. | bruisec==99)
+. replace bruise2=. if (bruisea ==. | bruisea==99) & (bruiseb ==. | bruiseb=
+> =99) & (bruisec ==. | bruisec==99)
 (67 real changes made, 67 to missing)
 
 . 
@@ -68,8 +72,7 @@ childid was double now str10
 . tempfile midline
 
 . save `midline'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_17028.00
-> 0001 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000001 saved
 
 . 
 . 
@@ -90,12 +93,11 @@ hhid was double now str7
 . 
 . gen bruise2=0
 
-. replace bruise2=1 if bruisea_ad ==1 | bruiseb_ad == 1 | bruisec
-> _ad ==1
+. replace bruise2=1 if bruisea_ad ==1 | bruiseb_ad == 1 | bruisec_ad ==1
 (1,168 real changes made)
 
-. replace bruise2=. if (bruisea_ad ==. | bruisea_ad==99) & (bruis
-> eb_ad ==. | bruiseb_ad==99) & (bruisec_ad ==. | bruisec_ad==99)
+. replace bruise2=. if (bruisea_ad ==. | bruisea_ad==99) & (bruiseb_ad ==. |
+>  bruiseb_ad==99) & (bruisec_ad ==. | bruisec_ad==99)
 (694 real changes made, 694 to missing)
 
 . 
@@ -104,8 +106,7 @@ hhid was double now str7
 . replace bruise7 = 1 if bruise2==1 | bruised==1
 (1,371 real changes made)
 
-. replace bruise7 = . if bruise2==. & (bruised_ad==. | bruised_ad
-> ==99)
+. replace bruise7 = . if bruise2==. & (bruised_ad==. | bruised_ad==99)
 (694 real changes made, 694 to missing)
 
 . 
@@ -118,8 +119,7 @@ hhid was double now str7
 . tempfile endline
 
 . save `endline'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_17028.00
-> 0002 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000002 saved
 
 . 
 . *********************************************
@@ -133,8 +133,7 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_17028.00
 . tempfile childdata
 
 . save `childdata'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_17028.00
-> 0003 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000003 saved
 
 . 
 . * ---------------------------------------------
@@ -177,22 +176,21 @@ hhid was double now str7
 . label values sex sexl
 
 . 
-. keep clusterid compoundid hhid childid date* sibling targetchil
-> d newbirth date* dob sex
+. keep clusterid compoundid hhid childid date* sibling targetchild newbirth 
+> date* dob sex
 
 . 
 . tempfile agesex
 
 . save `agesex'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_17028.00
-> 0005 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000005 saved
 
 . restore
 
 . 
 . merge m:1 childid using `agesex'
-(note: variable clusterid was float, now double to accommodate
-       using data's values)
+(note: variable clusterid was float, now double to accommodate using
+       data's values)
 
     Result                           # of obs.
     -----------------------------------------
@@ -245,8 +243,7 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_17028.00
 . 
 . gen dcohort=0
 
-. replace dcohort=1 if agey<3 & targetchild==0 & bruise7!=. & tim
-> e==0
+. replace dcohort=1 if agey<3 & targetchild==0 & bruise7!=. & time==0
 (0 real changes made)
 
 . replace dcohort=1 if targetchild==1 & bruise7!=. & time==1
@@ -266,8 +263,8 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_17028.00
 . tostring clusterid, replace
 clusterid was double now str5
 
-. merge m:1 clusterid using "~/Dropbox/WASHB-Kenya-Data/0-Untouch
-> ed-Data/0-Treatment-assignments/washb-kenya-tr.dta"
+. merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr
+> .dta"
 
     Result                           # of obs.
     -----------------------------------------
@@ -286,27 +283,21 @@ clusterid was double now str5
 . 
 . sort hhid childid time
 
-. order block clusterid compoundid hhid childid time targetchild 
-> tr date 
+. order block clusterid compoundid hhid childid time targetchild tr date 
 
 . 
-. outsheet using "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-da
-> tasets/bruise.csv", replace comma 
-(note: file /Users/jadederong/Dropbox/WASHB-Kenya-Data/1-primary-
-> outcome-datasets/bruise.csv not found)
+. outsheet using "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/brui
+> se.csv", replace comma 
 
-. save  "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/br
-> uise.dta", replace 
-(note: file /Users/jadederong/Dropbox/WASHB-Kenya-Data/1-primary-
-> outcome-datasets/bruise.dta not found)
-file ~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/bruise
-> .dta saved
+. save  "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/bruise.dta", 
+> replace 
+file ~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/bruise.dta saved
 
 . 
 . log close
       name:  <unnamed>
-       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/
-> src/primary/dm/6_negcontrol.log
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary
+> /dm/5_negcontrol.log
   log type:  text
- closed on:   6 Dec 2016, 13:26:30
------------------------------------------------------------------
+ closed on:  17 Jul 2017, 15:12:52
+----------------------------------------------------------------------------

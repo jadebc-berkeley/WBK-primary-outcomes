@@ -1,25 +1,29 @@
------------------------------------------------------------------
+----------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/
-> src/primary/dm/7_mortality.log
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary
+> /dm/6_mortality.log
   log type:  text
- opened on:   6 Dec 2016, 13:28:29
+ opened on:  17 Jul 2017, 15:13:01
 
 . 
 . *********************************************
 . * WASH Benefits Kenya
+. * Primary outcome analysis
 . 
 . * Make analysis dataset: mortality
 . 
-. * by Jade
+. * Reads in raw data
+. * Outputs 1 dataset with individual level data
+. * from endline
+. 
+. * by Jade Benjamin-Chung (jadebc@berkeley.edu)
 . *********************************************
 . clear all
 
 . set more off
 
 . cd "~/Dropbox/WASHB-Kenya-Data/0-Untouched-Data/1-Main-survey/"
-/Users/jadederong/Dropbox/WASHB-Kenya-Data/0-Untouched-data/1-Mai
-> n-survey
+/Users/jadederong/Dropbox/WASHB-Kenya-Data/0-Untouched-data/1-Main-survey
 
 . 
 . 
@@ -53,8 +57,8 @@ clusterid was double now str5
 
 . 
 . * merge in treatment info
-. merge m:1 clusterid using "~/Dropbox/WASHB-Kenya-Data/0-Untouch
-> ed-Data/0-Treatment-assignments/washb-kenya-tr.dta"
+. merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr
+> .dta"
 
     Result                           # of obs.
     -----------------------------------------
@@ -66,8 +70,7 @@ clusterid was double now str5
 . drop _m
 
 . 
-. order tr block clusterid hhid childid childtype pregloss childd
-> eath 
+. order tr block clusterid hhid childid childtype pregloss childdeath 
 
 . 
 . * drop if not live birth
@@ -88,10 +91,8 @@ clusterid was double now str5
 . ren childdeathnew childdeath
 
 . 
-. outsheet using "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-da
-> tasets/mortality.csv", comma replace
-(note: file /Users/jadederong/Dropbox/WASHB-Kenya-Data/1-primary-
-> outcome-datasets/mortality.csv not found)
+. outsheet using "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/mort
+> ality.csv", comma replace
 
 . 
 . 
@@ -99,8 +100,8 @@ clusterid was double now str5
 . 
 . log close
       name:  <unnamed>
-       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/
-> src/primary/dm/7_mortality.log
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary
+> /dm/6_mortality.log
   log type:  text
- closed on:   6 Dec 2016, 13:28:29
------------------------------------------------------------------
+ closed on:  17 Jul 2017, 15:13:01
+----------------------------------------------------------------------------

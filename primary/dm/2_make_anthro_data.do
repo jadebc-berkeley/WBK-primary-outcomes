@@ -718,7 +718,8 @@ drop _m
 * ---------------------------------------------
 * merge in block
 * ---------------------------------------------
-merge m:1 clusterid using "~/Dropbox/WASHB-Kenya-Data/0-Untouched-data/0-Treatment-assignments/washb-kenya-tr.dta"
+merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr.dta"
+
 * drop if there are no children in that compound
 drop if _m==2
 drop _m
@@ -745,7 +746,7 @@ drop _m
 * ---------------------------------------------
 * merge in block
 * ---------------------------------------------
-merge m:1 clusterid using "~/Dropbox/WASHB-Kenya-Data/0-Untouched-data/0-Treatment-assignments/washb-kenya-tr.dta"
+merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr.dta"
 * drop if there are no children in that compound
 drop if _m==2
 drop _m
