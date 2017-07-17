@@ -1,5 +1,5 @@
 capture log close
-log using "~/documents/crg/wash-benefits/Kenya/src/primary/dm/6_negcontrol.log", replace
+log using "~/documents/crg/wash-benefits/Kenya/src/primary/dm/5_negcontrol.log", replace
 
 *********************************************
 * WASH Benefits Kenya
