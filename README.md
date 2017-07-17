@@ -12,13 +12,13 @@ The scripts in the dm directory process raw data and create the analysis dataset
 
 ### WASH Benefits Package
 
-This analysis used an R package developed for the WASH Benefits study intention-to-treat analyses called washb(). 
+This analysis used an R package developed for the WASH Benefits study intention-to-treat analyses called [washb](https://github.com/ben-arnold/washb). 
 
 For all analysis scripts, you will need to change directory statements within them to point them to the files on your local directory. Similar directory statement changes will be needed wherever output files are saved down (e.g., raw estimates, figures).
 
 ### Directory structure
 
-*`adherence`* : intervention adherence measures at enrollment, year 1, and year 2
+**`adherence`** : intervention adherence measures at enrollment, year 1, and year 2
 
 balance : enrollment characteristics by arm
 
