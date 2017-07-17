@@ -3,8 +3,13 @@
 # Primary outcome analysis  
 
 # Wasting unadjusted analysis
+# calculate unadjusted differences
+# between treatment arms for H1 and H3
 
-# by Jade (jadebc@berkeley.edu)
+# input: midline-anthro.csv, endline-anthro.csv
+# output: wast_pr_unadj.RData, wast_rd_unadj.RData
+
+# by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 library(washb)
 
