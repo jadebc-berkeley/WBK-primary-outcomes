@@ -18,7 +18,7 @@ For all analysis scripts, you will need to change directory statements within th
 
 ### Directory structure
 
-**`analysis`** : data management scripts
+**`analysis`** : analysis scripts
 
 * **`1-diar`**: diarrhea analyses
 * **`2-laz`**: length-for-age z-score analyses
