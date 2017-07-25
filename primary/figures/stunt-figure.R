@@ -1,5 +1,5 @@
 # --------------------------------------
-# diar-figure.R
+# stunt-figure.R
 # jade benjamin-chung (jadebc@berkeley.edu)
 #
 # description:
@@ -22,9 +22,9 @@ library(foreign)
 # load the analysis output files
 # --------------------------------------
 
-load("~/Dropbox/WBK-primary-analysis/results/jade/stunt_rd_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/stunt_pr_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/stunt_prev.RData")
+load("C:/Users/andre/Dropbox/WBK-primary-analysis/results/jade/stunt_rd_unadj.RData")
+load("C:/Users/andre/Dropbox/WBK-primary-analysis/results/jade/stunt_pr_unadj.RData")
+load("C:/Users/andre/Dropbox/WBK-primary-analysis/results/jade/stunt_prev.RData")
 # --------------------------------------
 # format the objects for plotting
 # --------------------------------------
@@ -42,13 +42,10 @@ fuPrev <- stunt_t2_prev_j
 h1pr <- stunt_t2_h1_pr_unadj_j
 h3pr <- stunt_t2_h3_pr_unadj_j
 
-pdf("~/Dropbox/WBK-primary-analysis/results/Figures/kenya-stunt.pdf",width=14,height=4)
+pdf("C:/Users/andre/Dropbox/WBK-primary-analysis/results/Figures/kenya-stunt.pdf",width=14,height=4)
 
 
-# cbPalette <- c("#999999","#9970ab" ,"#E69F00", "#56B4E9", "#009E73", "#F0E442", "#6e016b", "#0072B2", "#D55E00")
-# cols <- c("gray30",cbPalette[c(2:4,6:8)])
-
-# 
+# set up color palette
 black = "#000004FF"
 blue = "#3366AA"
 teal = "#11AA99"
@@ -97,10 +94,8 @@ MidPts <- barplot(1:8,names.arg=NA,border=NA,col=NA,
 	
 	mtext("Nutrition + WSH v. Nutrition",side=3,line=2,at=hx,adj=1,cex=0.8,col="gray30")
 	mtext(c("ref",prform(h3pr[1,1],h3pr[1,2],h3pr[1,3])),side=3,line=2,at=MidPts[c(7,8)],cex=0.8,col=c(cols[7],"gray30"))
-	# 
-	# mtext("WSH v. H",side=3,line=1,at=hx,adj=1,cex=0.8,col="gray30")
-	# mtext(c("ref",prform(h2pr[3,1],h2pr[3,2],h2pr[3,3])),side=3,line=1,at=MidPts[c(4,5)],cex=0.8,col=c(cols[4],"gray30"))
-	# 
+
+	
 par(op)
 dev.off()
 

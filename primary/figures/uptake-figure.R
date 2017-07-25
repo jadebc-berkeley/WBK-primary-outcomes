@@ -1,10 +1,12 @@
 #---------------------------------------
-# bangladesh-uptake-plot.R
+# Kenya-uptake-plot.R
 #
-# ben arnold (benarnold@berkeley.edu)
+# Andrew Mertens (amertens@berkeley.edu)
 #
-# plot uptake measures
+# plot uptake measures for the WASH
+# Benefits Kenya trial
 #---------------------------------------
+
 
 #---------------------------------------
 # preamble
@@ -16,9 +18,9 @@ library(scales)
 # load the uptake estimates
 #---------------------------------------
 
-# setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Andrew")
-#setwd("~/Dropbox/WBK-primary-analysis/Data/Results/Jade")
-load("~/Dropbox/WBK-primary-analysis/results/jade/kenya-uptake.RData")
+setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade")
+
+load("kenya-uptake.RData")
 
 #---------------------------------------
 # general plotting function for uptake
@@ -57,13 +59,11 @@ ulabplot <- function(title) {
 }
 
 
-
 #---------------------------------------
 # put the result objects into a list
 # to make them easier to plot in a loop
 #---------------------------------------
 
-# freechl0 <- matrix(NA,nrow=nrow(freechl1),ncol=ncol(freechl1))
 rlnsp0 <- matrix(NA,nrow=nrow(rlnsp1),ncol=ncol(rlnsp1))
 uptakelist <- list(
   list(promoter_vis0,promoter_vis1,promoter_vis2),
@@ -72,6 +72,7 @@ uptakelist <- list(
                    list(humfeces0,humfeces1,humfeces2),
                    list(hwsw0,hwsw1,hwsw2),
                    list(rlnsp0,rlnsp1,rlnsp2))
+
 # labels for the lists
 uptakelabs <- c(
   "Visited by\npromoter\n in past month\n(%)",
@@ -82,9 +83,9 @@ uptakelabs <- c(
   "LNS sachets\nconsumed\n(% of expected)"
 )
 
-pdf("~/Dropbox/WBK-primary-analysis/results/figures/kenya-uptake.pdf",width=10.5,height=14)
-# cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-# cols <- c("gray30",cbPalette[c(2:4,5,6:8)])
+pdf("C:/Users/andre/Dropbox/WBK-primary-analysis/results/figures/kenya-uptake.pdf",width=10.5,height=14)
+
+
 
 black = "#000004FF"
 blue = "#3366AA"
@@ -99,10 +100,11 @@ grey = "#777777"
 cols=c(black,chartr,blue,teal,green,orange,red,magent)
 
 
-
+#Set up plot layout
 lo <- layout(mat=matrix(1:24,ncol=4,nrow=6,byrow=T),widths=c(0.5,1,1,1))
 op <- par(mar=c(4,2.5,3,0.5)+0.1)
 
+#Plot the uptake measures
 for(i in 1:length(uptakelist)) {
   if(i!=length(uptakelist)){
     op <- par(mar=c(3,1,1,0.5)+0.1)
