@@ -61,10 +61,25 @@ diar_h2_pr_unadj_j=t(sapply(trlist, function(x) washb_mh(Y=df$diarr7,tr=df$tr,
 rownames(diar_h2_pr_unadj_j)=c("WSH vs Water","WSH vs Sanitation","WSH vs Handwashing")
 rownames(diar_h2_rd_unadj_j)=c("WSH vs Water","WSH vs Sanitation","WSH vs Handwashing")
 
+#----------------------------------------------
+# H3: Unadjusted prevalence ratios; combined WSH vs. 
+# single arms.  PR, CI, MH P-value
+#----------------------------------------------
+trlist=c("WSH","Nutrition")
 
-save(diar_h1_pr_unadj_j, diar_h2_pr_unadj_j,
+diar_h3_rd_unadj_j=t(sapply(trlist, function(x) washb_mh(Y=df$diarr7,tr=df$tr,
+      strat=df$block,contrast=c(x,"Nutrition + WSH"),measure="RD")))
+
+diar_h3_pr_unadj_j=t(sapply(trlist, function(x) washb_mh(Y=df$diarr7,tr=df$tr,
+      strat=df$block,contrast=c(x,"Nutrition + WSH"),measure="RR")))
+
+rownames(diar_h3_rd_unadj_j)=c("Nutrition + WSH vs WSH","Nutrition + WSH vs Nutrition")
+rownames(diar_h3_pr_unadj_j)=c("Nutrition + WSH vs WSH","Nutrition + WSH vs Nutrition")
+
+
+save(diar_h1_pr_unadj_j, diar_h2_pr_unadj_j,diar_h3_pr_unadj_j,
      file="~/Dropbox/WBK-primary-analysis/results/jade/diar_pr_unadj.RData")
 
-  save(diar_h1_rd_unadj_j, diar_h2_rd_unadj_j,
+  save(diar_h1_rd_unadj_j, diar_h2_rd_unadj_j,diar_h3_rd_unadj_j,
        file="~/Dropbox/WBK-primary-analysis/results/jade/diar_rd_unadj.RData")
   

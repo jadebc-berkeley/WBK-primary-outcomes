@@ -5,6 +5,8 @@
 # Diarrhea unadjusted analysis
 # Midline data only
 
+# Year 1 data only
+
 # calculate unadjusted differences
 # between treatment arms for H1-H3
 
@@ -21,7 +23,7 @@ source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs
 
 d=preprocess.diarr(data)
 
-# subset to year 1 and 2
+# subset to year 1 
 df = d[d$time==1,]
   
 # subset to columns needed for unadjusted PR
