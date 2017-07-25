@@ -31,8 +31,8 @@ library(foreign)
 # --------------------------------------
 # load the analysis output files
 # --------------------------------------
-
-setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade/")
+try(setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade/"))
+try(setwd("~/Dropbox/WBK-primary-analysis/Results/Jade/"))
 load("diar_rd_unadj.RData")
 load("diar_pr_unadj.RData")
 load("diar_prev.RData")
@@ -79,6 +79,7 @@ cols=c(black,chartr,blue,teal,green,orange,red,magent)
 # Year 2 diarrhea figure 
 #--------------------------------------------------------------------
 try(setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Figures/"))
+try(setwd("~/Dropbox/WBK-primary-analysis/Results/Figures/"))
 pdf("kenya-diar.pdf",width=14,height=4)
 
 

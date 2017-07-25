@@ -21,10 +21,11 @@ library(foreign)
 # --------------------------------------
 # load the analysis output files
 # --------------------------------------
-
-load("C:/Users/andre/Dropbox/WBK-primary-analysis/results/jade/stunt_rd_unadj.RData")
-load("C:/Users/andre/Dropbox/WBK-primary-analysis/results/jade/stunt_pr_unadj.RData")
-load("C:/Users/andre/Dropbox/WBK-primary-analysis/results/jade/stunt_prev.RData")
+try(setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade/"))
+try(setwd("~/Dropbox/WBK-primary-analysis/Results/Jade/"))
+load("stunt_rd_unadj.RData")
+load("stunt_pr_unadj.RData")
+load("stunt_prev.RData")
 # --------------------------------------
 # format the objects for plotting
 # --------------------------------------
@@ -42,7 +43,9 @@ fuPrev <- stunt_t2_prev_j
 h1pr <- stunt_t2_h1_pr_unadj_j
 h3pr <- stunt_t2_h3_pr_unadj_j
 
-pdf("C:/Users/andre/Dropbox/WBK-primary-analysis/results/Figures/kenya-stunt.pdf",width=14,height=4)
+try(setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Figures/"))
+try(setwd("~/Dropbox/WBK-primary-analysis/Results/Figures/"))
+pdf("kenya-stunt.pdf",width=14,height=4)
 
 
 # set up color palette

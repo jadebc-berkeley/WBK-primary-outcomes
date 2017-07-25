@@ -35,7 +35,7 @@ library(scales)
 # --------------------------------------
 
 setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade")
-
+try(setwd("~/Dropbox/WBK-primary-analysis/Results/Jade/"))
 
 load("laz_mean.Rdata")
 load("laz_rd_unadj.Rdata")
@@ -64,6 +64,7 @@ t2pvalh3 <- laz_t2_h3_pval_unadj_j
 # and subset to analysis children
 #---------------------------------------
 setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Data/Final/Jade")
+try(setwd("~/Dropbox/WBK-primary-analysis/Data/Final/Jade/"))
 ad1 <- read.csv("midline-anthro.csv")
 head(ad1)
 #Subset to target children without extreme HAZ values
@@ -191,7 +192,8 @@ cols=c(black,chartr,blue,teal,green,orange,red,magent)
 # --------------------------------------
 #  make a multi-panel density plot - year 1
 # --------------------------------------
-setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/")
+try(setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/"))
+try(setwd("~/Dropbox/WBK-primary-analysis/Results/"))
 pdf("Figures/kenya-laz1.pdf",width=15,height=15)
 
 # set up the layout

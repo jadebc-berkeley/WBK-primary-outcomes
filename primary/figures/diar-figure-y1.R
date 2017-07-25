@@ -30,12 +30,11 @@ library(foreign)
 # --------------------------------------
 # load the analysis output files
 # --------------------------------------
-
-setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade/")
+try(setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade/"))
+try(setwd("~/Dropbox/WBK-primary-analysis/Results/Jade/"))
 load("diar_y1_rd_unadj.RData")
 load("diar_y1_pr_unadj.RData")
-load("diar_prev.RData")
-
+load("diar_prev_y1.RData")
 
 # --------------------------------------
 # format the objects for plotting
@@ -43,8 +42,6 @@ load("diar_prev.RData")
 
 glab <- c("Control\n","Passive Control\n","Water\n","Sanitation\n","Handwashing\n","Combined\nWSH","Nutrition\n","Combined\nNutrition+WSH")
 glab2 <- c("C","PC","W","S","H","WSH","N","WSHN")
-
-
 
 #Rename the object to be plotted with "fuPrev"
 t0n <- diar_t0_n_j
@@ -78,7 +75,9 @@ cols=c(black,chartr,blue,teal,green,orange,red,magent)
 # Y1 diarrhea figure
 #--------------------------------------------------------------------
 try(setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Figures/"))
-pdf("kenya-diar-y1.pdf",width=14,height=4)
+try(setwd("~/Dropbox/WBK-primary-analysis/Results/Figures/"))
+
+pdf("~/Dropbox/WBK-primary-analysis/Results/Figures/kenya-diar-y1.pdf",width=14,height=4)
 
 ytics <- seq(18,36,by=2)  #<----------Set the Y-axis range here
 

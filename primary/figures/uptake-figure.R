@@ -18,8 +18,8 @@ library(scales)
 # load the uptake estimates
 #---------------------------------------
 
-setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade")
-
+try(setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade/"))
+try(setwd("~/Dropbox/WBK-primary-analysis/Results/Jade/"))
 load("kenya-uptake.RData")
 
 #---------------------------------------
@@ -83,7 +83,9 @@ uptakelabs <- c(
   "LNS sachets\nconsumed\n(% of expected)"
 )
 
-pdf("C:/Users/andre/Dropbox/WBK-primary-analysis/results/figures/kenya-uptake.pdf",width=10.5,height=14)
+try(setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Figures/"))
+try(setwd("~/Dropbox/WBK-primary-analysis/Results/Figures/"))
+pdf("kenya-uptake.pdf",width=10.5,height=14)
 
 
 
