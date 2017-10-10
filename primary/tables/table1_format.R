@@ -1,32 +1,43 @@
+
 ##############################################
 # WASH Benefits Kenya
-# Primary outcome analysis 
 
 # Table 1 formatting
 
-# by Jade Benjamin-Chung (jadebc@berkeley.edu)
+# by Jade
 ##############################################
 rm(list=ls())
 
-load("~/Dropbox/WBK-primary-analysis/Results/jade/table1.RData")
+
+load("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/jade/table1.RData")
+
+# n.comp.f=matrix(NA,1,8)
+# for(i in 1:length(n.comp)){
+#   n.comp.f[i]=paste("(N=",n.comp[i],")",sep="")
+# }
 
 n.hh.f=matrix(NA,1,8)
 for(i in 1:length(n.hh)){
   n.hh.f[i]=paste("(N=",n.hh[i],")",sep="")
 }
 
+#Extract N
+table1_N = table1_j[,c(1,2,4,6,8,10,12,14,16)]
+
 #drop n columns
 table1_j = table1_j[,c(1,3,5,7,9,11,13,15,17)]
+table1_SD_j = table1_SD_j[,c(1,3,5,7,9,11,13,15,17)]
+
 
 for(i in c(2:9)){
   for(j in c(1,5:7,12)){
-    table1_j[j,i]=sprintf("%1.0f",as.numeric(table1_j[j,i]))
+    table1_j[j,i]=paste0(sprintf("%1.0f",as.numeric(table1_j[j,i])), " (", sprintf("%1.0f",as.numeric(table1_SD_j[j,i])),")")
   }
   for(j in c(2:4,8:11,13:23)){
-    table1_j[j,i]=sprintf("%1.1f",as.numeric(table1_j[j,i])*100)
+    table1_j[j,i]=paste0(table1_N[j,i], " (",sprintf("%1.0f",as.numeric(table1_j[j,i])*100), "\\%)")
   } 
 }
-
+table1_j
 table1=table1_j
 
 blank=rep("",8)
@@ -61,5 +72,7 @@ for(i in c(20:21,23:24,26:27)){
   table1_f$lab[i]=paste("~~~~~",table1_f$lab[i],sep="")
 }
 
-save(n.hh.f,table1_f,file="~/Dropbox/WBK-primary-analysis/Results/jade/table1_f.RData")
+save(n.hh.f,table1_f,file="C:/Users/andre/Dropbox/WBK-primary-analysis/Results/jade/table1_f.RData")
+
+
 
