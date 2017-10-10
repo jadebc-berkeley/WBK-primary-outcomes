@@ -81,7 +81,7 @@ pdf("~/Dropbox/WBK-primary-analysis/Results/Figures/kenya-diar-y1.pdf",width=14,
 
 ytics <- seq(18,36,by=2)  #<----------Set the Y-axis range here
 
-op <- par(mar=c(1,9,11,0)+0.1,xpd=TRUE)
+op <- par(mar=c(1,9,9,0)+0.1,xpd=TRUE)
 # set up an empty plot
 MidPts <- barplot(1:8,names.arg=NA,border=NA,col=NA,
 	ylim=range(ytics),ylab="",yaxt="n",
@@ -98,32 +98,26 @@ MidPts <- barplot(1:8,names.arg=NA,border=NA,col=NA,
 	text(x=MidPts+0.05,y=fuPrev[,1]*100,sprintf("%1.1f",fuPrev[,1]*100),pos=4,cex=1,col=cols,font=1)
 	
 	# print header and footer labels
-	mtext(glab,at=MidPts,side=3,line=8,col=cols,font=1  )
+	mtext(glab,at=MidPts,side=3,line=6,col=cols,font=1  )
 	hx <- MidPts[1]-0.5
 	prform <- function(pr,lb,ub) {
 		paste(sprintf("%1.2f",pr)," (",sprintf("%1.2f",lb),", ",sprintf("%1.2f",ub),")",sep="")
 	}
 	
 	# print header table - PRs for H1	
-	mtext("Prevalence Ratio (95% CI)",side=3,line=7.5,at=hx,adj=1,cex=1)
-	mtext("Intervention v. Control",side=3,line=6.5,at=hx,adj=1,cex=0.8,col="gray30")
-	mtext(c("ref",prform(h1pr[,1],h1pr[,2],h1pr[,3])),side=3,line=6.5,at=MidPts,cex=0.8,col="gray30")
+	mtext("Prevalence Ratio (95% CI)",side=3,line=5.5,at=hx,adj=1,cex=1)
+	mtext("Intervention v. Control",side=3,line=4.5,at=hx,adj=1,cex=0.8,col="gray30")
+	mtext(c("ref",prform(h1pr[,1],h1pr[,2],h1pr[,3])),side=3,line=4.5,at=MidPts,cex=0.8,col="gray30")
 	
 	# print header table - PRs for H2a - c
-	mtext("WSH v. W",side=3,line=5,at=hx,adj=1,cex=0.8,col="gray30")
-	mtext(c("ref",prform(h2pr[1,1],h2pr[1,2],h2pr[1,3])),side=3,line=5,at=MidPts[c(3,6)],cex=0.8,col=c(cols[3],"gray30"))
+	mtext("WSH v. Water",side=3,line=3,at=hx,adj=1,cex=0.8,col="gray30")
+	mtext(c("ref",prform(h2pr[1,1],h2pr[1,2],h2pr[1,3])),side=3,line=3,at=MidPts[c(3,6)],cex=0.8,col=c(cols[3],"gray30"))
 	
-	mtext("WSH v. S",side=3,line=4,at=hx,adj=1,cex=0.8,col="gray30")
-	mtext(c("ref",prform(h2pr[2,1],h2pr[2,2],h2pr[2,3])),side=3,line=4,at=MidPts[c(4,6)],cex=0.8,col=c(cols[4],"gray30"))
+	mtext("WSH v. Sanitation",side=3,line=2,at=hx,adj=1,cex=0.8,col="gray30")
+	mtext(c("ref",prform(h2pr[2,1],h2pr[2,2],h2pr[2,3])),side=3,line=2,at=MidPts[c(4,6)],cex=0.8,col=c(cols[4],"gray30"))
 	
-	mtext("WSH v. H",side=3,line=3,at=hx,adj=1,cex=0.8,col="gray30")
-	mtext(c("ref",prform(h2pr[3,1],h2pr[3,2],h2pr[3,3])),side=3,line=3,at=MidPts[c(5,6)],cex=0.8,col=c(cols[5],"gray30"))
+	mtext("WSH v. Handwashing",side=3,line=1,at=hx,adj=1,cex=0.8,col="gray30")
+	mtext(c("ref",prform(h2pr[3,1],h2pr[3,2],h2pr[3,3])),side=3,line=1,at=MidPts[c(5,6)],cex=0.8,col=c(cols[5],"gray30"))
 
-	mtext("WSH+N v. WSH",side=3,line=2,at=hx,adj=1,cex=0.8,col="gray30")
-	mtext(c("ref",prform(h3pr[2,1],h3pr[2,2],h3pr[2,3])),side=3,line=2,at=MidPts[c(6,8)],cex=0.8,col=c(cols[6],"gray30"))
-
-	mtext("WSH+N v. N",side=3,line=1,at=hx,adj=1,cex=0.8,col="gray30")
-	mtext(c("ref",prform(h3pr[1,1],h3pr[1,2],h3pr[1,3])),side=3,line=1,at=MidPts[c(7,8)],cex=0.8,col=c(cols[7],"gray30"))
-		
 par(op)
 dev.off()
