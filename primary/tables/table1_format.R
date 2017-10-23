@@ -30,10 +30,10 @@ table1_SD_j = table1_SD_j[,c(1,3,5,7,9,11,13,15,17)]
 
 
 for(i in c(2:9)){
-  for(j in c(1,5:7,12)){
+  for(j in c(1,3,7:9,16)){
     table1_j[j,i]=paste0(sprintf("%1.0f",as.numeric(table1_j[j,i])), " (", sprintf("%1.0f",as.numeric(table1_SD_j[j,i])),")")
   }
-  for(j in c(2:4,8:11,13:23)){
+  for(j in c(2,4:6,10:15,17:27)){
     table1_j[j,i]=paste0(table1_N[j,i], " (",sprintf("%1.0f",as.numeric(table1_j[j,i])*100), "\\%)")
   } 
 }
@@ -44,31 +44,31 @@ blank=rep("",8)
 
 table1_f=   rbind(
                c("\\textbf{Maternal}",blank),
-               table1[c(1:2),],
+               table1[c(1:4),],
                c( "\\textbf{Paternal}",blank),
-               table1[c(3:4),],
+               table1[c(5:6),],
                c("\\textbf{Household}",blank),
-               table1[c(5:10),],
+               table1[c(7:14),],
                c("\\textbf{Drinking Water}",blank),
-               table1[c(11:13),],
+               table1[c(15:17),],
                c("\\textbf{Sanitation}",blank),
                c("Always or usually use primary toilet for defecation",blank),
-               table1[c(14:15),],
+               table1[c(18:19),],
                c("Daily defecating in the open",blank),
-               table1[c(16:17),],
+               table1[c(20:21),],
                c("Latrine",blank),
-               table1[c(18:20),],
+               table1[c(22:24),],
                c("\\textbf{Handwashing location}",blank),
-               table1[c(21:22),],
+               table1[c(25:26),],
                c("\\textbf{Nutrition}",blank),
-               table1[c(23),])
+               table1[c(27),])
 
 rownames(table1_f)=NULL
 
-for(i in c(2:3,5:6,8:13,15:17,19,22,25,28,30:31,33)){
+for(i in c(2:5,7:8,10:17,19:21,24:25,27:28,30:32,34:35,37)){
   table1_f$lab[i]=paste("~~~",table1_f$lab[i],sep="")
 }
-for(i in c(20:21,23:24,26:27)){
+for(i in c(24:25,27:28,30:31)){
   table1_f$lab[i]=paste("~~~~~",table1_f$lab[i],sep="")
 }
 

@@ -77,7 +77,7 @@ cols=c(black,chartr,blue,teal,green,orange,red,magent)
 try(setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Figures/"))
 try(setwd("~/Dropbox/WBK-primary-analysis/Results/Figures/"))
 
-pdf("~/Dropbox/WBK-primary-analysis/Results/Figures/kenya-diar-y1.pdf",width=14,height=4)
+pdf("kenya-diar-y1.pdf",width=14,height=4)
 
 ytics <- seq(18,36,by=2)  #<----------Set the Y-axis range here
 
@@ -89,7 +89,7 @@ MidPts <- barplot(1:8,names.arg=NA,border=NA,col=NA,
 	)
 	segments(x0=0,x1=max(MidPts+0.5),y0=ytics,lty=2,lwd=1,col="gray80")
 	axis(2,at=ytics,las=1)
-	mtext("Diarrhoea\nPrevalence\nDuring\nFollow-up\n(%)",side=2,line=3,las=1)
+	mtext("7-day\nDiarrhoea\nPrevalence\nDuring\nFollow-up\n(%)",side=2,line=3,las=1)
 
 	# plot estimates
 	arrows(x0=MidPts, y0=fuPrev[,2]*100, y1=fuPrev[,3]*100, col=cols,lwd=2,length=0.05,angle=90,code=3)

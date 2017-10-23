@@ -147,7 +147,7 @@ cols <- c(corange,cblue)
 plot(diar_c$month[diar_c$month<="2015-07-01"],
      diar_c$mean[diar_c$month<="2015-07-01"],
      type="n",
-     ylim=range(ytics),ylab="Diarrhea prevalence (%)",yaxt="n",
+     ylim=range(ytics),ylab="7-day Diarrhea prevalence (%)",yaxt="n",
      xlim=range(xtics),xlab="",xaxt="n",
      bty="n",las=1)
 axis(1,at=xtics,las=2,labels=format(xtics,"%m"),cex.axis=0.6)
@@ -195,7 +195,7 @@ cols <- c(corange,cblue)
 plot(diar_c$month[diar_c$month<="2015-07-01"],
      diar_c$mean[diar_c$month<="2015-07-01"],
      type="n",
-     ylim=range(ytics),ylab="Diarrhea prevalence (%)",yaxt="n",
+     ylim=range(ytics),ylab="7- day Diarrhea prevalence (%)",yaxt="n",
      xlim=range(xtics),xlab="",xaxt="n",
      bty="n",las=1)
 axis(1,at=xtics,las=2,labels=format(xtics,"%m"),cex.axis=0.6)
@@ -240,7 +240,7 @@ cols <- c(corange,cblue)
 plot(diar_c$month[diar_c$month<="2015-07-01"],
      diar_c$mean[diar_c$month<="2015-07-01"],
      type="n",
-     ylim=range(ytics),ylab="Diarrhea prevalence (%)",yaxt="n",
+     ylim=range(ytics),ylab="7-day Diarrhea prevalence (%)",yaxt="n",
      xlim=range(xtics),xlab="",xaxt="n",
      bty="n",las=1)
   axis(1,at=xtics,las=2,labels=format(xtics,"%m"),cex.axis=0.6)
@@ -494,7 +494,7 @@ xtics3 <- as.Date(c("2015-03-01","2016-02-01"))
 plot(diar_c$month[diar_c$month<="2015-07-01"],
      diar_c$mean[diar_c$month<="2015-07-01"],
      type="n",
-     ylim=range(ytics),ylab="Diarrhea prevalence (%)",yaxt="n",
+     ylim=range(ytics),ylab="7-day Diarrhea prevalence (%)",yaxt="n",
      xlim=range(xtics),xlab="",xaxt="n",
      bty="n",las=1)
   axis(1,at=xtics,las=2,labels=format(xtics,"%m"),cex.axis=0.6)

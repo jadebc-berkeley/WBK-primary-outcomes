@@ -94,8 +94,8 @@ load(paste(dir.start,"Dropbox/WBK-primary-analysis/Results/Jade/table1_f.RData",
 \hline
 & &  &  &  &  & Water + &  &  \\
 & &  &  &  &  & Sanitation + &  &  \\
-& Active & Passive &  &  &  & Handwashing + &  & Nutrition + \\
-& Control & Control & Water & Sanitation & Handwashing & WSH & Nutrition & WSH \\
+& Active & Passive &  &  &  & Handwashing &  & Nutrition + \\
+& Control & Control & Water & Sanitation & Handwashing & (WSH) & Nutrition & WSH \\
 <<table,echo=false,results=tex>>=
 cleantable(matrix(c("No. of households:",n.hh.f),nrow=1,ncol=9),digits=0)
 @
@@ -121,6 +121,15 @@ Data are n (\%) or mean (SD). Percentages were estimated from slightly smaller d
 \FloatBarrier
 
 \end{landscape}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -302,60 +311,129 @@ The median child age was 2.05 years (IQR: 1.93-2.16).
 \end{table}
 
 
-%<<tab,echo=false>>=
-%#load("~/Dropbox/WBK-primary-analysis/Results/Jade/table-anthro-bin-adj.RData")
-%# load("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade/table-anthro-bin-adj.RData")
-%load(paste(dir.start,"Dropbox/WBK-primary-analysis/Results/Jade/table-anthro-bin-adj.RData",sep=""))
 
-%@
 
-%\begin{table}[!ht]
-%\begin{center}
-%\begin{minipage}{4in}
-%\caption{Proportion of children stunted, severely stunted, wasted and underweight after 2 years of intervention - Nutrition + WSH arm vs. single %Nutrition and WSH arms - Unadjusted and adjusted analyses}
-%\begin{small}
-%\begin{tabular}{l c c c}\hline
-%& & \multicolumn{2}{c}{Nutrition + WSH minus }  \\
-%& & \multicolumn{2}{c}{single arms (95$\%$ CI)}  \\\cline{3-4}
-%Outcome, Arm & Mean & Unadjusted$^*$ & Adjusted$^\dag$ \\\hline
-%\textbf{Stunting$^\ddag$}&&&\\
-%<<table,echo=false,results=tex>>=
-%cleantable(anthro.bin.table.adj.h3[1:3,],digits=0)
-%@
-%&&&\\
-%\textbf{Severe stunting$^\S$}&&&\\
 
-%<<table,echo=false,results=tex>>=
-%cleantable(anthro.bin.table.adj.h3[4:6,],digits=0)
-%@
-%&&&\\
-%\textbf{Wasting$^\S$}&&&\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Table 4 Uptake table - excel image
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%<<table,echo=false,results=tex>>=
-%cleantable(anthro.bin.table.adj.h3[7:9,],digits=0)
-%@
-%&&&\\
-%\textbf{Underweight$^\S$}&&&\\
 
-%<<table,echo=false,results=tex>>=
-%cleantable(anthro.bin.table.adj.h3[10:12,],digits=0)
-%@
-%\hline
-%\end{tabular}
-%\begin{scriptsize}
-%\begin{spacing}{1.0}
-%The median child age was 2.05 years (IQR: 1.93-2.16).
-%\\$^*$ Unadjusted estimates were estimated using a pair-matched Mantel-Haenszel analysis.
-%\\$^\dag$ Adjusted for pre-specified covariates using targeted maximum likelihood estimation with data-adaptive model selection [Arnold 2013, Balzer %2016]: Field staff who collected data, month of measurement, household food insecurity, child age, child sex, mother's age, mothers height, mothers %education level, number of children < 18 years in the household, number of individuals living in the compound, distance in minutes to the primary %water source, household roof, floor, wall materials, household assets.
-%\\$^\ddag$ Pre-specified secondary outcome
-%\\$^\S$ Pre-specified tertiary outcome
-%\end{spacing}
-%\end{scriptsize}
-%\end{small}
-%\end{minipage}
-%\end{center}
-%\end{table}
+ \begin{landscape}
+% \clearpage
+% 
+% 
+% \FloatBarrier
+% \begin{table}[!ht]
+% \begin{center}
+% \begin{minipage}{10in}
+% \caption{Measures of intervention adherence by study arm at enrollment and 1 and 2 years after delivery of interventions in rural Kenya.}
+% \begin{center}
+% \includegraphics[width=9in]{table-adherence.jpg}
+% \end{center}
+% \begin{scriptsize}
+% \begin{spacing}{1.0}
+% The table includes mean percentages (\%) and their 95\% confidence intervals. Free chlorine in drinking water and lipid-based nutrient supplement (LNS) consumption were not measured at enrollment and were only measured in a subset of arms. LNS adherence measured as proportion of 14 sachets consumed in the past week among index children ages 6-24 months (reported).  WSH: combined water, sanitation, handwashing. 
+% \end{spacing}
+% \end{scriptsize}
+% \end{minipage}
+% \end{center}
+% \end{figure}
+% \FloatBarrier
 
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Table 4 Uptake table
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+<<tab,echo=false>>=
+load(paste(dir.start,"Dropbox/WBK-primary-analysis/Results/Andrew/uptake_table.Rdata",sep=""))
+
+@
+
+
+% latex table generated in R 3.2.3 by xtable 1.8-2 package
+% Sun Oct 15 19:15:32 2017
+\FloatBarrier
+\begin{table}[!ht]
+\begin{center}
+\begin{minipage}{10in}
+\caption{Measures of intervention adherence by study arm at enrollment and 1 and 2 years after delivery of interventions in rural Kenya.}
+\begin{center}
+\begin{tabular}{r ccccccccc}
+  \hline
+ Measure of Adherence & Control & Passive Control & Water & Sanitation & Handwashing & WSH & Nutrition & Nutrition + WSH \\
+  \hline
+
+\multicolumn{9}{l}{\textbf{Number of compounds measured (N)}}\\
+
+<<table,echo=false,results=tex>>=
+cleantable(d[2:4,], digits=0)
+@
+  &&&&&&&&&\\
+
+\multicolumn{9}{l}{\textbf{Visited by promoter in past month (\%)}}\\
+
+<<table,echo=false,results=tex>>=
+cleantable(d[6:8,], digits=0)
+@
+  &&&&&&&&&\\
+
+\multicolumn{9}{l}{\textbf{Stored drinking water has detectable free chlorine (\%)}}\\
+
+<<table,echo=false,results=tex>>=
+cleantable(d[10:12,], digits=0)
+@
+  &&&&&&&&&\\
+
+\multicolumn{9}{l}{\textbf{Access to improved latrine (\%)}}\\
+
+<<table,echo=false,results=tex>>=
+cleantable(d[14:16,], digits=0)
+@
+  &&&&&&&&&\\
+
+\multicolumn{9}{l}{\textbf{Child feces safely disposed (\%)}}\\
+
+<<table,echo=false,results=tex>>=
+cleantable(d[18:20,], digits=0)
+@
+  &&&&&&&&&\\
+
+\multicolumn{9}{l}{\textbf{Handwashing location has water and soap (\%)}}\\
+
+<<table,echo=false,results=tex>>=
+cleantable(d[22:24,], digits=0)
+@
+  &&&&&&&&&\\
+
+
+\multicolumn{9}{l}{\textbf{LNS sachets consumed (\% of expected)}}\\
+
+<<table,echo=false,results=tex>>=
+cleantable(d[26:28,], digits=0)
+@
+
+
+   \hline
+\end{tabular}
+\end{center}
+\begin{scriptsize}
+\begin{spacing}{1.0}
+The table includes mean percentages (\%) and their 95\% confidence intervals. Free chlorine in drinking water and lipid-based nutrient supplement (LNS) consumption were not measured at enrollment and were only measured in a subset of arms. LNS adherence measured as proportion of 14 sachets consumed in the past week among index children ages 6-24 months (reported).  WSH: combined water, sanitation, handwashing.
+\end{spacing}
+\end{scriptsize}
+\end{minipage}
+\end{center}
+\end{figure}
+\FloatBarrier
+\end{table}
+
+\end{landscape}
 
 
 
@@ -901,5 +979,4 @@ cleantable(dob.tab[8:9,],digits=0)
 
 
  \end{document}
-
 

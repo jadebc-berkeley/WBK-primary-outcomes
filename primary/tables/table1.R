@@ -51,6 +51,8 @@ tr.mean=function(x,lab){
 
 mother_age=tr.mean("mother_age","Age (years)")
 mother_edu=tr.mean("mother_edu","Completed at least primary")
+mother_height=tr.mean("mother_height","Height (cm)")
+firstborn=tr.mean("firstborn","Study child is firstborn")
 
 father_edu=tr.mean("father_edu","Completed at least primary")
 father_agri=tr.mean("father_agri","Works in agriculture")
@@ -61,6 +63,9 @@ u18=tr.mean("u18","Number of children <18 years in the household")
 elec=tr.mean("elec","Has electricity")
 cement=tr.mean("cement","Has a cement floor")
 roof=tr.mean("roof","Has an iron roof")
+mobile=tr.mean("mobilephone","Owns a mobile phone")
+motorcycle=tr.mean("motorcycle","Owns a motorcycle")
+
 
 prim_drink_ws=tr.mean("prim_drink_ws","Primary drinking water source is improved")
 wat_time=tr.mean("wat_time","One-way walking time to primary water source (minutes)")
@@ -81,16 +86,12 @@ soap=tr.mean("soap2m","Has soap within 2 meters of handwashing location")
 hhs=tr.mean("HHS_bi","Prevalence of moderate to severe household hunger*")
 
 
-mother_height=tr.mean("momheight","Maternal height (cm)")
-mobile=tr.mean("mobile","Completed at least primary")
-bicycle=tr.mean("bicycle","Completed at least primary")
 
-"momheight"
-"mobile"
-"bicycle"
 
-table1=data.frame(rbind(mother_age, mother_edu, father_edu, father_agri,
-             Nhh, Nppl, u18, elec, cement, roof,
+
+table1=data.frame(rbind(mother_age, mother_edu, mother_height, firstborn,
+                        father_edu, father_agri,
+             Nhh, Nppl, u18, elec, cement, roof, mobile, motorcycle,
              prim_drink_ws, wat_time, tr_storedwt,
              toilet_men,toilet_women,od_child38, od_child03,
              ownlat,implat,feces,
@@ -128,6 +129,8 @@ tr.SD=function(x,lab){
 
 mother_age_SD=tr.SD("mother_age","Age (years)")
 mother_edu_SD=tr.SD("mother_edu","Completed at least primary")
+mother_height_SD=tr.SD("mother_height","Height (cm)")
+firstborn_SD=tr.SD("firstborn","Study child is firstborn")
 
 father_edu_SD=tr.SD("father_edu","Completed at least primary")
 father_agri_SD=tr.SD("father_agri","Works in agriculture")
@@ -138,6 +141,8 @@ u18_SD=tr.SD("u18","Number of children <18 years in the household")
 elec_SD=tr.SD("elec","Has electricity")
 cement_SD=tr.SD("cement","Has a cement floor")
 roof_SD=tr.SD("roof","Has an iron roof")
+mobile_SD=tr.SD("mobilephone","Owns a mobile phone")
+motorcycle_SD=tr.SD("motorcycle","Owns a motorcycle")
 
 prim_drink_ws_SD=tr.SD("prim_drink_ws","Primary drinking water source is improved")
 wat_time_SD=tr.SD("wat_time","One-way walking time to primary water source (minutes)")
@@ -157,8 +162,9 @@ soap_SD=tr.SD("soap2m","Has soap within 2 meters of handwashing location")
 
 hhs_SD=tr.SD("HHS_bi","Prevalence of moderate to severe household hunger*")
 
-table1_SD=data.frame(rbind(mother_age_SD, mother_edu_SD, father_edu_SD, father_agri_SD,
-             Nhh_SD, Nppl_SD, u18_SD, elec_SD, cement_SD, roof_SD,
+table1_SD=data.frame(rbind(mother_age_SD, mother_edu_SD, mother_height_SD, firstborn_SD,
+                           father_edu_SD, father_agri_SD,
+             Nhh_SD, Nppl_SD, u18_SD, elec_SD, cement_SD, roof_SD, mobile_SD, motorcycle_SD,
              prim_drink_ws_SD, wat_time_SD, tr_storedwt_SD,
              toilet_men_SD,toilet_women_SD,od_child38_SD, od_child03_SD,
              ownlat_SD,implat_SD,feces_SD,
