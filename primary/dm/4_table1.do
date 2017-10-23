@@ -46,6 +46,88 @@ gen mother_edu = 0
 replace mother_edu = 1 if b13_school >2 
 replace mother_edu = . if b13_school ==. 
 
+* maternal height
+tempfile table1
+save `table1'
+clear
+
+* calculate median maternal height at endline
+use "~/Dropbox/WBK-primary-analysis/Data/Untouched/Endline/msP_el_append_ID_clean_anthropometry_20160909.dta", clear
+sort  hhid
+for any c422 c423 c424: replace X = . if X >999
+for any c422 c423 c424: replace X = X-resp_hair_height if resp_hair==2
+egen float momheight2 = rowmedian(c422 c423 c424)
+	replace momheight2 = . if momheight >999
+	label var momheight2 "Maternal height (median), year 2 visit"
+
+ren c422 c422_el 
+ren c423 c423_el
+ren c424 c424_el
+keep hhid momheight2 c422_el c423_el c424_el
+tempfile el_mat_anthro
+save `el_mat_anthro'
+
+* calculate median maternal height at midline
+use "~/Dropbox/WBK-primary-analysis/Data/Untouched/Midline/msP_ml_append_ID_clean_anthropometry_20160909.dta", clear
+sort  hhid
+for any c422 c423 c424: replace X = . if X >999
+for any c422 c423 c424: replace X = X-resp_hair_height if resp_hair==2
+egen float momheight1 = rowmedian(c422 c423 c424)
+	replace momheight1 = . if momheight >999
+	label var momheight1 "Maternal height (median), year 1 visit"
+
+keep hhid momheight1 c422 c423 c424
+tempfile ml_mat_anthro
+save `ml_mat_anthro'
+clear
+
+* merge in maternal height and generate single maternal height variable
+use `table1'
+merge m:1 hhid using `ml_mat_anthro'
+
+tab _merge
+drop if _merge==2
+drop _merge
+merge m:1 hhid using `el_mat_anthro'
+drop if _merge==2
+drop _merge
+
+
+
+* calculate the overall median
+egen float momheight = rowmedian(c422 c423 c424 c422_el c423_el c424_el)
+	label var momheight "Maternal height (median)"
+
+* replace the height measurement with round 1 median if the two medians differ by >3 cm
+gen diff = momheight1-momheight2
+replace momheight = momheight1 if abs(diff)>3 & (diff!=.)
+codebook momheight
+rename momheight mother_height
+
+tempfile table1
+save `table1'
+clear
+
+
+* child parity
+clear
+insheet using "washk_firstborn_20171015.csv"
+sort hhid
+rename firstborn firstborn_char
+gen byte firstborn= (firstborn_char=="yes")
+replace firstborn=. if firstborn_char==""
+codebook firstborn
+drop firstborn_char
+tempfile firstborn
+save `firstborn'
+clear
+
+use `table1'
+sort hhid
+merge hhid using `firstborn'
+tab _merge 
+drop _merge
+
 * -----------------------------------
 * father characteristics
 * -----------------------------------
@@ -76,6 +158,19 @@ replace cement = . if b1_floor ==.
 
 gen roof = (b2_roof==2)
 replace roof = . if b2_roof ==. 
+
+* household assets
+  * mobile phone
+gen mobilephone=0
+replace mobilephone=1 if b22d==1
+label define mobilephone 0 "No mobile phone" 1 "Any mobile phones" 
+label values mobilephone mobilephonel
+
+  * motorbike
+gen motorcycle=0
+replace motorcycle=1 if b22g==1
+label define motorcycle 0 "No motorcycle" 1 "Has motorcycle" 
+label values motorcycle motorcyclel
 
 * -----------------------------------
 * water
@@ -250,12 +345,14 @@ label values HHS HHSl
 * merge in tr
 * ---------------------------------------------
 tostring clusterid, replace
-merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr.dta"
+*merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr.dta"
+merge m:1 clusterid using "~/Dropbox/WBK-primary-analysis/Data/Untouched/tr/washb-kenya-tr.dta"
+
 drop _m
 
 
 #delimit; 
-keep hhid compoundid clusterid tr mother_age mother_edu father_edu father_agri Nhh Nppl u18 elec cement roof 
+keep hhid compoundid clusterid tr mother_age mother_edu mother_height father_edu father_agri Nhh Nppl u18 elec cement roof mobilephone motorcycle firstborn
 prim_drink_ws wat_time tr_storedwt toilet_men toilet_women od_child38 od_child03
 ownlat implat feces water2m soap2m HHS_bi;
 #delimit cr
@@ -263,5 +360,8 @@ ownlat implat feces water2m soap2m HHS_bi;
 order clusterid hhid tr
 
 outsheet using "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/table1.csv", replace comma 
+outsheet using "~/Dropbox/WBK-primary-analysis/Data/final/jade/table1.csv", replace comma 
+
+
 
 log close 
