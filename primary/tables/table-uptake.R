@@ -75,8 +75,7 @@ estformat <- function(x) {
 #---------------------------------------
 
 
-# two adherence measures without measurements in all arms
-freechl0 <- matrix(NA,nrow=nrow(freechl1),ncol=ncol(freechl1))
+# One adherence measureswithout measurements in all arms
 rlnsp0 <- matrix(NA,nrow=nrow(rlnsp1),ncol=ncol(rlnsp1))
 
 
@@ -166,5 +165,5 @@ print(xtable(adtab2),
       type='html',include.rownames=FALSE
 )
 
-
-
+d <- adtab2
+save(d, file = "C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Andrew/uptake_table.Rdata")
