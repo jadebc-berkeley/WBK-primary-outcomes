@@ -1,0 +1,982 @@
+\documentclass[11pt, nogin]{article}
+\usepackage[fleqn]{amsmath}
+\usepackage{fancyhdr, graphicx, listings,amssymb, comment,cancel}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{Sweave}
+\usepackage{placeins}
+\usepackage{pdflscape}
+\usepackage{subcaption}
+
+\usepackage[table]{xcolor}
+
+\raggedbottom
+%\SweaveOpts{pdfcrop=TRUE}
+%\graphicspath{{Figures/}}
+
+\usepackage{pdfpages}
+\usepackage{setspace}
+
+\geometry{ left = 0.5in, right = 0.5in, top = 0.75in, bottom = 0.5in, foot=0.5in} %foot option ensures page number prints on page
+%\pagestyle{fancy}
+%\setlength{\headsep}{.5in}
+
+%\lhead{WASH Benefits Kenya Primary Analysis}
+% \chead{}
+% \rhead{}
+
+\lstset{breaklines=true}
+
+% change font to helvetica
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+\usepackage[helvet]{sfmath}
+\everymath={\sf}
+
+% the following three lines ensure table is at top of page
+\makeatletter
+\setlength{\@fptop}{0pt}
+\makeatother
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\cfoot{\vspace*{1.5\baselineskip}\thepage} % this line ensures page number doesn't overlap
+% with the footer
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+<<preamble,echo=false>>=
+library(xtable)
+
+#function to strip row/colnames from table and output contents only
+##for formatting in latex
+cleantable <- function(x,digits) {
+ print( xtable(x,digits=digits),
+        sanitize.text.function=function(y){y},
+        floating=FALSE,
+        include.rownames=FALSE,
+        include.colnames=FALSE,
+        only.contents=TRUE,
+        hline.after=NULL
+ )
+}
+
+# determine whether computer is running unix or windows
+if(.Platform$OS.type == "unix") {
+  dir.start="~/"
+} else {
+  dir.start="C:/Users/andre/"
+}
+@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Table 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+<<chunk1,echo=false>>=
+#load("~/Dropbox/WBK-primary-analysis/Results/jade/table1_f.RData")
+# load("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade/table1_f.RData")
+load(paste(dir.start,"Dropbox/WBK-primary-analysis/Results/Jade/table1_f.RData",sep=""))
+@
+
+\begin{landscape}
+
+\FloatBarrier
+
+\begin{table}[!ht]
+\caption{Enrollment characteristics by intervention group}
+\begin{small}
+  \setlength{\tabcolsep}{0.75\tabcolsep}% Reduce \tabcolsep by 25%
+\begin{tabular}{l c c c c c c c c}\hline
+
+\hline
+& &  &  &  &  & Water + &  &  \\
+& &  &  &  &  & Sanitation + &  &  \\
+& Active & Passive &  &  &  & Handwashing &  & Nutrition + \\
+& Control & Control & Water & Sanitation & Handwashing & (WSH) & Nutrition & WSH \\
+<<table,echo=false,results=tex>>=
+cleantable(matrix(c("No. of households:",n.hh.f),nrow=1,ncol=9),digits=0)
+@
+\hline
+&N ($\%$) /  &N ($\%$) /  &N ($\%$) /  &N ($\%$) /  &N ($\%$) /  &N ($\%$) /  &N ($\%$) /  &N ($\%$) /  \\
+& mean (SD) & mean (SD) &mean (SD) & mean (SD) & mean (SD) & mean (SD) & mean (SD) & mean (SD) \\\hline
+
+<<table,echo=false,results=tex>>=
+cleantable(table1_f,digits=0)
+@
+
+\hline
+\end{tabular}
+\begin{scriptsize}
+\begin{spacing}{1.0}
+Data are n (\%) or mean (SD). Percentages were estimated from slightly smaller denominators than those shown at the top of the table for all variables due to missing values. \\
+*Assessed by the Household Food Insecurity Access Scale
+\end{scriptsize}
+\end{spacing}
+\end{small}
+\end{table}
+
+\FloatBarrier
+
+\end{landscape}
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Table 2 Uptake table - excel image
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+ \begin{landscape}
+% \clearpage
+% 
+% 
+% \FloatBarrier
+% \begin{table}[!ht]
+% \begin{center}
+% \begin{minipage}{10in}
+% \caption{Measures of intervention adherence by study arm at enrollment and 1 and 2 years after delivery of interventions in rural Kenya.}
+% \begin{center}
+% \includegraphics[width=9in]{table-adherence.jpg}
+% \end{center}
+% \begin{scriptsize}
+% \begin{spacing}{1.0}
+% The table includes mean percentages (\%) and their 95\% confidence intervals. Free chlorine in drinking water and lipid-based nutrient supplement (LNS) consumption were not measured at enrollment and were only measured in a subset of arms. LNS adherence measured as proportion of 14 sachets consumed in the past week among index children ages 6-24 months (reported).  WSH: combined water, sanitation, handwashing. 
+% \end{spacing}
+% \end{scriptsize}
+% \end{minipage}
+% \end{center}
+% \end{figure}
+% \FloatBarrier
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Table 2 Uptake table
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+<<tab,echo=false>>=
+load(paste(dir.start,"Dropbox/WBK-primary-analysis/Results/Andrew/uptake_table.Rdata",sep=""))
+
+@
+
+
+% latex table generated in R 3.2.3 by xtable 1.8-2 package
+% Sun Oct 15 19:15:32 2017
+\FloatBarrier
+\begin{table}[!ht]
+\begin{center}
+\begin{minipage}{10in}
+\caption{Measures of intervention adherence by study arm at enrollment and 1 and 2 years after delivery of interventions in rural Kenya.}
+\begin{center}
+\begin{tabular}{r ccccccccc}
+  \hline
+ Measure of Adherence & Control & Passive Control & Water & Sanitation & Handwashing & WSH & Nutrition & Nutrition + WSH \\
+  \hline
+
+\multicolumn{9}{l}{\textbf{Number of compounds measured (N)}}\\
+
+<<table,echo=false,results=tex>>=
+cleantable(d[2:4,], digits=0)
+@
+  &&&&&&&&&\\
+
+\multicolumn{9}{l}{\textbf{Visited by promoter in past month (\%)}}\\
+
+<<table,echo=false,results=tex>>=
+cleantable(d[6:8,], digits=0)
+@
+  &&&&&&&&&\\
+
+\multicolumn{9}{l}{\textbf{Stored drinking water has detectable free chlorine (\%)}}\\
+
+<<table,echo=false,results=tex>>=
+cleantable(d[10:12,], digits=0)
+@
+  &&&&&&&&&\\
+
+\multicolumn{9}{l}{\textbf{Access to improved latrine (\%)}}\\
+
+<<table,echo=false,results=tex>>=
+cleantable(d[14:16,], digits=0)
+@
+  &&&&&&&&&\\
+
+\multicolumn{9}{l}{\textbf{Child feces safely disposed (\%)}}\\
+
+<<table,echo=false,results=tex>>=
+cleantable(d[18:20,], digits=0)
+@
+  &&&&&&&&&\\
+
+\multicolumn{9}{l}{\textbf{Handwashing location has water and soap (\%)}}\\
+
+<<table,echo=false,results=tex>>=
+cleantable(d[22:24,], digits=0)
+@
+  &&&&&&&&&\\
+
+
+\multicolumn{9}{l}{\textbf{LNS sachets consumed (\% of expected)}}\\
+
+<<table,echo=false,results=tex>>=
+cleantable(d[26:28,], digits=0)
+@
+
+
+   \hline
+\end{tabular}
+\end{center}
+\begin{scriptsize}
+\begin{spacing}{1.0}
+The table includes mean percentages (\%) and their 95\% confidence intervals. Free chlorine in drinking water and lipid-based nutrient supplement (LNS) consumption were not measured at enrollment and were only measured in a subset of arms. LNS adherence measured as proportion of 14 sachets consumed in the past week among index children ages 6-24 months (reported).  WSH: combined water, sanitation, handwashing.
+\end{spacing}
+\end{scriptsize}
+\end{minipage}
+\end{center}
+\end{figure}
+\FloatBarrier
+\end{table}
+
+\end{landscape}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Table 3 Effect of intervention on child growth after 2 years of intervention
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+<<tab,echo=false>>=
+#load("~/Dropbox/WBK-primary-analysis/Results/jade/table-anthroZ-adj.RData")
+# load("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade/table-anthroZ-adj.RData")
+#load(paste(dir.start,"Dropbox/WBK-primary-analysis/Results/Jade/table-anthroZ-adj.RData",sep=""))
+load(paste(dir.start,"Dropbox/WBK-primary-analysis/Results/Andrew/table3.RData",sep=""))
+
+@
+
+\begin{table}[!ht]
+\begin{center}
+\begin{minipage}{8in}
+%\caption{Child growth Z-scores after 2 years of intervention - single and combined arms vs. control arm - Unadjusted and adjusted analyses}
+\caption{Child growth Z-scores after 2 years of intervention}
+\begin{small}
+%\begin{tabular}{l c c c }\hline
+%& & \multicolumn{2}{c}{Difference from Control (95$\%$)} \\\cline{3-4}
+%Arm & Mean & Unadjusted & Adjusted$^*$ \\\hline
+%\textbf{Length-for-age Z-score}&&&\\
+
+\begin{tabular}{l c c c c c c}\hline
+%& & \multicolumn{2}{c}{Difference from Control (95$\%$)}  \\\cline{3-4}
+& & & &   Difference vs. & Difference vs.  & Difference vs.  \\
+Outcome, Arm & N & Mean & SD &  Control (95$\%$) & Nutrition (95$\%$) &  WSH (95$\%$)  \\\hline
+%\textbf{Length-for-age Z-score}&&&\\
+%<<table,echo=false,results=tex>>=
+%cleantable(table3[1:8,],digits=0)
+%@
+%&&&\\
+\textbf{Weight-for-age Z-score$^*$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(table3[9:16,],digits=0)
+@
+&&&\\
+\textbf{Weight-for-length Z-score$^*$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(table3[17:24,],digits=0)
+@
+&&&\\
+\textbf{Head circumference-for-age Z-score$^*$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(table3[25:32,],digits=0)
+@
+\hline
+\end{tabular}
+\begin{scriptsize}
+\begin{spacing}{1.0}
+The median child age was 2.05 years (IQR: 1.93-2.16).
+%\\$^*$ Adjusted for pre-specified covariates using targeted maximum likelihood estimation with data-adaptive model selection [Arnold 2013, Balzer %2016]: Field staff who collected data, month of measurement, household food insecurity, child age, child sex, mother's age, mothers height, mothers %education level, number of children < 18 years in the household, number of individuals living in the compound, distance in minutes to the primary %water source, household roof, floor, wall materials, household assets.
+\\$^*$ Pre-specified secondary outcome
+\end{spacing}
+\end{scriptsize}
+\end{small}
+\end{minipage}
+\end{center}
+\end{table}
+
+
+
+%\begin{table}[!ht]
+%\begin{center}
+%\begin{minipage}{5.3in}
+%\caption{Child growth Z-scores after 2 years of intervention - Nutrition + WSH arm vs. single Nutrition and WSH arms - Unadjusted and adjusted analyses}
+%\begin{small}
+%\begin{tabular}{l c c c}\hline
+%& & \multicolumn{2}{c}{Nutrition + WSH minus }  \\
+%& & \multicolumn{2}{c}{single arms (95$\%$ CI)}  \\\cline{3-4}
+%Arm & Mean & Unadjusted & Adjusted$^*$\\\hline
+%\textbf{Length-for-age Z-score}&&&\\
+%<<table,echo=false,results=tex>>=
+%cleantable(table3[1:3,],digits=0)
+%@
+%&&&\\
+%\textbf{Weight-for-age Z-score$^\dag$}&&&\\
+
+%<<table,echo=false,results=tex>>=
+%cleantable(table3[4:6,],digits=0)
+%@
+%&&&\\
+%\textbf{Weight-for-length Z-score$^\dag$}&&&\\
+
+%<<table,echo=false,results=tex>>=
+%cleantable(table3[7:9,],digits=0)
+%@
+%&&&\\
+%\textbf{Head circumference-for-age Z-score$^\dag$}&&&\\
+
+%<<table,echo=false,results=tex>>=
+%cleantable(table3[10:12,],digits=0)
+%@
+%\hline
+%\end{tabular}
+%\begin{scriptsize}
+%\begin{spacing}{1.0}
+%The median child age was 2.05 years (IQR: 1.93-2.16).
+%\\$^*$ Adjusted for pre-specified covariates using targeted maximum likelihood estimation with data-adaptive model selection [Arnold 2013, Balzer 2016]: Field staff who collected data, month of measurement, household food insecurity, child age, child sex, mother's age, mothers height, mothers education level, number of children < 18 years in the household, number of individuals living in the compound, distance in minutes to the primary water source, household roof, floor, wall materials, household assets.
+%\\$^\dag$ Pre-specified secondary outcome
+%\end{spacing}
+%\end{scriptsize}
+%\end{small}
+%\end{minipage}
+%\end{center}
+%\end{table}
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Table 4 Proportion of children stunted, severely stunted, wasted and underweight after 2 years of intervention
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+<<tab,echo=false>>=
+#load("~/Dropbox/WBK-primary-analysis/Results/Jade/table-anthro-bin-adj.RData")
+# load("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade/table-anthro-bin-adj.RData")
+#load(paste(dir.start,"Dropbox/WBK-primary-analysis/Results/Jade/table-anthro-bin-adj.RData",sep=""))
+load(paste(dir.start,"Dropbox/WBK-primary-analysis/Results/Andrew/table2.RData",sep=""))
+
+@
+
+\begin{table}[!ht]
+\begin{center}
+\begin{minipage}{8in}
+\caption{Proportion of children stunted, severely stunted, wasted and underweight after 2 years of intervention}
+\begin{small}
+\begin{tabular}{l c c c c c}\hline
+%& & \multicolumn{2}{c}{Difference from Control (95$\%$)}  \\\cline{3-4}
+& & &  Difference vs. & Difference vs.  & Difference vs.  \\
+Outcome, Arm & n/N  & Mean &  Control (95$\%$) & Nutrition (95$\%$) &  WSH (95$\%$)  \\\hline
+\textbf{Stunting$^*$}&&&\\
+<<table,echo=false,results=tex>>=
+cleantable(table2[1:8,],digits=0)
+@
+&&&\\
+\textbf{Severe stunting$^\dag$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(table2[9:16,],digits=0)
+@
+&&&\\
+\textbf{Wasting$^\dag$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(table2[17:24,],digits=0)
+@
+&&&\\
+\textbf{Underweight$^\dag$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(table2[25:32,],digits=0)
+@
+\hline
+\end{tabular}
+\begin{scriptsize}
+\begin{spacing}{1.0}
+The median child age was 2.05 years (IQR: 1.93-2.16).
+%\\$^*$ Unadjusted estimates were estimated using a pair-matched Mantel-Haenszel analysis.
+%\\$^\dag$ Adjusted for pre-specified covariates using targeted maximum likelihood estimation with data-adaptive model selection [Arnold 2013, Balzer 2016]: Field staff who collected data, month of measurement, household food insecurity, child age, child sex, mother's age, mothers height, mothers education level, number of children < 18 years in the household, number of individuals living in the compound, distance in minutes to the primary water source, household roof, floor, wall materials, household assets.
+%\\$^\ddag$ Pre-specified secondary outcome
+%\\$^\S$ Pre-specified tertiary outcome
+\\$^*$ Pre-specified secondary outcome
+\\$^\dag$ Pre-specified tertiary outcome
+\end{spacing}
+\end{scriptsize}
+\end{small}
+\end{minipage}
+\end{center}
+\end{table}
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Supplement Table 1 Effect of intervention on diarrhea prevalence among index children
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+<<tab,echo=false>>=
+#load("~/Dropbox/WBK-primary-analysis/Results/jade/table-diarrhea.RData")
+# load("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade/table-diarrhea.RData")
+load(paste(dir.start,"Dropbox/WBK-primary-analysis/Results/Jade/table-diarrhea.RData",sep=""))
+@
+
+\begin{table}[!ht]
+\begin{center}
+\renewcommand\thetable{S1}
+\begin{minipage}{4.2in}
+\caption{Effect of intervention on diarrhea prevalence 1 and 2 years after intervention}
+\begin{small}
+\begin{tabular}{l c c c}\hline
+& & \multicolumn{2}{c}{Prevalence difference (95$\%$ CI)} \\\cline{3-4}
+Arm & Mean$^*$ & Unadjusted$^\dag$ & Adjusted$^\ddag$ \\\hline
+\textbf{Intervention vs. Control}&&&\\
+<<table,echo=false,results=tex>>=
+cleantable(diarr.table[1:8,],digits=0)
+@
+&&&\\
+\textbf{WSH vs. Single arms}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(diarr.table[9:12,],digits=0)
+@
+\hline
+\end{tabular}
+\begin{scriptsize}
+\begin{spacing}{1.0}
+$^*$ Post-intervention measurements in years 1 and 2 combined
+\\$^\dag$ Unadjusted estimates were estimated using a pair-matched Mantel-Haenszel analysis.
+\\$^\ddag$ Adjusted for pre-specified covariates using targeted maximum likelihood estimation with data-adaptive model selection [Arnold 2013, Balzer 2016]: Field staff who collected data, month of measurement, household food insecurity, child age, child sex, mother's age, mothers height, mothers education level, number of children < 18 years in the household, number of individuals living in the compound, distance in minutes to the primary water source, household roof, floor, wall materials, household assets.
+\end{spacing}
+\end{scriptsize}
+\end{small}
+\end{minipage}
+\end{center}
+\end{table}
+
+
+
+<<loaddata,echo=false,results=tex>>=
+#load("~/Dropbox/WBK-primary-analysis/Results/jade/table-btw-spill.RData")
+# load("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade/table-btw-spill.RData")
+load(paste(dir.start,"Dropbox/WBK-primary-analysis/Results/Jade/table-btw-spill.RData",sep=""))
+@
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Table S2 Effect of intervention on child growth after 1 years of intervention
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+<<tab,echo=false>>=
+#load("~/Dropbox/WBK-primary-analysis/Results/jade/table-anthroZ-adj.RData")
+# load("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade/table-anthroZ-adj.RData")
+load(paste(dir.start,"Dropbox/WBK-primary-analysis/Results/Andrew/tableS2.RData",sep=""))
+@
+
+\begin{table}[!ht]
+\begin{center}
+\renewcommand\thetable{S2}
+\begin{minipage}{8in}
+\caption{Child growth Z-scores after 1 year of intervention}
+\begin{small}
+\begin{tabular}{l c c c c c c}\hline
+%& & \multicolumn{2}{c}{Difference from Control (95$\%$)}  \\\cline{3-4}
+& & & &   Difference vs. & Difference vs.  & Difference vs.  \\
+Outcome, Arm & N & Mean & SD &  Control (95$\%$) & Nutrition (95$\%$) &  WSH (95$\%$)  \\\hline
+%\textbf{Length-for-age Z-score}&&&\\
+%<<table,echo=false,results=tex>>=
+%cleantable(tableS2[1:8,],digits=0)
+%@
+%&&&\\
+\textbf{Weight-for-age Z-score$^*$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(tableS2[9:16,],digits=0)
+@
+&&&\\
+\textbf{Weight-for-length Z-score$^*$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(tableS2[17:24,],digits=0)
+@
+&&&\\
+\textbf{Head circumference-for-age Z-score$^*$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(tableS2[25:32,],digits=0)
+@
+\hline
+\end{tabular}
+\begin{scriptsize}
+\begin{spacing}{1.0}
+The median child age was 1.03 years (IQR: 0.91-1.14).
+\\$^*$ Pre-specified secondary outcome
+\end{spacing}
+\end{scriptsize}
+\end{small}
+\end{minipage}
+\end{center}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Table S3 Effect of intervention on child growth after 2 years of intervention :H1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+<<tab,echo=false>>=
+#load("~/Dropbox/WBK-primary-analysis/Results/jade/table-anthroZ-adj.RData")
+# load("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade/table-anthroZ-adj.RData")
+load(paste(dir.start,"Dropbox/WBK-primary-analysis/Results/Andrew/table-anthroZ-adj-edit.RData",sep=""))
+@
+
+\begin{table}[!ht]
+\begin{center}
+\renewcommand\thetable{S3}
+\begin{minipage}{5.5in}
+\caption{Child growth Z-scores after 2 years of intervention - single and combined arms vs. control arm - Unadjusted and adjusted analyses}
+\begin{small}
+\begin{tabular}{l c c c }\hline
+& & \multicolumn{2}{c}{Difference from Control (95$\%$)} \\\cline{3-4}
+Arm & Mean & Unadjusted & Adjusted$^*$ \\\hline
+\textbf{Length-for-age Z-score}&&&\\
+<<table,echo=false,results=tex>>=
+cleantable(anthroZ.adj.table.h1[1:8,],digits=0)
+@
+&&&\\
+\textbf{Weight-for-age Z-score$^\dag$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(anthroZ.adj.table.h1[9:16,],digits=0)
+@
+&&&\\
+\textbf{Weight-for-length Z-score$^\dag$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(anthroZ.adj.table.h1[17:24,],digits=0)
+@
+&&&\\
+\textbf{Head circumference-for-age Z-score$^\dag$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(anthroZ.adj.table.h1[25:32,],digits=0)
+@
+\hline
+\end{tabular}
+\begin{scriptsize}
+\begin{spacing}{1.0}
+The median child age was 2.05 years (IQR: 1.93-2.16).
+\\$^*$ Adjusted for pre-specified covariates using targeted maximum likelihood estimation with data-adaptive model selection [Arnold 2013, Balzer 2016]: Field staff who collected data, month of measurement, household food insecurity, child age, child sex, mother's age, mothers height, mothers education level, number of children < 18 years in the household, number of individuals living in the compound, distance in minutes to the primary water source, household roof, floor, wall materials, household assets.
+\\$^\dag$ Pre-specified secondary outcome
+\end{spacing}
+\end{scriptsize}
+\end{small}
+\end{minipage}
+\end{center}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Table S4 Effect of intervention on child growth after 2 years of intervention :H2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\begin{table}[!ht]
+\begin{center}
+\renewcommand\thetable{S4}
+\begin{minipage}{5.3in}
+\caption{Child growth Z-scores after 2 years of intervention - Nutrition + WSH arm vs. single Nutrition and WSH arms - Unadjusted and adjusted analyses}
+\begin{small}
+\begin{tabular}{l c c c}\hline
+& & \multicolumn{2}{c}{Nutrition + WSH minus }  \\
+& & \multicolumn{2}{c}{single arms (95$\%$ CI)}  \\\cline{3-4}
+Arm & Mean & Unadjusted & Adjusted$^*$\\\hline
+\textbf{Length-for-age Z-score}&&&\\
+<<table,echo=false,results=tex>>=
+cleantable(anthroZ.adj.table.h3[1:3,],digits=0)
+@
+&&&\\
+\textbf{Weight-for-age Z-score$^\dag$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(anthroZ.adj.table.h3[4:6,],digits=0)
+@
+&&&\\
+\textbf{Weight-for-length Z-score$^\dag$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(anthroZ.adj.table.h3[7:9,],digits=0)
+@
+&&&\\
+\textbf{Head circumference-for-age Z-score$^\dag$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(anthroZ.adj.table.h3[10:12,],digits=0)
+@
+\hline
+\end{tabular}
+\begin{scriptsize}
+\begin{spacing}{1.0}
+The median child age was 2.05 years (IQR: 1.93-2.16).
+\\$^*$ Adjusted for pre-specified covariates using targeted maximum likelihood estimation with data-adaptive model selection [Arnold 2013, Balzer 2016]: Field staff who collected data, month of measurement, household food insecurity, child age, child sex, mother's age, mothers height, mothers education level, number of children < 18 years in the household, number of individuals living in the compound, distance in minutes to the primary water source, household roof, floor, wall materials, household assets.
+\\$^\dag$ Pre-specified secondary outcome
+\end{spacing}
+\end{scriptsize}
+\end{small}
+\end{minipage}
+\end{center}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Table S5 Proportion of children stunted, severely stunted, wasted and underweight after 2 years of intervention: H1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+<<tab,echo=false>>=
+#load("~/Dropbox/WBK-primary-analysis/Results/Jade/table-anthro-bin-adj.RData")
+# load("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade/table-anthro-bin-adj.RData")
+load(paste(dir.start,"Dropbox/WBK-primary-analysis/Results/Andrew/table-anthro-bin-adj-edit.RData",sep=""))
+@
+
+\begin{table}[!ht]
+\begin{center}
+\renewcommand\thetable{S5}
+\begin{minipage}{5.3in}
+\caption{Proportion of children stunted, severely stunted, wasted and underweight after 2 years of intervention - single and combined arms vs. control arm - Unadjusted and adjusted analyses}
+\begin{small}
+\begin{tabular}{l c c c}\hline
+& & \multicolumn{2}{c}{Difference from Control (95$\%$)}  \\\cline{3-4}
+Outcome, Arm & Mean & Unadjusted$^*$ & Adjusted$^\dag$ \\\hline
+\textbf{Stunting$^\ddag$}&&&\\
+<<table,echo=false,results=tex>>=
+cleantable(anthro.bin.table.adj.h1[1:8,],digits=0)
+@
+&&&\\
+\textbf{Severe stunting$^\S$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(anthro.bin.table.adj.h1[9:16,],digits=0)
+@
+&&&\\
+\textbf{Wasting$^\S$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(anthro.bin.table.adj.h1[17:24,],digits=0)
+@
+&&&\\
+\textbf{Underweight$^\S$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(anthro.bin.table.adj.h1[25:32,],digits=0)
+@
+\hline
+\end{tabular}
+\begin{scriptsize}
+\begin{spacing}{1.0}
+The median child age was 2.05 years (IQR: 1.93-2.16).
+\\$^*$ Unadjusted estimates were estimated using a pair-matched Mantel-Haenszel analysis.
+\\$^\dag$ Adjusted for pre-specified covariates using targeted maximum likelihood estimation with data-adaptive model selection [Arnold 2013, Balzer 2016]: Field staff who collected data, month of measurement, household food insecurity, child age, child sex, mother's age, mothers height, mothers education level, number of children < 18 years in the household, number of individuals living in the compound, distance in minutes to the primary water source, household roof, floor, wall materials, household assets.
+\\$^\ddag$ Pre-specified secondary outcome
+\\$^\S$ Pre-specified tertiary outcome
+\end{spacing}
+\end{scriptsize}
+\end{small}
+\end{minipage}
+\end{center}
+\end{table}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Table S6 Proportion of children stunted, severely stunted, wasted and underweight after 2 years of intervention: H2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{table}[!ht]
+\begin{center}
+\renewcommand\thetable{S6}
+\begin{minipage}{4in}
+\caption{Proportion of children stunted, severely stunted, wasted and underweight after 2 years of intervention - Nutrition + WSH arm vs. single Nutrition and WSH arms - Unadjusted and adjusted analyses}
+\begin{small}
+\begin{tabular}{l c c c}\hline
+& & \multicolumn{2}{c}{Nutrition + WSH minus }  \\
+& & \multicolumn{2}{c}{single arms (95$\%$ CI)}  \\\cline{3-4}
+Outcome, Arm & Mean & Unadjusted$^*$ & Adjusted$^\dag$ \\\hline
+\textbf{Stunting$^\ddag$}&&&\\
+<<table,echo=false,results=tex>>=
+cleantable(anthro.bin.table.adj.h3[1:3,],digits=0)
+@
+&&&\\
+\textbf{Severe stunting$^\S$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(anthro.bin.table.adj.h3[4:6,],digits=0)
+@
+&&&\\
+\textbf{Wasting$^\S$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(anthro.bin.table.adj.h3[7:9,],digits=0)
+@
+&&&\\
+\textbf{Underweight$^\S$}&&&\\
+
+<<table,echo=false,results=tex>>=
+cleantable(anthro.bin.table.adj.h3[10:12,],digits=0)
+@
+\hline
+\end{tabular}
+\begin{scriptsize}
+\begin{spacing}{1.0}
+The median child age was 2.05 years (IQR: 1.93-2.16).
+\\$^*$ Unadjusted estimates were estimated using a pair-matched Mantel-Haenszel analysis.
+\\$^\dag$ Adjusted for pre-specified covariates using targeted maximum likelihood estimation with data-adaptive model selection [Arnold 2013, Balzer 2016]: Field staff who collected data, month of measurement, household food insecurity, child age, child sex, mother's age, mothers height, mothers education level, number of children < 18 years in the household, number of individuals living in the compound, distance in minutes to the primary water source, household roof, floor, wall materials, household assets.
+\\$^\ddag$ Pre-specified secondary outcome
+\\$^\S$ Pre-specified tertiary outcome
+\end{spacing}
+\end{scriptsize}
+\end{small}
+\end{minipage}
+\end{center}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Distance
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\FloatBarrier
+\begin{table}[!ht]
+\begin{center}
+\renewcommand\thetable{S7}
+\begin{minipage}{6in}
+\caption{Mean outcomes among children in control clusters stratified by quantile of intervention household density within 2 km}
+\begin{footnotesize}
+\begin{tabular}{l c c c c c c c}\hline
+ & &  &  &  &  & & Adjusted\\
+Arm & $N_{20}^a$ & $N_{80}^b$ & $Mean_{20}^c$ & $Mean_{80}^d$ & Difference$^e$ & P-value$^f$& P-value$^g$\\
+\hline\textbf{Length-for-age z-score$^h$} & & & & & & &\\\hline
+<<table,echo=false,results=tex>>=
+cleantable(sp.haz,digits=0)
+@
+\hline\textbf{Diarrhea$^i$} & & & & & & &\\\hline
+<<table,echo=false,results=tex>>=
+cleantable(sp.diarr,digits=0)
+@
+\hline
+\end{tabular}
+\begin{scriptsize}
+\begin{spacing}{1.0}
+Intervention households were grouped by different types of intervention (sanitation, handwashing, water, nutrition). In the presence of positive between-cluster spillover effects (contamination), control children in the <20th percentile would have better outcomes (higher LAZ, lower diarrhea prevalence) compared with control children in the >80th percentile. 
+\\$^a$ $N_{20}$ = the number of control households for which the number of treated households within 2 km is less than or equal to the 20th percentile of the observed distribution of distance
+\\$^b$ $N_{80}$ = the number of control households for which the number of treated households within 2 km is greater than or equal to the 80th percentile of the observed distribution of distance
+\\$^c$ $Mean_{20}$ = the mean outcome in control households for which the number of treated households within 2 km is less than or equal to the 20th percentile of the observed distribution of distance
+\\$^d$ $Mean_{80}$ = the mean outcome in control households for which the number of treated households within 2 km is greater than or equal to the 80th percentile of the observed distribution of distance
+\\$^e$ Difference = $Mean_{80}$ - $Mean_{20}$
+\\$^f$ Permutation test p-value
+\\$^g$ Adjusted permutation test p-value. Models adjusted for pre-specified covariates using with data-adaptive model selection [Arnold 2013]: Field staff who collected data, month of measurement, household food insecurity, child age, child sex, mother's age, mothers height, mothers education level, number of children < 18 years in the household, number of individuals living in the compound, distance in minutes to the primary water source, household roof, floor, wall materials, household assets
+\\$^h$ Post-intervention year 2 measurement
+\\$^i$ Post-intervention measurements in years 1 and 2 combined
+
+\end{spacing}
+\end{scriptsize}
+\end{footnotesize}
+\end{minipage}
+\end{center}
+\end{table}
+\FloatBarrier
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mortality
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+
+<<loaddata,echo=false,results=tex>>=
+#load("~/Dropbox/WBK-primary-analysis/Results/jade/table-mort.RData")
+load(paste(dir.start,"Dropbox/WBK-primary-analysis/Results/Jade/table-mort.RData",sep=""))
+@
+
+\FloatBarrier
+\begin{table}[!ht]
+\begin{center}
+\renewcommand\thetable{S8}
+\begin{minipage}{5in}
+\caption{All-cause mortality among index children 2 years after intervention}
+% \begin{footnotesize}
+\begin{tabular}{l c c c c}\hline
+ & & &Cumulative & Risk difference\\
+ Arm & N at risk & n deaths & incidence & (95$\%$ CI)\\\hline
+<<table,echo=false,results=tex>>=
+cleantable(mort.tab,digits=0)
+@
+\hline
+\end{tabular}
+\begin{scriptsize}
+\begin{spacing}{1.0}
+\end{spacing}
+\end{scriptsize}
+% \end{footnotesize}
+\end{minipage}
+\end{center}
+\end{table}
+\FloatBarrier
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Date of birth
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{landscape}
+
+
+\clearpage
+
+
+<<loaddata,echo=false,results=tex>>=
+#load("~/Dropbox/WBK-primary-analysis/Results/Andrew/table-dob.RData")
+load(paste(dir.start,"Dropbox/WBK-primary-analysis/Results/Andrew/table-dob.RData",sep=""))
+@
+
+
+\FloatBarrier
+\begin{table}[!ht]
+\begin{center}
+\renewcommand\thetable{S9}
+\begin{minipage}{5in}
+\caption{Methods of determining child date of birth (DOB)}
+\begin{small}
+  \setlength{\tabcolsep}{0.75\tabcolsep}% Reduce \tabcolsep by 25%
+\hspace*{-5cm}\begin{tabular}{lccccccccc}
+
+  \hline
+   &  Active  & Passive  &  &  &  &  &  & Nutrition  \\
+ &   Control &  Control & Water & Sanitation & Handwashing & WSH & Nutrition &  + WSH \\
+    &  N (\%)  & N (\%)  & N (\%)  & N (\%)  & N (\%)  & N (\%)  & N (\%)  & N (\%)  \\
+
+  \hline
+<<table,echo=false,results=tex>>=
+cleantable(dob.tab[1:3,],digits=0)
+@
+
+\multicolumn{9}{l}{\textbf{Reported exact same DOB by DOB recall or reported age}}  \\
+
+<<table,echo=false,results=tex>>=
+cleantable(dob.tab[5:6,],digits=0)
+@
+\multicolumn{9}{l}{\textbf{Reported DOB within two weeks, by DOB recall or reported age}}  \\
+
+<<table,echo=false,results=tex>>=
+cleantable(dob.tab[8:9,],digits=0)
+@
+
+
+
+\hline
+\end{tabular}
+\begin{scriptsize}
+\begin{spacing}{1.0}
+\\$^*$Date of birth documentation includes health booklet, clinic card, birth certificate, or baptism card.
+\end{spacing}
+\end{scriptsize}
+\end{small}
+\end{minipage}
+\end{center}
+\end{table}
+\FloatBarrier
+
+\end{landscape}
+
+
+ \end{document}
+

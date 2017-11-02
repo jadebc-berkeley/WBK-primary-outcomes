@@ -72,21 +72,21 @@
 \end{landscape}
 
 
-\FloatBarrier
-\begin{figure}[!ht]
-\begin{center}
-\begin{minipage}{6.5in}
-\includegraphics[width=6.5in]{kenya-uptake}
-\caption{ Measures of intervention adherence by study arm at enrollment and 1 and 2 years after delivery of interventions. Error bars mark 95\% confidence intervals. Promoter visits and LNS consumption were not measured at enrollment. Safe disposal of children's feces based on caregiver reports of defecation and disposal locations. LNS compliance measured as proportion of 14 sachets consumed in the past week among index children ages 6-24 months (reported). C: active control; P: passive control; W: water treatment; S: sanitation; H: handwashing; WSH: combined water, sanitation, handwashing; N: nutrition; WSHN: combined water, sanitation, handwashing, nutrition}
-\begin{scriptsize}
-\begin{spacing}{1.0}
-\noindent 
-\end{spacing}
-\end{scriptsize}
-\end{minipage}
-\end{center}
-\end{figure}
-\FloatBarrier
+% \FloatBarrier
+% \begin{figure}[!ht]
+% \begin{center}
+% \begin{minipage}{6.5in}
+% \includegraphics[width=6.5in]{kenya-uptake}
+% \caption{ Measures of intervention adherence by study arm at enrollment and 1 and 2 years after delivery of interventions. Error bars mark 95\% confidence intervals. Promoter visits and LNS consumption were not measured at enrollment. Safe disposal of children's feces based on caregiver reports of defecation and disposal locations. LNS compliance measured as proportion of 14 sachets consumed in the past week among index children ages 6-24 months (reported). C: active control; P: passive control; W: water treatment; S: sanitation; H: handwashing; WSH: combined water, sanitation, handwashing; N: nutrition; WSHN: combined water, sanitation, handwashing, nutrition}
+% \begin{scriptsize}
+% \begin{spacing}{1.0}
+% \noindent 
+% \end{spacing}
+% \end{scriptsize}
+% \end{minipage}
+% \end{center}
+% \end{figure}
+% \FloatBarrier
 
 
 
@@ -135,7 +135,7 @@
 \renewcommand\thefigure{S2}
 \begin{minipage}{7.5in}
 \includegraphics[width=7.5in]{kenya-diar-y1}
-\caption{Intervention effects on diarrhea prevalence 1 year after intervention. Diarrhea prevalence was measured twice during the study, at 1 and 2 years after the delivery of interventions. Mantel-Haenszel prevalence ratios (stratified by matched pair) and their 95$\%$ confidence intervals (CI) compare the passive control arm and each intervention arm against the active control arm, as well as the combined water, sanitation, and handwashing (WSH) package against single water, sanitation, or handwashing interventions.}
+\caption{Intervention effects on diarrhea prevalence 1 year after intervention. Seven day diarrhea prevalence was measured twice during the study, at 1 and 2 years after the delivery of interventions. Mantel-Haenszel prevalence ratios (stratified by matched pair) and their 95$\%$ confidence intervals (CI) compare the passive control arm and each intervention arm against the active control arm, as well as the combined water, sanitation, and handwashing (WSH) package against single water, sanitation, or handwashing interventions.}
 \begin{scriptsize}
 \begin{spacing}{1.0}
 \noindent 
