@@ -127,12 +127,31 @@
 
 
 
+\FloatBarrier
+\begin{figure}[!ht]
+\begin{center}
+\renewcommand\thefigure{S2}
+\begin{minipage}{7.5in}
+\includegraphics[width=7.5in]{kenya-age-boxplots}
+\caption{Box-and-whisker plots of child age in months by study arm at year 1 and year 2, 12 and 24 months after delivery of the interventions. The line across the box denotes the median age. The bottom and top of the boxes, and printed numbers, are the 25th and 75th percentiles respectively.  The whiskers mark 1.5 times the inter-quartile range, the difference between the 75th and 25th percentiles, and points mark outliers beyond the whiskers. C: active control; P: passive control; W: water treatment; S: sanitation; H: handwashing; WSH: combined water, sanitation, handwashing; N: nutrition; WSHN: combined water, sanitation, handwashing, nutrition}
+\begin{scriptsize}
+\begin{spacing}{1.0}
+\noindent 
+\end{spacing}
+\end{scriptsize}
+\end{minipage}
+\end{center}
+\end{figure}
+\FloatBarrier
+
+
+
 
 
 \FloatBarrier
 \begin{figure}[!ht]
 \begin{center}
-\renewcommand\thefigure{S2}
+\renewcommand\thefigure{S3}
 \begin{minipage}{7.5in}
 \includegraphics[width=7.5in]{kenya-diar-y1}
 \caption{Intervention effects on diarrhoea prevalence 1 year after intervention. Seven day diarrhoea prevalence was measured twice during the study, at 1 and 2 years after the delivery of interventions. Mantel-Haenszel prevalence ratios (stratified by matched pair) and their 95$\%$ confidence intervals (CI) compare the passive control arm and each intervention arm against the active control arm, as well as the combined water, sanitation, and handwashing (WSH) package against single water, sanitation, or handwashing interventions.}
@@ -150,7 +169,7 @@
 \FloatBarrier
 \begin{figure}[!ht]
 \begin{center}
-\renewcommand\thefigure{S3}
+\renewcommand\thefigure{S4}
 \begin{minipage}{7.5in}
 \includegraphics[width=7.5in]{DiarByMonth_Kenya-bw-noci}
 \caption{Diarrhoea prevalence by calendar month. Individual children were measured only once at each round of follow-up, but due to the large study size each follow-up measurement spanned approximately one calendar year. Control and intervention clusters were geographically matched and matched clusters were measured concurrently.  All intervention arms had similar prevalence during follow-up (Fig 3), and were combined into a single data series in this figure to have sufficient observations to estimate monthly prevalence. The control data series includes on average 208 observations per month (range: 100, 309) and the intervention data series includes on average 400 observations per month (range: 188, 570).}
@@ -171,7 +190,7 @@
 \FloatBarrier
 \begin{figure}[!ht]
 \begin{center}
-\renewcommand\thefigure{S4}
+\renewcommand\thefigure{S5}
 \begin{minipage}{7.5in}
 \includegraphics[width=7.5in]{kenya-laz1}
 \caption{Intervention effects on length for age Z-scores (LAZ) among 6,262 children after 1 year of intervention. Kernel density plots summarize the distribution of LAZ among index children who were born into the study and were between 2-18 months (median = 12 months) at the time of measurement. In each panel, a dashed line illustrates the comparison group distribution and a solid line illustrates the active comparator distribution. a-g, passive control and each active intervention arm compared against the double-sized active control arm; h,i, combined water, sanitation, handwashing (WSH) plus nutrition compared against either nutrition alone (h) or WSH alone (i). t-test p-values test whether differences in group means are different from zero; permutation p-values test the strong null hypothesis of no difference between groups using a Wilcoxon signed-rank test statistic.}
