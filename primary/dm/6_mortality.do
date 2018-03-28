@@ -48,6 +48,7 @@ drop childdeath
 ren childdeathnew childdeath
 
 outsheet using "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/mortality.csv", comma replace
+save "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/mortality.dta", replace
 
 
 

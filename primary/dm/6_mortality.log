@@ -1,9 +1,8 @@
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary
-> /dm/6_mortality.log
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary/dm/6_mortality.log
   log type:  text
- opened on:  17 Jul 2017, 15:13:01
+ opened on:  28 Mar 2018, 09:22:34
 
 . 
 . *********************************************
@@ -57,8 +56,7 @@ clusterid was double now str5
 
 . 
 . * merge in treatment info
-. merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr
-> .dta"
+. merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr.dta"
 
     Result                           # of obs.
     -----------------------------------------
@@ -91,8 +89,13 @@ clusterid was double now str5
 . ren childdeathnew childdeath
 
 . 
-. outsheet using "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/mort
-> ality.csv", comma replace
+. outsheet using "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/mortality.csv", comma repl
+> ace
+
+. save "~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/mortality.dta", replace
+(note: file /Users/jadederong/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/mortality.dta no
+> t found)
+file ~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/mortality.dta saved
 
 . 
 . 
@@ -100,8 +103,7 @@ clusterid was double now str5
 . 
 . log close
       name:  <unnamed>
-       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary
-> /dm/6_mortality.log
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary/dm/6_mortality.log
   log type:  text
- closed on:  17 Jul 2017, 15:13:01
-----------------------------------------------------------------------------
+ closed on:  28 Mar 2018, 09:22:35
+--------------------------------------------------------------------------------------------------
