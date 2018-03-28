@@ -1,9 +1,8 @@
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary
-> /dm/3_uptake.log
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary/dm/3_uptake.log
   log type:  text
- opened on:  17 Jul 2017, 15:12:20
+ opened on:  28 Mar 2018, 10:02:54
 
 . 
 . *********************************************
@@ -50,13 +49,11 @@ clusterid was double now str5
 . #delimit;
 delimiter now ;
 . replace chlorine = 0 if c1015a==0 | c1005==2 | (c1005==1 & c100601!=1 &
->         c100601!=2 & c100601!=11 & c100601!=12 & c100601!=13 &  c100602!=1
->  & 
+>         c100601!=2 & c100601!=11 & c100601!=12 & c100601!=13 &  c100602!=1 & 
 >         c100602!=2 & c100602!=11 & c100602!=12 & c100602!=13);
 (6,494 real changes made)
 
-. replace chlorine = . if  c1003_1==2 | c1014!=1 | c1015a==99.9 | c1023==11 
-> | c1023==12;
+. replace chlorine = . if  c1003_1==2 | c1014!=1 | c1015a==99.9 | c1023==11 | c1023==12;
 (1,688 real changes made, 1,688 to missing)
 
 .  #delimit cr
@@ -80,8 +77,7 @@ delimiter now cr
 . * merging in indicator for having child in parasite cohort
 . preserve
 
-. use "~/Dropbox/WBK-primary-analysis/Data/Untouched/msP_household_tracking_
-> 20161006.dta", clear
+. use "~/Dropbox/WBK-primary-analysis/Data/Untouched/msP_household_tracking_20161006.dta", clear
 
 . keep hhid parasite_bl
 
@@ -91,7 +87,7 @@ hhid was double now str7
 . tempfile para
 
 . save `para'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000002 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_12040.000002 saved
 
 . restore
 
@@ -110,15 +106,15 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000002 saved
 . 
 . gen feces_disp=0
 
-. replace feces_disp= 1 if c903_intoilet==1 | c903_diaper==1 | ((c903_potty_
-> incourt==1 | c903_potty_inhouse==1) & (c904==2 | c904==7)) 
+. replace feces_disp= 1 if c903_intoilet==1 | c903_diaper==1 | ((c903_potty_incourt==1 | c903_pott
+> y_inhouse==1) & (c904==2 | c904==7)) 
 (530 real changes made)
 
 . replace feces_disp = . if parasite_bl ==1
 (743 real changes made, 743 to missing)
 
-. replace feces_disp = . if c903_intoilet==. & c903_potty_incourt==. & c903_
-> potty_inhouse==. & (c904==. | c904==99)
+. replace feces_disp = . if c903_intoilet==. & c903_potty_incourt==. & c903_potty_inhouse==. & (c9
+> 04==. | c904==99)
 (4,451 real changes made, 4,451 to missing)
 
 . 
@@ -127,17 +123,14 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000002 saved
 delimiter now ;
 . gen hws=0;
 
-. replace hws=1 if (c702c_water==1 & (c702c_scentbar==1 | c702c_unscentbar==
-> 1 | c702c_powder==1 | 
->         c702c_soapywat==1)) | ( c703c_water==1 & (c703c_scentbar==1 | c703
-> c_unscentbar==1 | 
+. replace hws=1 if (c702c_water==1 & (c702c_scentbar==1 | c702c_unscentbar==1 | c702c_powder==1 | 
+>         c702c_soapywat==1)) | ( c703c_water==1 & (c703c_scentbar==1 | c703c_unscentbar==1 | 
 >         c703c_powder==1 | c703c_soapywat==1));
 (478 real changes made)
 
-.         replace hws=. if (c702c_water==. & c702c_scentbar==. & c702c_unsce
-> ntbar==. & c702c_powder==. & 
->         c702c_soapywat==.) & ( c703c_water==. & c703c_scentbar==. & c703c_
-> unscentbar==. &
+.         replace hws=. if (c702c_water==. & c702c_scentbar==. & c702c_unscentbar==. & c702c_powde
+> r==. & 
+>         c702c_soapywat==.) & ( c703c_water==. & c703c_scentbar==. & c703c_unscentbar==. &
 >         c703c_powder==. & c703c_soapywat==.);
 (18 real changes made, 18 to missing)
 
@@ -154,8 +147,7 @@ delimiter now cr
 . tostring clusterid, replace
 clusterid already string; no replace
 
-. merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr
-> .dta"
+. merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr.dta"
 
     Result                           # of obs.
     -----------------------------------------
@@ -170,8 +162,8 @@ clusterid already string; no replace
 . keep hhid clusterid tr promoter chlorine imp_lat feces_disp hws lns
 
 . 
-. outsheet using "~/Dropbox/WBK-primary-analysis/Data/final/jade/uptake_base
-> line.csv", replace comma 
+. outsheet using "~/Dropbox/WBK-primary-analysis/Data/final/jade/uptake_baseline.csv", replace com
+> ma 
 
 . 
 . *********************************************
@@ -200,13 +192,11 @@ clusterid was double now str5
 
 . #delimit; 
 delimiter now ;
-. replace chlorine = 0 if c1015a==0 | c1005==2 | (c1005==1 & c1006_cldisp!=1
->  & 
+. replace chlorine = 0 if c1015a==0 | c1005==2 | (c1005==1 & c1006_cldisp!=1 & 
 >         c1006_botcl!=1 & c1006_pur!=1 & c1006_aqua!=1 & c1006_cl!=1);
 (2,844 real changes made)
 
-. replace chlorine = . if  c1003_1==2 | c1014!=1 | c1015a==99.9 | c1015a==99
-> 9;
+. replace chlorine = . if  c1003_1==2 | c1014!=1 | c1015a==99.9 | c1015a==999;
 (2,860 real changes made, 2,860 to missing)
 
 . #delimit cr
@@ -232,8 +222,7 @@ delimiter now cr
 . * merging in indicator for having child in parasite cohort
 . preserve
 
-. use "~/Dropbox/WBK-primary-analysis/Data/Untouched/msP_household_tracking_
-> 20161006.dta", clear
+. use "~/Dropbox/WBK-primary-analysis/Data/Untouched/msP_household_tracking_20161006.dta", clear
 
 . keep hhid parasite_bl
 
@@ -243,7 +232,7 @@ hhid was double now str7
 . tempfile para
 
 . save `para'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000004 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_12040.000004 saved
 
 . restore
 
@@ -268,15 +257,15 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000004 saved
 . 
 . gen feces_disp=0
 
-. replace feces_disp= 1 if c903_intoilet==1 | ( c903_diaper==1 & c904==2) | 
-> ((c903_pottyincourt==1 | c903_pottyinhouse==1) & (c904==2 | c904==7)) 
+. replace feces_disp= 1 if c903_intoilet==1 | ( c903_diaper==1 & c904==2) | ((c903_pottyincourt==1
+>  | c903_pottyinhouse==1) & (c904==2 | c904==7)) 
 (1,898 real changes made)
 
 . replace feces_disp = . if parasite_bl ==1
 (534 real changes made, 534 to missing)
 
-. replace feces_disp = . if c903_intoilet==. & c903_pottyincourt==. & c903_p
-> ottyinhouse==. & c904==. 
+. replace feces_disp = . if c903_intoilet==. & c903_pottyincourt==. & c903_pottyinhouse==. & c904=
+> =. 
 (2,094 real changes made, 2,094 to missing)
 
 . 
@@ -285,17 +274,13 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000004 saved
 delimiter now ;
 . gen ws = 0;
 
-. replace ws = 1 if (c702c_water==1 & (c702c_scentbar==1 | c702c_unscentbar=
-> =1 | 
->         c702c_powder==1 | c702c_soapywat==1)) | (c703c_water==1 & (c703c_s
-> centbar==1 | 
+. replace ws = 1 if (c702c_water==1 & (c702c_scentbar==1 | c702c_unscentbar==1 | 
+>         c702c_powder==1 | c702c_soapywat==1)) | (c703c_water==1 & (c703c_scentbar==1 | 
 >         c703c_unscentbar==1 | c703c_powder==1 | c703c_soapywat==1));
 (1,440 real changes made)
 
-. replace ws = . if (c702c_water==. & c702c_scentbar==. & c702c_unscentbar==
-> . & c702c_powder==. & 
->         c702c_soapywat==.) & ( c703c_water==. & c703c_scentbar==. & c703c_
-> unscentbar==. &
+. replace ws = . if (c702c_water==. & c702c_scentbar==. & c702c_unscentbar==. & c702c_powder==. & 
+>         c702c_soapywat==.) & ( c703c_water==. & c703c_scentbar==. & c703c_unscentbar==. &
 >         c703c_powder==. & c703c_soapywat==.);
 (2,107 real changes made, 2,107 to missing)
 
@@ -304,12 +289,10 @@ delimiter now cr
 .         
 . gen tt = 0
 
-. replace tt=1 if (tt702b1==1 & tt702d==1 & tt702f==1) | (tt703b1==1 & tt703
-> d==1 & tt703f==1)
+. replace tt=1 if (tt702b1==1 & tt702d==1 & tt702f==1) | (tt703b1==1 & tt703d==1 & tt703f==1)
 (161 real changes made)
 
-. replace tt=. if tt702b1==. & tt702d==. & tt702f==. & tt703b1==. & tt703d==
-> . & tt703f==.
+. replace tt=. if tt702b1==. & tt702d==. & tt702f==. & tt703b1==. & tt703d==. & tt703f==.
 (5,802 real changes made, 5,802 to missing)
 
 . 
@@ -350,7 +333,7 @@ hhid was double now str7
 . tempfile dob
 
 . save `dob'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000006 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_12040.000006 saved
 
 . restore
 
@@ -397,8 +380,7 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000006 saved
 . tostring clusterid, replace
 clusterid already string; no replace
 
-. merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr
-> .dta"
+. merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr.dta"
 
     Result                           # of obs.
     -----------------------------------------
@@ -419,8 +401,8 @@ clusterid already string; no replace
 . keep hhid clusterid tr promoter chlorine imp_lat feces_disp hws lns
 
 . 
-. outsheet using "~/Dropbox/WBK-primary-analysis/Data/final/jade/uptake_midl
-> ine.csv", replace comma 
+. outsheet using "~/Dropbox/WBK-primary-analysis/Data/final/jade/uptake_midline.csv", replace comm
+> a 
 
 . 
 . *********************************************
@@ -449,13 +431,11 @@ clusterid was float now str5
 
 . #delimit; 
 delimiter now ;
-. replace chlorine = 0 if c1015a==0 | c1005==2 | (c1005==1 & c1006_cldisp!=1
->  & 
+. replace chlorine = 0 if c1015a==0 | c1005==2 | (c1005==1 & c1006_cldisp!=1 & 
 >         c1006_botcl!=1 & c1006_pur!=1 & c1006_aqua!=1 & c1006_cl!=1);
 (4,744 real changes made)
 
-. replace chlorine = . if  c1003_1==2 | c1014!=1 | c1015a==99.9 | c1015a==99
-> 9;
+. replace chlorine = . if  c1003_1==2 | c1014!=1 | c1015a==99.9 | c1015a==999;
 (1,926 real changes made, 1,926 to missing)
 
 . #delimit cr
@@ -481,8 +461,7 @@ delimiter now cr
 . * merging in indicator for having child in parasite cohort
 . preserve
 
-. use "~/Dropbox/WBK-primary-analysis/Data/Untouched/msP_household_tracking_
-> 20161006.dta", clear
+. use "~/Dropbox/WBK-primary-analysis/Data/Untouched/msP_household_tracking_20161006.dta", clear
 
 . keep hhid parasite_bl
 
@@ -492,7 +471,7 @@ hhid was double now str7
 . tempfile para
 
 . save `para'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000008 saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_12040.000008 saved
 
 . restore
 
@@ -518,8 +497,8 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000008 saved
 . * child feces safely disposed 
 . gen feces_disp=0
 
-. replace feces_disp= 1 if c903==7 | (c903==8 & c904==2) | ((c903 ==1 | c903
->  ==2) & (c904==2 | c904==7))
+. replace feces_disp= 1 if c903==7 | (c903==8 & c904==2) | ((c903 ==1 | c903 ==2) & (c904==2 | c90
+> 4==7))
 (1,078 real changes made)
 
 . replace feces_disp = . if parasite_bl ==1
@@ -535,17 +514,13 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.000008 saved
 delimiter now ;
 . gen ws = 0;
 
-. replace ws = 1 if (c702c_water==1 & (c702c_scentbar==1 | c702c_unscentbar=
-> =1 | 
->         c702c_powder==1 | c702c_soapywat==1)) | (c703c_water==1 & (c703c_s
-> centbar==1 | 
+. replace ws = 1 if (c702c_water==1 & (c702c_scentbar==1 | c702c_unscentbar==1 | 
+>         c702c_powder==1 | c702c_soapywat==1)) | (c703c_water==1 & (c703c_scentbar==1 | 
 >         c703c_unscentbar==1 | c703c_powder==1 | c703c_soapywat==1));
 (717 real changes made)
 
-. replace ws = . if (c702c_water==. & c702c_scentbar==. & c702c_unscentbar==
-> . & c702c_powder==. & 
->         c702c_soapywat==.) & ( c703c_water==. & c703c_scentbar==. & c703c_
-> unscentbar==. &
+. replace ws = . if (c702c_water==. & c702c_scentbar==. & c702c_unscentbar==. & c702c_powder==. & 
+>         c702c_soapywat==.) & ( c703c_water==. & c703c_scentbar==. & c703c_unscentbar==. &
 >         c703c_powder==. & c703c_soapywat==.);
 (1,463 real changes made, 1,463 to missing)
 
@@ -554,12 +529,10 @@ delimiter now cr
 .         
 . gen tt = 0
 
-. replace tt=1 if (tt702b1==1 & tt702d==1 & tt702f==1) | (tt703b1==1 & tt703
-> d==1 & tt703f==1)
+. replace tt=1 if (tt702b1==1 & tt702d==1 & tt702f==1) | (tt703b1==1 & tt703d==1 & tt703f==1)
 (64 real changes made)
 
-. replace tt=. if tt702b1==. & tt702d==. & tt702f==. & tt703b1==. & tt703d==
-> . & tt703f==.
+. replace tt=. if tt702b1==. & tt702d==. & tt702f==. & tt703b1==. & tt703d==. & tt703f==.
 (5,895 real changes made, 5,895 to missing)
 
 . 
@@ -602,7 +575,7 @@ hhid was double now str7
 . tempfile dob
 
 . save `dob'
-file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.00000a saved
+file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_12040.00000a saved
 
 . restore
 
@@ -650,8 +623,7 @@ file /var/folders/gh/bgfnnwkd7wdg7cw3q0_zwvt40000gp/T//S_29139.00000a saved
 . tostring clusterid, replace
 clusterid already string; no replace
 
-. merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr
-> .dta"
+. merge m:1 clusterid using "/Volumes/0-Treatment-assignments/washb-kenya-tr.dta"
 
     Result                           # of obs.
     -----------------------------------------
@@ -673,22 +645,20 @@ clusterid already string; no replace
 . keep hhid clusterid tr promoter chlorine imp_lat feces_disp hws lns
 
 . 
-. * there are 66 observations in the passive control arm, but my understandi
-> ng
+. * there are 66 observations in the passive control arm, but my understanding
 . * was that measurements were not taken in that arm. 
 . drop if tr==8
 (66 observations deleted)
 
 . 
-. outsheet using "~/Dropbox/WBK-primary-analysis/Data/final/jade/uptake_endl
-> ine.csv", replace comma 
+. outsheet using "~/Dropbox/WBK-primary-analysis/Data/final/jade/uptake_endline.csv", replace comm
+> a 
 
 . 
 . 
 . log close
       name:  <unnamed>
-       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary
-> /dm/3_uptake.log
+       log:  /Users/jadederong/documents/crg/wash-benefits/Kenya/src/primary/dm/3_uptake.log
   log type:  text
- closed on:  17 Jul 2017, 15:12:21
-----------------------------------------------------------------------------
+ closed on:  28 Mar 2018, 10:02:56
+--------------------------------------------------------------------------------------------------
