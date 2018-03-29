@@ -5,7 +5,8 @@
 # Length-for-age 
 # N, mean, SD by arm
 
-# input: midline-anthro.csv, endline-anthro.csv
+# input: washb-kenya-midline-anthro-public.csv,
+# washb-kenya-endline-anthro-public.csv
 # output: laz_mean.RData
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
