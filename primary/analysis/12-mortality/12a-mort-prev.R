@@ -4,7 +4,7 @@
 
 # All-cause mortality
 
-# input: mortality.csv
+# input: washb-kenya-mortality-public.csv
 # output: mort_prev.RData
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
@@ -12,9 +12,15 @@
 library(washb)
 
 rm(list=ls())
-source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
 
-d=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/mortality.csv")
+# define directories
+source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
+data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
+res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
+
+source(paste0(source.dir,"0-base-programs.R"))
+
+d=read.csv(paste0(data.dir,"washb-kenya-mortality-public.csv"))
 
 # reorder tr labels
 reord=function(x){
@@ -42,5 +48,5 @@ N_mort_j
 mort_prev_j
 
 save(N_mort_j, mort_prev_j,
-     file="~/Dropbox/WBK-primary-analysis/results/jade/mort_prev.RData")
+     file=paste0(res.dir,"mort_prev.RData"))
 

@@ -6,7 +6,7 @@
 # n, N, prevalence, and 95% CI by arm at
 # baseline and follow-up
 
-# input: bruise.csv
+# input: washb-kenya-bruise-public.csv
 # output: bruise_prev.RData
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
@@ -14,9 +14,15 @@
 library(washb)
 
 rm(list=ls())
-source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
 
-d=read.csv("~/Dropbox/WBK-primary-analysis/Data/final/jade/bruise.csv")
+# define directories
+source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
+data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
+res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
+
+source(paste0(source.dir,"0-base-programs.R"))
+
+d=read.csv(paste0(data.dir,"washb-kenya-bruise-public.csv"))
 
 # keep diarrhea cohort members
 d=subset(d, d$dcohort==1)
@@ -83,5 +89,5 @@ bruise_t12_prev_j
 save(
   bruise_t1_n_j, bruise_t2_n_j, bruise_t12_n_j, 
   bruise_t1_prev_j, bruise_t2_prev_j, bruise_t12_prev_j,
-     file="~/Dropbox/WBK-primary-analysis/results/jade/bruise_prev.RData")
+     file=paste0(res.dir,"bruise_prev.RData"))
 
