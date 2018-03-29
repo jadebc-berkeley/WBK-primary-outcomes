@@ -9,7 +9,8 @@
 # Note: this code does not use the washb R package
 # However, the results are replicated with the washb_permute function
 
-# input: midline-anthro.csv, endline-anthro.csv
+# input: washb-kenya-midline-anthro-public.csv,
+# washb-kenya-endline-anthro-public.csv
 # output: hcz_t1_pval_unadj.RData, hcz_t2_pval_unadj.RData
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
@@ -19,10 +20,16 @@ library(coin)
 library(reshape2)
 
 rm(list=ls())
-m=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midline-anthro.csv")
-e=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/endline-anthro.csv")
 
-source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
+# define directories
+source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
+data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
+res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
+
+m=read.csv(paste0(data.dir,"washb-kenya-midline-anthro-public.csv"))
+e=read.csv(paste0(data.dir,"washb-kenya-endline-anthro-public.csv"))
+
+source(paste0(source.dir,"0-base-programs.R"))
 
 m=preprocess.anthro(m, "hcz")
 e=preprocess.anthro(e, "hcz")
@@ -169,10 +176,10 @@ rownames(hcz_t2_h3_pval_unadj_j)=c("Nutrition + WSH vs. Nutrition","Nutrition + 
 
 
 save(hcz_t1_h1_pval_unadj_j,hcz_t1_h3_pval_unadj_j,
-     file="~/Dropbox/WBK-primary-analysis/results/jade/hcz_t1_pval_unadj.RData")
+     file=paste0(res.dir,"hcz_t1_pval_unadj.RData"))
 
 save(hcz_t2_h1_pval_unadj_j,hcz_t2_h3_pval_unadj_j,
-     file="~/Dropbox/WBK-primary-analysis/results/jade/hcz_t2_pval_unadj.RData")
+     file=paste0(res.dir,"hcz_t2_pval_unadj.RData"))
 
 hcz_t1_h1_pval_unadj_j
 hcz_t1_h3_pval_unadj_j
