@@ -11,7 +11,7 @@
 # Note: this code does not use the washb R package
 # However, the results are replicated with the washb_permute function
 
-# input: diarrhea.csv
+# input: washb-kenya-diar-public.csv
 # output: diarr_pval_adj.RData
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)

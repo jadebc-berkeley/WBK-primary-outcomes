@@ -8,7 +8,7 @@
 
 # Year 1 data only
 
-# input: diarrhea.csv
+# input: washb-kenya-diar-public.csv
 # output: diar_prev_y1.RData
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)

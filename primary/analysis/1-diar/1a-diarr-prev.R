@@ -6,7 +6,7 @@
 # n, N, prevalence, and 95% CI by arm at
 # baseline and follow-up
 
-# input: diarrhea.csv
+# input: washb-kenya-diar-public.csv
 # output: diar_prev.RData
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)

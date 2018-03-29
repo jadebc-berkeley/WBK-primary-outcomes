@@ -10,7 +10,7 @@
 # calculate unadjusted differences
 # between treatment arms for H1-H3
 
-# input: diarrhea.csv
+# input: washb-kenya-diar-public.csv
 # output: diar_y1_rd_unadj.RData, diar_y1_pr_unadj.RData
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
