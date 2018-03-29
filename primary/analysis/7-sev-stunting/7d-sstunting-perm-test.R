@@ -9,7 +9,8 @@
 # Note: this code does not use the washb R package
 # However, the results are replicated with the washb_permute function
 
-# input: midline-anthro.csv, endline-anthro.csv
+# input: washb-kenya-midline-anthro-public.csv,
+# washb-kenya-endline-anthro-public.csv
 # output: sstunt_pval_unadj.RData
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
@@ -19,10 +20,15 @@ rm(list=ls())
 library(reshape2)
 library(coin)
 
-source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
+# define directories
+source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
+data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
+res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
 
-m=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midline-anthro.csv")
-e=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/endline-anthro.csv")
+m=read.csv(paste0(data.dir,"washb-kenya-midline-anthro-public.csv"))
+e=read.csv(paste0(data.dir,"washb-kenya-endline-anthro-public.csv"))
+
+source(paste0(source.dir,"0-base-programs.R"))
 
 m=preprocess.anthro(m, "sstunted")
 e=preprocess.anthro(e, "sstunted")
