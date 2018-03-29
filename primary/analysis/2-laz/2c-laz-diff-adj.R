@@ -14,14 +14,15 @@
 library(devtools)
 library(washb)
 
-rm(list=ls())
-m=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midline-anthro.csv",stringsAsFactors=TRUE)
-e=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/endline-anthro.csv",stringsAsFactors=TRUE)
+# define directories
+source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
+data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
+res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
 
-source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
+m=read.csv(paste0(data.dir,"washb-kenya-midline-anthro-public.csv"))
+e=read.csv(paste0(data.dir,"washb-kenya-endline-anthro-public.csv"))
 
-m=preprocess.anthro(m, y="haz")
-e=preprocess.anthro(e, y="haz")
+source(paste0(source.dir,"0-base-programs.R"))
 
 m=preprocess.adj(m,y="haz",time=1)
 e=preprocess.adj(e,y="haz",time=2)
@@ -115,6 +116,6 @@ laz_t2_h3_rd_adj_j
 
 save(laz_t1_h1_rd_adj_j,laz_t1_h3_rd_adj_j,
   laz_t2_h1_rd_adj_j,laz_t2_h3_rd_adj_j,
-  file="~/Dropbox/WBK-primary-analysis/Results/jade/laz-PR-adj.RData")
+  file=paste0(res.dir,"laz-PR-adj.RData"))
 
 

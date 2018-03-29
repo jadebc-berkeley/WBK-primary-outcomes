@@ -14,11 +14,15 @@
 
 library(washb)
 
-rm(list=ls())
-m=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midline-anthro.csv")
-e=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/endline-anthro.csv")
+# define directories
+source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
+data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
+res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
 
-source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
+m=read.csv(paste0(data.dir,"washb-kenya-midline-anthro-public.csv"))
+e=read.csv(paste0(data.dir,"washb-kenya-endline-anthro-public.csv"))
+
+source(paste0(source.dir,"0-base-programs.R"))
 
 m=preprocess.anthro(m, "haz")
 e=preprocess.anthro(e, "haz")
@@ -70,5 +74,5 @@ rownames(laz_t2_h3_rd_unadj_j)=c("Nutrition + WSH vs Nutrition",
 
 save(laz_t1_h1_rd_unadj_j, laz_t1_h3_rd_unadj_j,
      laz_t2_h1_rd_unadj_j, laz_t2_h3_rd_unadj_j,
-     file="~/Dropbox/WBK-primary-analysis/results/jade/laz_rd_unadj.RData")
+     file=paste0(res.dir,"laz_rd_unadj.RData"))
 
