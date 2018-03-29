@@ -6,7 +6,8 @@
 # calculate adjusted differences
 # between treatment arms for H1 and H3
 
-# input: midline-anthro.csv, endline-anthro.csv
+# input: washb-kenya-midline-anthro-public.csv,
+# washb-kenya-endline-anthro-public.csv
 # output: wasted-PR-adj.RData
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
@@ -15,10 +16,16 @@ library(devtools)
 library(washb)
 
 rm(list=ls())
-m=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midline-anthro.csv",stringsAsFactors=TRUE)
-e=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/endline-anthro.csv",stringsAsFactors=TRUE)
 
-source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
+# define directories
+source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
+data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
+res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
+
+m=read.csv(paste0(data.dir,"washb-kenya-midline-anthro-public.csv"))
+e=read.csv(paste0(data.dir,"washb-kenya-endline-anthro-public.csv"))
+
+source(paste0(source.dir,"0-base-programs.R"))
 
 m=preprocess.anthro(m, y="wasted")
 e=preprocess.anthro(e, y="wasted")
@@ -123,6 +130,6 @@ save(wast_t1_h1_pr_adj_j,wast_t1_h3_pr_adj_j,
      wast_t2_h1_pr_adj_j,wast_t2_h3_pr_adj_j,
   wast_t1_h1_rd_adj_j,wast_t1_h3_rd_adj_j,
   wast_t2_h1_rd_adj_j,wast_t2_h3_rd_adj_j,
-  file="~/Dropbox/WBK-primary-analysis/Results/jade/wasted-PR-adj.RData")
+  file=paste0(res.dir,"wasted-PR-adj.RData"))
 
 
