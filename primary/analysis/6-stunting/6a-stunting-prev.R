@@ -6,7 +6,8 @@
 # n, N, prevalence, and 95% CI by arm at
 # baseline and follow-up
 
-# input: midline-anthro.csv, endline-anthro.csv
+# input: washb-kenya-midline-anthro-public.csv,
+# washb-kenya-endline-anthro-public.csv
 # output: stunt_prev.RData
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
@@ -14,10 +15,16 @@
 library(washb)
 
 rm(list=ls())
-source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
 
-m=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midline-anthro.csv")
-e=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/endline-anthro.csv")
+# define directories
+source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
+data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
+res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
+
+m=read.csv(paste0(data.dir,"washb-kenya-midline-anthro-public.csv"))
+e=read.csv(paste0(data.dir,"washb-kenya-endline-anthro-public.csv"))
+
+source(paste0(source.dir,"0-base-programs.R"))
 
 m=preprocess.anthro(m, "stunted")
 e=preprocess.anthro(e, "stunted")
@@ -61,5 +68,5 @@ stunt_t1_prev_j
 stunt_t2_prev_j
 
 save(stunt_t1_n_j, stunt_t2_n_j, stunt_t1_prev_j, stunt_t2_prev_j, 
-     file="~/Dropbox/WBK-primary-analysis/results/jade/stunt_prev.RData")
+     file=paste0(res.dir,"stunt_prev.RData"))
 
