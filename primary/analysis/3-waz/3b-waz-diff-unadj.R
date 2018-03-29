@@ -6,7 +6,8 @@
 # calculate unadjusted differences
 # between treatment arms for H1 and H3
 
-# input: midline-anthro.csv, endline-anthro.csv
+# input: washb-kenya-midline-anthro-public.csv,
+# washb-kenya-endline-anthro-public.csv
 # output: waz_rd_unadj.RData
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
