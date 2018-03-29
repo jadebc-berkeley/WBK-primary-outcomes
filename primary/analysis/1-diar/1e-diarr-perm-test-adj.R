@@ -25,10 +25,13 @@ library(plyr)
 library(washb)
 library(SuperLearner)
 
-data=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/diarrhea.csv",
-              stringsAsFactors=TRUE)
+# define directories
+source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
+data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
+res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
 
-source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
+data=read.csv(paste0(data.dir,"washb-kenya-diar-public.csv"),stringsAsFactors=TRUE)
+source(paste0(source.dir,"0-base-programs.R"))
 
 d=preprocess.diarr(data)
 
@@ -163,7 +166,7 @@ rownames(diar_h2_pval_adj_j)=c("WSH vs. Water",
                                  "WSH vs. Sanitation", "WSH vs. Handwashing")
 
 save(diar_h1_pval_adj_j,diar_h2_pval_adj_j,
-     file="~/Dropbox/WBK-primary-analysis/results/jade/diarr_pval_adj.RData")
+     file=paste0(res.dir,"diarr_pval_adj.RData"))
 
 
 diar_h1_pval_adj_j

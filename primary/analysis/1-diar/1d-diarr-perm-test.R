@@ -21,8 +21,13 @@ rm(list=ls())
 library(reshape2)
 library(coin)
 
-data=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/diarrhea.csv")
-source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
+# define directories
+source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
+data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
+res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
+
+data=read.csv(paste0(data.dir,"washb-kenya-diar-public.csv"),stringsAsFactors=TRUE)
+source(paste0(source.dir,"0-base-programs.R"))
 
 d=preprocess.diarr(data)
 
@@ -105,7 +110,7 @@ rownames(diar_h2_pval_unadj_j)=c("WSH vs. Water",
                                  "WSH vs. Sanitation", "WSH vs. Handwashing")
 
 save(diar_h1_pval_unadj_j,diar_h2_pval_unadj_j,
-     file="~/Dropbox/WBK-primary-analysis/results/jade/diarr_pval_unadj.RData")
+     file=paste0(res.dir,"diarr_pval_unadj.RData"))
 
 
 diar_h1_pval_unadj_j
