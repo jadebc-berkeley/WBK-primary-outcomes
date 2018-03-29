@@ -5,7 +5,7 @@
 # between-cluster spillover test
 # get distance matrix for compounds
 
-# input: msP_household_tracking_20161006.csv
+# input: washb-kenya-tracking-public.csv
 # output: washb-dist.RData
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
@@ -17,12 +17,17 @@ library(maptools)
 library(rgdal)
 library(reshape2)
 
-source("~/Documents/CRG/wash-benefits/kenya/src/primary/analysis/10-btw-clus-spill/10a-distance-functions.R")
+# define directories
+source.dir="~/Documents/CRG/wash-benefits/kenya/src/primary/analysis/10-btw-clus-spill/"
+data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
+res.dir="~/Dropbox/WBK-primary-analysis/Results/Jade/"
+
+source(paste0(source.dir,"10a-distance-functions.R"))
 
 #----------------------------------------------------
 # Read in data
 #----------------------------------------------------
-gps=read.csv("~/Dropbox/WASHB-Kenya-Data/0-Untouched-data/1-Main-survey/msP_household_tracking_20161006.csv")
+gps=read.csv(paste0(data.dir,"washb-kenya-tracking-public.csv"))
 
 # drop compounds with missing latitude/longitude
 gps=gps[!is.na(gps$GPS_lat),]
@@ -57,5 +62,5 @@ dm.flat=melt(dm)[melt(upper.tri(dm))$value,]
 quantile(dm.flat$value,probs=c(0,0.25,0.5,0.75,1))
 
            
-save(dm,dm.flat,file="~/Dropbox/WBK-primary-analysis/Results/Jade/washb-dist.RData")
+save(dm,dm.flat,file=paste0(res.dir,"washb-dist.RData"))
 

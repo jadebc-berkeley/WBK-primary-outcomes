@@ -8,23 +8,28 @@
 # obtain distribution of distances between
 # compound in C and each T arm
 
-# input: washb-dist.RData, washb-kenya-tr.csv, msP_household_tracking_20160909.csv
+# input: washb-dist.RData, washb-kenya-tr-public.csv, washb-kenya-tracking-public.csv
 # output: washb-dist-sub.RData, washb-dist-km.csv, washb-dist-quant.csv
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 #####################################################
+# define directories
+source.dir="~/Documents/CRG/wash-benefits/kenya/src/primary/analysis/10-btw-clus-spill/"
+data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
+res.dir="~/Dropbox/WBK-primary-analysis/Results/Jade/"
+fig.dir="~/Dropbox/WBK-primary-analysis/Results/Figures/"
 
-source("~/Documents/CRG/wash-benefits/kenya/src/primary/analysis/10-btw-clus-spill/10a-distance-functions.R")
+source(paste0(source.dir,"10a-distance-functions.R"))
 
 # load distance matrix objects
-load("~/Dropbox/WBK-primary-analysis/Results/Jade/washb-dist.RData")
+load(paste0(res.dir,"washb-dist.RData"))
 
 # load cluster treatment assignments
-tx=read.csv("~/Dropbox/WASHB-Kenya-Data/0-Untouched-data/0-Treatment-assignments/washb-kenya-tr.csv")
+tx=read.csv(paste0(data.dir,"washb-kenya-tr-public.csv"))
 tx=tx[,c("clusterid","tr")]
 
 # load list of compound ids
-washb=read.csv("~/Dropbox/WASHB-Kenya-Data/0-Untouched-data/1-Main-survey/msP_household_tracking_20160909.csv")
+washb=read.csv(paste0(data.dir,"washb-kenya-tracking-public.csv"))
 
 # merge tx with compound id
 comptx=merge(washb,tx,by="clusterid",all.x=TRUE)
@@ -103,7 +108,7 @@ anyN.mat=C.mat[,anyN.cols]
 
 save(C.mat, CT.mat, W.mat, S.mat, H.mat, WSH.mat, N.mat, WSHN.mat, 
      anyW.mat, anyS.mat, anyH.mat, anyN.mat, anyTr.mat,
-     file="~/Dropbox/WBK-primary-analysis/Results/Jade/washb-dist-sub.RData")
+     file=paste0(res.dir,"washb-dist-sub.RData"))
 
 
 # ----------------------------------------------
@@ -117,32 +122,32 @@ WSH.near=apply(WSH.mat,1,min)
 N.near=apply(N.mat,1,min)
 WSHN.near=apply(WSHN.mat,1,min)
 
-pdf(file="~/Dropbox/WBK-primary-analysis/Results/Figures/compdist_w.pdf",
+pdf(file=paste0(fig.dir,"compdist_w.pdf"),
     onefile=TRUE,width=6,height=4)
 hist(W.near,main="Distance from Control to nearest Water compound",
      xlab="Kilometers",breaks=20)
 dev.off()
-pdf(file="~/Dropbox/WBK-primary-analysis/Results/Figures/compdist_s.pdf",
+pdf(file=paste0(fig.dir,"compdist_s.pdf"),
     onefile=TRUE,width=6,height=4)
 hist(S.near,main="Distance from Control to nearest Sanitation compounds",
      xlab="Kilometers",breaks=20)
 dev.off()
-pdf(file="~/Dropbox/WBK-primary-analysis/Results/Figures/compdist_h.pdf",
+pdf(file=paste0(fig.dir,"compdist_h.pdf"),
     onefile=TRUE,width=6,height=4)
 hist(H.near,main="Distance from Control to nearest Handwashing compounds",
      xlab="Kilometers",breaks=20)
 dev.off()
-pdf(file="~/Dropbox/WBK-primary-analysis/Results/Figures/compdist_wsh.pdf",
+pdf(file=paste0(fig.dir,"compdist_wsh.pdf"),
     onefile=TRUE,width=6,height=4)
 hist(WSH.near,main="Distance from Control to nearest WSH compounds",
      xlab="Kilometers",breaks=20)
 dev.off()
-pdf(file="~/Dropbox/WBK-primary-analysis/Results/Figures/compdist_n.pdf",
+pdf(file=paste0(fig.dir,"compdist_n.pdf"),
     onefile=TRUE,width=6,height=4)
 hist(N.near,main="Distance from Control to nearest Nutrition compounds",
      xlab="Kilometers",breaks=20)
 dev.off()
-pdf(file="~/Dropbox/WBK-primary-analysis/Results/Figures/compdist_wshn.pdf",
+pdf(file=paste0(fig.dir,"compdist_wshn.pdf"),
     onefile=TRUE,width=6,height=4)
 hist(WSHN.near,main="Distance from Control to nearest Nutrition+WSH compounds",
      xlab="Kilometers",breaks=20)
@@ -169,7 +174,7 @@ for(i in 2:7){
   all.dists[,i]=as.numeric(sprintf("%0.2f",all.dists[,i]))
 }
 
-write.csv(all.dists,"~/Dropbox/WBK-primary-analysis/Results/Jade/washb-dist-km.csv")
+write.csv(all.dists,paste0(res.dir,"washb-dist-km.csv"))
 
 # ----------------------------------------------
 # quantiles of distance to nearest tx compound
@@ -189,7 +194,7 @@ for(i in 1:3){
   all.q[,i]=as.numeric(sprintf("%0.2f",all.q[,i]))
 }
 
-write.csv(all.q,"~/Dropbox/WBK-primary-analysis/Results/Jade/washb-dist-quant.csv")
+write.csv(all.q,paste0(res.dir,"washb-dist-quant.csv"))
 
 
 

@@ -8,29 +8,35 @@
 # HAZ: endline data
 # diarrhea: midline and endline data
 
-# input: washb-dist-sub.RData, endline-anthro.csv, diarrhea.csv
+# input: washb-dist-sub.RData, washb-kenya-endline-anthro-public.csv
+# washb-kenya-diar-public.csv
 # output: spill-dist-adj.RData
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 #####################################################
 library(SuperLearner)
 
+# define directories
+source.dir="~/Documents/CRG/wash-benefits/kenya/src/primary/analysis/"
+data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
+res.dir="~/Dropbox/WBK-primary-analysis/Results/Jade/"
+
 rm(list=ls())
 
-source("~/Documents/CRG/wash-benefits/kenya/src/primary/analysis/10-btw-clus-spill/10a-distance-functions.R")
-source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
+source(paste0(source.dir,"10-btw-clus-spill/10a-distance-functions.R"))
+source(paste0(source.dir,"0-base-programs.R"))
 
 
 #----------------------------------------------------
 # Read in distance matrices
 #----------------------------------------------------
-load("~/Dropbox/WBK-primary-analysis/Results/Jade/washb-dist-sub.RData")
+load(paste0(res.dir,"washb-dist-sub.RData"))
 
 #----------------------------------------------------
 # Read in outcome data - HAZ
 #----------------------------------------------------
 # load child length endline dataset
-e=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/endline-anthro.csv",stringsAsFactors=TRUE)
+e=read.csv(paste0(data.dir,"washb-kenya-endline-anthro-public.csv"),stringsAsFactors=TRUE)
 e=preprocess.anthro(e, "haz")
 e=preprocess.adj(e, "haz")
 
@@ -41,7 +47,7 @@ e = subset(e,e$tr=="Control")
 # Read in outcome data - diarrhea
 #----------------------------------------------------
 # load child length endline dataset
-data=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/diarrhea.csv")
+data=read.csv(data.dir,"washb-kenya-diar-public.csv")
 d=preprocess.diarr(data)
 d=preprocess.adj(d, "diarr7")
 
@@ -181,5 +187,5 @@ rownames(perm.haz.dist.adj_j)=c("Water","Sanitation","Handwashing","Nutrition")
 rownames(perm.diarr.dist.adj_j)=c("Water","Sanitation","Handwashing","Nutrition")
 
 save(perm.haz.dist.adj_j, perm.diarr.dist.adj_j,
-     file="~/Dropbox/WBK-primary-analysis/results/jade/spill-dist-adj.RData")
+     file=paste0(res.dir,"spill-dist-adj.RData"))
 
