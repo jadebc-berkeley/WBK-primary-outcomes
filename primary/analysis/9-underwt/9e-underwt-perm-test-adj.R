@@ -9,7 +9,8 @@
 # Note: this code does not use the washb R package
 # However, the results are replicated with the washb_permute function
 
-# input: midline-anthro.csv, endline-anthro.csv
+# input: washb-kenya-midline-anthro-public.csv,
+# washb-kenya-endline-anthro-public.csv
 # output: underwt_t1_pval_adj.RData, underwt_t2_pval_adj.RData
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
@@ -23,10 +24,15 @@ library(plyr)
 library(washb)
 library(SuperLearner)
 
-source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
+# define directories
+source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
+data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
+res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
 
-m=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midline-anthro.csv")
-e=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/endline-anthro.csv")
+m=read.csv(paste0(data.dir,"washb-kenya-midline-anthro-public.csv"))
+e=read.csv(paste0(data.dir,"washb-kenya-endline-anthro-public.csv"))
+
+source(paste0(source.dir,"0-base-programs.R"))
 
 m1=preprocess.anthro(m, "underwt")
 e1=preprocess.anthro(e, "underwt")
@@ -255,10 +261,10 @@ underwt_t2_h3_pval_adj_j=data.frame(perm.pvalue=c(WSHN.N.t2.perm.p,WSHN.WSH.t2.p
 rownames(underwt_t2_h3_pval_adj_j)=c("Nutrition + WSH vs. Nutrition","Nutrition + WSH vs. WSH")
 
 save(underwt_t1_h1_pval_adj_j,underwt_t1_h3_pval_adj_j,
-     file="~/Dropbox/WBK-primary-analysis/results/jade/underwt_t1_pval_adj.RData")
+     file=paste0(res.dir,"underwt_t1_pval_adj.RData"))
 
 save(underwt_t2_h1_pval_adj_j,underwt_t2_h3_pval_adj_j,
-     file="~/Dropbox/WBK-primary-analysis/results/jade/underwt_t2_pval_adj.RData")
+     file=paste0(res.dir,"underwt_t2_pval_adj.RData"))
 
 underwt_t1_h1_pval_adj_j
 underwt_t1_h3_pval_adj_j
