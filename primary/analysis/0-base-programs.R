@@ -7,7 +7,7 @@
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 #----------------------------------------
 
-library(lmtest)
+source(here::here("primary/analysis/0-config.R"))
 
 #----------------------------------------------------
 # function to prepare data for diarrhea analysis in R
