@@ -13,19 +13,10 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
-library(devtools)
-library(washb)
+source(here::here("primary/analysis/0-config.R"))
+source(here("primary/analysis/0-base-programs.R"))
 
-rm(list=ls())
-
-# define directories
-source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
-data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
-res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
-
-data=read.csv(paste0(data.dir,"washb-kenya-diar-public.csv"),stringsAsFactors=TRUE)
-
-source(paste0(source.dir,"0-base-programs.R"))
+data=read.csv(here("primary/data/washb-kenya-diar-public.csv"),stringsAsFactors=TRUE)
 
 d=preprocess.diarr(data)
 
@@ -89,6 +80,6 @@ diar_h1_rd_adj_j
 diar_h2_rd_adj_j
 
 save(diar_h1_pr_adj_j,diar_h2_pr_adj_j, diar_h1_rd_adj_j, diar_h2_rd_adj_j,
-     file=paste0(res.dir,"diarr-PR-adj.RData"))
+     file=here("primary/res_data/diarr-PR-adj.RData"))
 
 

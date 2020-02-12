@@ -15,17 +15,10 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
-library(washb)
+source(here::here("primary/analysis/0-config.R"))
+source(here("primary/analysis/0-base-programs.R"))
 
-rm(list=ls())
-
-# define directories
-source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
-data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
-res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
-
-data=read.csv(paste0(data.dir,"washb-kenya-diar-public.csv"))
-source(paste0(source.dir,"0-base-programs.R"))
+data=read.csv(here("primary/data/washb-kenya-diar-public.csv"))
 
 d=preprocess.diarr(data)
 
@@ -87,8 +80,8 @@ rownames(diar_y1_h3_pr_unadj_j)=c("Nutrition + WSH vs WSH","Nutrition + WSH vs N
 
 
 save(diar_y1_h1_pr_unadj_j, diar_y1_h2_pr_unadj_j, diar_y1_h3_pr_unadj_j,
-     file=paste0(res.dir,"diar_y1_pr_unadj.RData"))
+     file=here("primary/res_data/diar_y1_pr_unadj.RData"))
 
   save(diar_y1_h1_rd_unadj_j, diar_y1_h2_rd_unadj_j,diar_y1_h3_pr_unadj_j,
-       file=paste0(res.dir,"diar_y1_rd_unadj.RData"))
+       file=here("primary/res_data/diar_y1_rd_unadj.RData"))
   

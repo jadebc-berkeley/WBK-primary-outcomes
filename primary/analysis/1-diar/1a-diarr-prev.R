@@ -11,18 +11,12 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
-library(washb)
+source(here::here("primary/analysis/0-config.R"))
 
-rm(list=ls())
 
-# define directories
-source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
-data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
-res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
+source(here("primary/analysis/0-base-programs.R"))
 
-source(paste0(source.dir,"0-base-programs.R"))
-
-d=read.csv(paste0(data.dir,"washb-kenya-diar-public.csv"))
+d=read.csv(here("primary/data/washb-kenya-diar-public.csv"))
 
 # keep diarrhea cohort members
 d=subset(d, d$dcohort==1)
@@ -101,5 +95,5 @@ diar_t12_prev_j
 
 save(diar_t0_n_j, diar_t1_n_j, diar_t2_n_j, diar_t12_n_j, 
      diar_t0_prev_j, diar_t1_prev_j, diar_t2_prev_j, diar_t12_prev_j,
-     file=paste0(res.dir,"diar_prev.RData"))
+     file=here("primary/res_data/diar_prev.RData"))
 
