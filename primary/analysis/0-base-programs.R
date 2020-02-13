@@ -7,8 +7,6 @@
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 #----------------------------------------
 
-source(here::here("primary/analysis/0-config.R"))
-
 #----------------------------------------------------
 # function to prepare data for diarrhea analysis in R
 #----------------------------------------------------
