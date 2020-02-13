@@ -33,43 +33,43 @@ P.df=coin.prep(d,tx="Passive Control",cont="Control",y="diarr7")
 set.seed(67890)
 P.permtest=wilcoxsign_test(diarr7~tr | block, data=P.df,
        distribution=approximate(nresample=100000))
-P.perm.p=pvalue(P.permtest)
+P.perm.p=coin::pvalue(P.permtest)
 
 W.df=coin.prep(d,tx="Water",cont="Control",y="diarr7")
 set.seed(67890)
 W.permtest=wilcoxsign_test(diarr7~tr | block, data=W.df,
    distribution=approximate(nresample=100000))
-W.perm.p=pvalue(W.permtest)
+W.perm.p=coin::pvalue(W.permtest)
 
 WSH.S.df=coin.prep(d,tx="Sanitation",cont="Control",y="diarr7")
 set.seed(67890)
 WSH.S.permtest=wilcoxsign_test(diarr7~tr | block, data=WSH.S.df,
    distribution=approximate(nresample=100000))
-WSH.S.perm.p=pvalue(WSH.S.permtest)
+WSH.S.perm.p=coin::pvalue(WSH.S.permtest)
 
 H.df=coin.prep(d,tx="Handwashing",cont="Control",y="diarr7")
 set.seed(67890)
 H.permtest=wilcoxsign_test(diarr7~tr | block, data=H.df,
    distribution=approximate(nresample=100000))
-H.perm.p=pvalue(H.permtest)
+H.perm.p=coin::pvalue(H.permtest)
 
 WSH.df=coin.prep(d,tx="WSH",cont="Control",y="diarr7")
 set.seed(67890)
 WSH.permtest=wilcoxsign_test(diarr7~tr | block, data=WSH.df,
    distribution=approximate(nresample=100000))
-WSH.perm.p=pvalue(WSH.permtest)
+WSH.perm.p=coin::pvalue(WSH.permtest)
 
 N.df=coin.prep(d,tx="Nutrition",cont="Control",y="diarr7")
 set.seed(67890)
 N.permtest=wilcoxsign_test(diarr7~tr | block, data=N.df,
    distribution=approximate(nresample=100000))
-N.perm.p=pvalue(N.permtest)
+N.perm.p=coin::pvalue(N.permtest)
 
 WSHN.df=coin.prep(d,tx="Nutrition + WSH",cont="Control",y="diarr7")
 set.seed(67890)
 WSHN.permtest=wilcoxsign_test(diarr7~tr | block, data=WSHN.df,
    distribution=approximate(nresample=100000))
-WSHN.perm.p=pvalue(WSHN.permtest)
+WSHN.perm.p=coin::pvalue(WSHN.permtest)
 
 diar_h1_pval_unadj_j=data.frame(perm.pvalue=c(P.perm.p,W.perm.p,WSH.S.perm.p,H.perm.p,
                          WSH.perm.p,N.perm.p,WSHN.perm.p))
@@ -85,19 +85,19 @@ WSH.W.df=coin.prep(d,tx="WSH",cont="Water",y="diarr7")
 set.seed(67890)
 WSH.W.permtest=wilcoxsign_test(diarr7~tr | block, data=WSH.W.df,
    distribution=approximate(nresample=100000))
-WSH.W.perm.p=pvalue(WSH.W.permtest)
+WSH.W.perm.p=coin::pvalue(WSH.W.permtest)
 
 WSH.S.df=coin.prep(d,tx="WSH",cont="Sanitation",y="diarr7")
 set.seed(67890)
 WSH.S.permtest=wilcoxsign_test(diarr7~tr | block, data=WSH.S.df,
    distribution=approximate(nresample=100000))
-WSH.S.perm.p=pvalue(WSH.S.permtest)
+WSH.S.perm.p=coin::pvalue(WSH.S.permtest)
 
 WSH.H.df=coin.prep(d,tx="WSH",cont="Handwashing",y="diarr7")
 set.seed(67890)
 WSH.H.permtest=wilcoxsign_test(diarr7~tr | block, data=WSH.H.df,
     distribution=approximate(nresample=100000))
-WSH.H.perm.p=pvalue(WSH.H.permtest)
+WSH.H.perm.p=coin::pvalue(WSH.H.permtest)
 
 diar_h2_pval_unadj_j=data.frame(perm.pvalue=c(WSH.W.perm.p,WSH.S.perm.p,WSH.H.perm.p))
 rownames(diar_h2_pval_unadj_j)=c("WSH vs. Water",
