@@ -1,6 +1,6 @@
 ##############################################
 # WASH Benefits Kenya
-# Primary outcome analysis 
+# Primary outcome analysis
 
 # Diarrhea unadjusted analysis
 # Pooled midline and endline 
@@ -16,8 +16,6 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
-
-
 source(here::here("primary/analysis/0-config.R"))
 source(here("primary/analysis/0-base-programs.R"))
 
