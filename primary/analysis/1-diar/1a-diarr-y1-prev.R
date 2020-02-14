@@ -14,9 +14,6 @@
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
 source(here::here("primary/analysis/0-config.R"))
-
-
-
 source(here("primary/analysis/0-base-programs.R"))
 
 d=read.csv(here("primary/data/washb-kenya-diar-public.csv"))
