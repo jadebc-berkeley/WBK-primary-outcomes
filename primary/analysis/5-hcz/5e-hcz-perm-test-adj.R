@@ -16,23 +16,11 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
+source(here::here("primary/analysis/0-config.R"))
+source(here("primary/analysis/0-base-programs.R"))
 
-library(SuperLearner)
-library(reshape2)
-library(coin)
-library(washb)
-
-rm(list=ls())
-
-# define directories
-source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
-data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
-res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
-
-m=read.csv(paste0(data.dir,"washb-kenya-midline-anthro-public.csv"))
-e=read.csv(paste0(data.dir,"washb-kenya-endline-anthro-public.csv"))
-
-source(paste0(source.dir,"0-base-programs.R"))
+m=read.csv(here("primary/data/washb-kenya-midline-anthro-public.csv"))
+e=read.csv(here("primary/data/washb-kenya-endline-anthro-public.csv"))
 
 m1=preprocess.anthro(m, y="hcz")
 e1=preprocess.anthro(e, y="hcz")
@@ -116,50 +104,50 @@ P.t1.df=coin.prep(resid.df.m,tx="Passive Control",cont="Control",y="hcz")
 nrow(P.t1.df)
 set.seed(67890)
 P.t1.permtest=wilcoxsign_test(hcz~tr | block, data=P.t1.df,
-    distribution=approximate(B=100000))
-P.t1.perm.p=pvalue(P.t1.permtest)
+    distribution=approximate(nresample=100000))
+P.t1.perm.p=coin::pvalue(P.t1.permtest)
 
 W.t1.df=coin.prep(resid.df.m,tx="Water",cont="Control",y="hcz")
 nrow(W.t1.df)
 set.seed(67890)
 W.t1.permtest=wilcoxsign_test(hcz~tr | block, data=W.t1.df,
-      distribution=approximate(B=100000))
-W.t1.perm.p=pvalue(W.t1.permtest)
+      distribution=approximate(nresample=100000))
+W.t1.perm.p=coin::pvalue(W.t1.permtest)
 
 S.t1.df=coin.prep(resid.df.m,tx="Sanitation",cont="Control",y="hcz")
 nrow(S.t1.df)
 set.seed(67890)
 S.t1.permtest=wilcoxsign_test(hcz~tr | block, data=S.t1.df,
-      distribution=approximate(B=100000))
-S.t1.perm.p=pvalue(S.t1.permtest)
+      distribution=approximate(nresample=100000))
+S.t1.perm.p=coin::pvalue(S.t1.permtest)
 
 H.t1.df=coin.prep(resid.df.m,tx="Handwashing",cont="Control",y="hcz")
 nrow(H.t1.df)
 set.seed(67890)
 H.t1.permtest=wilcoxsign_test(hcz~tr | block, data=H.t1.df,
-      distribution=approximate(B=100000))
-H.t1.perm.p=pvalue(H.t1.permtest)
+      distribution=approximate(nresample=100000))
+H.t1.perm.p=coin::pvalue(H.t1.permtest)
 
 WSH.t1.df=coin.prep(resid.df.m,tx="WSH",cont="Control",y="hcz")
 nrow(WSH.t1.df)
 set.seed(67890)
 WSH.t1.permtest=wilcoxsign_test(hcz~tr | block, data=WSH.t1.df,
-      distribution=approximate(B=100000))
-WSH.t1.perm.p=pvalue(WSH.t1.permtest)
+      distribution=approximate(nresample=100000))
+WSH.t1.perm.p=coin::pvalue(WSH.t1.permtest)
 
 N.t1.df=coin.prep(resid.df.m,tx="Nutrition",cont="Control",y="hcz")
 nrow(N.t1.df)
 set.seed(67890)
 N.permtest=wilcoxsign_test(hcz~tr | block, data=N.t1.df,
-      distribution=approximate(B=100000))
-N.t1.perm.p=pvalue(N.permtest)
+      distribution=approximate(nresample=100000))
+N.t1.perm.p=coin::pvalue(N.permtest)
 
 WSHN.t1.df=coin.prep(resid.df.m,tx="Nutrition + WSH",cont="Control",y="hcz")
 nrow(WSHN.t1.df)
 set.seed(67890)
 WSHN.t1.permtest=wilcoxsign_test(hcz~tr | block, data=WSHN.t1.df,
-      distribution=approximate(B=100000))
-WSHN.t1.perm.p=pvalue(WSHN.t1.permtest)
+      distribution=approximate(nresample=100000))
+WSHN.t1.perm.p=coin::pvalue(WSHN.t1.permtest)
 
 hcz_t1_h1_pval_adj_j=data.frame(perm.pvalue=c(P.t1.perm.p,W.t1.perm.p,S.t1.perm.p,H.t1.perm.p,
         WSH.t1.perm.p,N.t1.perm.p,WSHN.t1.perm.p))
@@ -173,50 +161,50 @@ P.t2.df=coin.prep(resid.df.e,tx="Passive Control",cont="Control",y="hcz")
 nrow(P.t2.df)
 set.seed(67890)
 P.t2.permtest=wilcoxsign_test(hcz~tr | block, data=P.t2.df,
-      distribution=approximate(B=100000))
-P.t2.perm.p=pvalue(P.t2.permtest)
+      distribution=approximate(nresample=100000))
+P.t2.perm.p=coin::pvalue(P.t2.permtest)
 
 W.t2.df=coin.prep(resid.df.e,tx="Water",cont="Control",y="hcz")
 nrow(W.t2.df)
 set.seed(67890)
 W.t2.permtest=wilcoxsign_test(hcz~tr | block, data=W.t2.df,
-      distribution=approximate(B=100000))
-W.t2.perm.p=pvalue(W.t2.permtest)
+      distribution=approximate(nresample=100000))
+W.t2.perm.p=coin::pvalue(W.t2.permtest)
 
 S.t2.df=coin.prep(resid.df.e,tx="Sanitation",cont="Control",y="hcz")
 nrow(S.t2.df)
 set.seed(67890)
 S.t2.permtest=wilcoxsign_test(hcz~tr | block, data=S.t2.df,
-      distribution=approximate(B=100000))
-S.t2.perm.p=pvalue(S.t2.permtest)
+      distribution=approximate(nresample=100000))
+S.t2.perm.p=coin::pvalue(S.t2.permtest)
 
 H.t2.df=coin.prep(resid.df.e,tx="Handwashing",cont="Control",y="hcz")
 nrow(H.t2.df)
 set.seed(67890)
 H.t2.permtest=wilcoxsign_test(hcz~tr | block, data=H.t2.df,
-      distribution=approximate(B=100000))
-H.t2.perm.p=pvalue(H.t2.permtest)
+      distribution=approximate(nresample=100000))
+H.t2.perm.p=coin::pvalue(H.t2.permtest)
 
 WSH.t2.df=coin.prep(resid.df.e,tx="WSH",cont="Control",y="hcz")
 nrow(WSH.t2.df)
 set.seed(67890)
 WSH.t2.permtest=wilcoxsign_test(hcz~tr | block, data=WSH.t2.df,
-      distribution=approximate(B=100000))
-WSH.t2.perm.p=pvalue(WSH.t2.permtest)
+      distribution=approximate(nresample=100000))
+WSH.t2.perm.p=coin::pvalue(WSH.t2.permtest)
 
 N.t2.df=coin.prep(resid.df.e,tx="Nutrition",cont="Control",y="hcz")
 nrow(N.t2.df)
 set.seed(67890)
 N.t2.permtest=wilcoxsign_test(hcz~tr | block, data=N.t2.df,
-      distribution=approximate(B=100000))
-N.t2.perm.p=pvalue(N.t2.permtest)
+      distribution=approximate(nresample=100000))
+N.t2.perm.p=coin::pvalue(N.t2.permtest)
 
 WSHN.t2.df=coin.prep(resid.df.e,tx="Nutrition + WSH",cont="Control",y="hcz")
 nrow(WSHN.t2.df)
 set.seed(67890)
 WSHN.t2.permtest=wilcoxsign_test(hcz~tr | block, data=WSHN.t2.df,
-      distribution=approximate(B=100000))
-WSHN.t2.perm.p=pvalue(WSHN.t2.permtest)
+      distribution=approximate(nresample=100000))
+WSHN.t2.perm.p=coin::pvalue(WSHN.t2.permtest)
 
 hcz_t2_h1_pval_adj_j=data.frame(perm.pvalue=c(P.t2.perm.p,W.t2.perm.p,S.t2.perm.p,H.t2.perm.p,
         WSH.t2.perm.p,N.t2.perm.p,WSHN.t2.perm.p))
@@ -233,15 +221,15 @@ WSHN.N.t1.df=coin.prep(resid.df.m,tx="Nutrition + WSH",cont="Nutrition",y="hcz")
 nrow(WSHN.N.t1.df)
 set.seed(67890)
 WSHN.N.t1.permtest=wilcoxsign_test(hcz~tr | block, data=WSHN.N.t1.df,
-      distribution=approximate(B=100000))
-WSHN.N.t1.perm.p=pvalue(WSHN.N.t1.permtest)
+      distribution=approximate(nresample=100000))
+WSHN.N.t1.perm.p=coin::pvalue(WSHN.N.t1.permtest)
 
 WSHN.WSH.t1.df=coin.prep(resid.df.m,tx="Nutrition + WSH",cont="WSH",y="hcz")
 nrow(WSHN.WSH.t1.df)
 set.seed(67890)
 WSHN.WSH.t1.permtest=wilcoxsign_test(hcz~tr | block, data=WSHN.WSH.t1.df,
-      distribution=approximate(B=100000))
-WSHN.WSH.t1.perm.p=pvalue(WSHN.WSH.t1.permtest)
+      distribution=approximate(nresample=100000))
+WSHN.WSH.t1.perm.p=coin::pvalue(WSHN.WSH.t1.permtest)
 
 hcz_t1_h3_pval_adj_j=data.frame(perm.pvalue=c(WSHN.N.t1.perm.p,WSHN.WSH.t1.perm.p))
 rownames(hcz_t1_h3_pval_adj_j)=c("Nutrition + WSH vs. Nutrition","Nutrition + WSH vs. WSH")
@@ -252,24 +240,24 @@ WSHN.N.t2.df=coin.prep(resid.df.e,tx="Nutrition + WSH",cont="Nutrition",y="hcz")
 nrow(WSHN.N.t2.df)
 set.seed(67890)
 WSHN.N.t2.permtest=wilcoxsign_test(hcz~tr | block, data=WSHN.N.t2.df,
-      distribution=approximate(B=100000))
-WSHN.N.t2.perm.p=pvalue(WSHN.N.t2.permtest)
+      distribution=approximate(nresample=100000))
+WSHN.N.t2.perm.p=coin::pvalue(WSHN.N.t2.permtest)
 
 WSHN.WSH.t2.df=coin.prep(resid.df.e,tx="Nutrition + WSH",cont="WSH",y="hcz")
 nrow(WSHN.WSH.t2.df)
 set.seed(67890)
 WSHN.WSH.t2.permtest=wilcoxsign_test(hcz~tr | block, data=WSHN.WSH.t2.df,
-      distribution=approximate(B=100000))
-WSHN.WSH.t2.perm.p=pvalue(WSHN.WSH.t2.permtest)
+      distribution=approximate(nresample=100000))
+WSHN.WSH.t2.perm.p=coin::pvalue(WSHN.WSH.t2.permtest)
 
 hcz_t2_h3_pval_adj_j=data.frame(perm.pvalue=c(WSHN.N.t2.perm.p,WSHN.WSH.t2.perm.p))
 rownames(hcz_t2_h3_pval_adj_j)=c("Nutrition + WSH vs. Nutrition","Nutrition + WSH vs. WSH")
 
 save(hcz_t1_h1_pval_adj_j,hcz_t1_h3_pval_adj_j,
-     file=paste0(res.dir,"hcz_t1_pval_adj.RData"))
+     file=here("primary/res_data/hcz_t1_pval_adj.RData"))
 
 save(hcz_t2_h1_pval_adj_j,hcz_t2_h3_pval_adj_j,
-     file=paste0(res.dir,"hcz_t2_pval_adj.RData"))
+     file=here("primary/res_data/hcz_t2_pval_adj.RData"))
 
 hcz_t1_h1_pval_adj_j
 hcz_t1_h3_pval_adj_j
