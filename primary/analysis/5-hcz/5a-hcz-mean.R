@@ -11,18 +11,11 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
+source(here::here("primary/analysis/0-config.R"))
+source(here("primary/analysis/0-base-programs.R"))
 
-rm(list=ls())
-
-# define directories
-source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
-data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
-res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
-
-m=read.csv(paste0(data.dir,"washb-kenya-midline-anthro-public.csv"))
-e=read.csv(paste0(data.dir,"washb-kenya-endline-anthro-public.csv"))
-
-source(paste0(source.dir,"0-base-programs.R"))
+m=read.csv(here("primary/data/washb-kenya-midline-anthro-public.csv"))
+e=read.csv(here("primary/data/washb-kenya-endline-anthro-public.csv"))
 
 m=preprocess.anthro(m, "hcz")
 e=preprocess.anthro(e, "hcz")
@@ -59,7 +52,7 @@ hcz_t1_n_j
 hcz_t2_n_j
 
 save(hcz_t1_n_j,hcz_t2_n_j,
-     file=paste0(res.dir,"hcz_mean.RData"))
+     file=here("primary/res_data/hcz_mean.RData"))
 
 
 
