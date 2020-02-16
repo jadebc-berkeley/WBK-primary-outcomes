@@ -12,17 +12,10 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
-library(washb)
+source(here::here("primary/analysis/0-config.R"))
+source(here("primary/analysis/0-base-programs.R"))
 
-rm(list=ls())
-
-# define directories
-source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
-data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
-res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
-
-data=read.csv(paste0(data.dir,"bruise.csv"))
-source(paste0(source.dir,"0-base-programs.R"))
+data=read.csv(here("primary/data/washb-kenya-bruise-public.csv"))
 
 # keep diarrhea cohort members
 d=subset(data, data$dcohort==1)
@@ -76,9 +69,14 @@ bruise_h2_pr_unadj_j=t(sapply(trlist, function(x) washb_mh(Y=df$bruise7,tr=df$tr
 rownames(bruise_h2_pr_unadj_j)=c("WSH vs Water","WSH vs Sanitation","WSH vs Handwashing")
 rownames(bruise_h2_rd_unadj_j)=c("WSH vs Water","WSH vs Sanitation","WSH vs Handwashing")
 
+bruise_h1_pr_unadj_j
+bruise_h2_pr_unadj_j
+
+bruise_h1_rd_unadj_j
+bruise_h2_rd_unadj_j
 
 save(bruise_h1_pr_unadj_j, bruise_h2_pr_unadj_j,
-     file=paste0(res.dir,"bruise_pr_unadj.RData"))
+     file=here("primary/res_data/bruise_pr_unadj.RData"))
 
 save(bruise_h1_rd_unadj_j, bruise_h2_rd_unadj_j,
-     file=paste0(res.dir,"bruise_rd_unadj.RData"))
+     file=here("primary/res_data/bruise_rd_unadj.RData"))
