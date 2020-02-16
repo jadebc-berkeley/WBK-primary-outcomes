@@ -12,20 +12,11 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
-library(devtools)
-library(washb)
+source(here::here("primary/analysis/0-config.R"))
+source(here("primary/analysis/0-base-programs.R"))
 
-rm(list=ls())
-
-# define directories
-source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
-data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
-res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
-
-m=read.csv(paste0(data.dir,"washb-kenya-midline-anthro-public.csv"))
-e=read.csv(paste0(data.dir,"washb-kenya-endline-anthro-public.csv"))
-
-source(paste0(source.dir,"0-base-programs.R"))
+m=read.csv(here("primary/data/washb-kenya-midline-anthro-public.csv"))
+e=read.csv(here("primary/data/washb-kenya-endline-anthro-public.csv"))
 
 m=preprocess.anthro(m, y="wasted")
 e=preprocess.anthro(e, y="wasted")
@@ -123,6 +114,16 @@ rownames(wast_t2_h3_pr_adj_j)=c("Nutrition + WSH vs. Nutrition",
 rownames(wast_t2_h3_rd_adj_j)=c("Nutrition + WSH vs. Nutrition",
                              "Nutrition + WSH vs. WSH")
 
+wast_t1_h1_pr_adj_j
+wast_t1_h3_pr_adj_j
+wast_t2_h1_pr_adj_j
+wast_t2_h3_pr_adj_j
+
+wast_t1_h1_rd_adj_j
+wast_t1_h3_rd_adj_j
+wast_t2_h1_rd_adj_j
+wast_t2_h3_rd_adj_j
+
 ######################################################
 # Save results
 ######################################################
@@ -130,6 +131,6 @@ save(wast_t1_h1_pr_adj_j,wast_t1_h3_pr_adj_j,
      wast_t2_h1_pr_adj_j,wast_t2_h3_pr_adj_j,
   wast_t1_h1_rd_adj_j,wast_t1_h3_rd_adj_j,
   wast_t2_h1_rd_adj_j,wast_t2_h3_rd_adj_j,
-  file=paste0(res.dir,"wasted-PR-adj.RData"))
+  file=here("primary/res_data/wasted-PR-adj.RData"))
 
 
