@@ -18,6 +18,9 @@ library(RColorBrewer)
 library(washb)
 library(devtools)
 library(reshape2)
+library(rgeos)
+library(maptools)
+library(rgdal)
 if(!require(washb)){
   install_github("ben-arnold/washb")
 }
