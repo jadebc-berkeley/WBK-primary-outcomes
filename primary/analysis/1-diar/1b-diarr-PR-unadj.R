@@ -75,7 +75,17 @@ diar_h3_pr_unadj_j=t(sapply(trlist, function(x) washb_mh(Y=df$diarr7,tr=df$tr,
 rownames(diar_h3_rd_unadj_j)=c("Nutrition + WSH vs WSH","Nutrition + WSH vs Nutrition")
 rownames(diar_h3_pr_unadj_j)=c("Nutrition + WSH vs WSH","Nutrition + WSH vs Nutrition")
 
+diar_h1_pr_unadj_j
+diar_h2_pr_unadj_j
+diar_h3_pr_unadj_j
 
+diar_h1_rd_unadj_j
+diar_h2_rd_unadj_j
+diar_h3_rd_unadj_j
+
+#-------------
+#Save results
+#-------------
 save(diar_h1_pr_unadj_j, diar_h2_pr_unadj_j,diar_h3_pr_unadj_j,
      file=here("primary/res_data/diar_pr_unadj.RData"))
 
