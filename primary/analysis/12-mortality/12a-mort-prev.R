@@ -9,18 +9,10 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
-library(washb)
+source(here::here("primary/analysis/0-config.R"))
+source(here("primary/analysis/0-base-programs.R"))
 
-rm(list=ls())
-
-# define directories
-source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
-data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
-res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
-
-source(paste0(source.dir,"0-base-programs.R"))
-
-d=read.csv(paste0(data.dir,"washb-kenya-mortality-public.csv"))
+d=read.csv(here("primary/data/washb-kenya-mortality-public.csv"))
 
 # reorder tr labels
 reord=function(x){
@@ -48,5 +40,5 @@ N_mort_j
 mort_prev_j
 
 save(N_mort_j, mort_prev_j,
-     file=paste0(res.dir,"mort_prev.RData"))
+     file=here("primary/res_data/mort_prev.RData"))
 
