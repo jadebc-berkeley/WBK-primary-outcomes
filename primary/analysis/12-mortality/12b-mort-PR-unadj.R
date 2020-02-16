@@ -11,17 +11,10 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
-library(washb)
+source(here::here("primary/analysis/0-config.R"))
+source(here("primary/analysis/0-base-programs.R"))
 
-rm(list=ls())
-
-# define directories
-source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
-data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
-res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
-
-d=read.csv(paste0(data.dir,"washb-kenya-mortality-public.csv"))
-source(paste0(source.dir,"0-base-programs.R"))
+d=read.csv(here("primary/data/washb-kenya-mortality-public.csv"))
 
 # subset to columns needed for unadjusted PR
 df = d[,c("block","clusterid","tr","childdeath")]
@@ -60,9 +53,13 @@ mort_h2_pr_unadj_j=t(sapply(trlist, function(x) washb_mh(Y=df$childdeath,tr=df$t
 rownames(mort_h2_pr_unadj_j)=c("WSH vs Water","WSH vs Sanitation","WSH vs Handwashing")
 rownames(mort_h2_rd_unadj_j)=c("WSH vs Water","WSH vs Sanitation","WSH vs Handwashing")
 
+mort_h1_pr_unadj_j
+mort_h2_pr_unadj_j
+mort_h1_rd_unadj_j
+mort_h2_rd_unadj_j
 
 save(mort_h1_pr_unadj_j, mort_h2_pr_unadj_j,
-     file=paste0(res.dir,"mort_pr_unadj.RData"))
+     file=here("primary/res_data/mort_pr_unadj.RData"))
 
 save(mort_h1_rd_unadj_j, mort_h2_rd_unadj_j,
-     file=paste0(res.dir,"mort_rd_unadj.RData"))
+     file=here("primary/res_data/mort_rd_unadj.RData"))
