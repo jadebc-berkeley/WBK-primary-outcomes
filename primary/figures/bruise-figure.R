@@ -7,6 +7,7 @@
 # results
 # --------------------------------------
 source(here::here("primary/analysis/0-config.R"))
+source(here("primary/analysis/0-base-programs.R"))
 
 # --------------------------------------
 # load the analysis output files
@@ -15,6 +16,7 @@ source(here::here("primary/analysis/0-config.R"))
 load(here("primary/res_data/bruise_rd_unadj.RData"))
 load(here("primary/res_data/bruise_pr_unadj.RData"))
 load(here("primary/res_data/bruise_prev.RData"))
+
 # --------------------------------------
 # format the objects for plotting
 # --------------------------------------
