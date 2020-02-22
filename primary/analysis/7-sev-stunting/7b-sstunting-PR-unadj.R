@@ -12,19 +12,11 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
-library(washb)
+source(here::here("primary/analysis/0-config.R"))
+source(here("primary/analysis/0-base-programs.R"))
 
-rm(list=ls())
-
-# define directories
-source.dir="~/documents/crg/wash-benefits/kenya/src/primary/analysis/"
-data.dir="~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/Public/"
-res.dir="~/Dropbox/WBK-primary-analysis/results/jade/"
-
-m=read.csv(paste0(data.dir,"washb-kenya-midline-anthro-public.csv"))
-e=read.csv(paste0(data.dir,"washb-kenya-endline-anthro-public.csv"))
-
-source(paste0(source.dir,"0-base-programs.R"))
+m=read.csv(here("primary/data/washb-kenya-midline-anthro-public.csv"))
+e=read.csv(here("primary/data/washb-kenya-endline-anthro-public.csv"))
 
 m=preprocess.anthro(m, "sstunted")
 e=preprocess.anthro(e, "sstunted")
@@ -101,15 +93,23 @@ sstunt_t2_h3_pr_unadj_j=t(sapply(trlist, function(x) washb_mh(Y=e$sstunted,tr=e$
 rownames(sstunt_t2_h3_pr_unadj_j)=c("Nutrition + WSH vs Nutrition","Nutrition + WSH vs WSH")
 rownames(sstunt_t2_h3_rd_unadj_j)=c("Nutrition + WSH vs Nutrition","Nutrition + WSH vs WSH")
 
-  
+sstunt_t1_h1_pr_unadj_j
+sstunt_t1_h3_pr_unadj_j
+sstunt_t2_h1_pr_unadj_j
+sstunt_t2_h3_pr_unadj_j
+
+sstunt_t1_h1_rd_unadj_j
+sstunt_t1_h3_rd_unadj_j
+sstunt_t2_h1_rd_unadj_j
+sstunt_t2_h3_rd_unadj_j
 
 #----------------------------------------------
 # save objects
 #----------------------------------------------
 save(sstunt_t1_h1_pr_unadj_j, sstunt_t1_h3_pr_unadj_j,
      sstunt_t2_h1_pr_unadj_j, sstunt_t2_h3_pr_unadj_j,
-     file=paste0(res.dir,"sstunt_pr_unadj.RData"))
+     file=here("primary/res_data/sstunt_pr_unadj.RData"))
 
   save(sstunt_t1_h1_rd_unadj_j, sstunt_t1_h3_rd_unadj_j,
        sstunt_t2_h1_rd_unadj_j, sstunt_t2_h3_rd_unadj_j,
-       file=paste0(res.dir,"sstunt_rd_unadj.RData"))
+       file=here("primary/res_data/sstunt_rd_unadj.RData"))
