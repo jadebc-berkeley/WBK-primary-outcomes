@@ -6,25 +6,23 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
+source(here::here("primary/analysis/0-config.R"))
+source(here("primary/tables/0-table-base-functions.R"))
 
-rm(list=ls())
+load(here("primary/res_data/laz_mean.RData"))
+load(here("primary/res_data/laz_mean.RData"))
+load(here("primary/res_data/whz_mean.RData"))
+load(here("primary/res_data/hcz_mean.RData"))
 
-source("~/Documents/CRG/wash-benefits/kenya/src/primary/tables/0-table-base-functions.R")
+load(here("primary/res_data/laz_rd_unadj.RData"))
+load(here("primary/res_data/laz_rd_unadj.RData"))
+load(here("primary/res_data/whz_rd_unadj.RData"))
+load(here("primary/res_data/hcz_rd_unadj.RData"))
 
-load("~/Dropbox/WBK-primary-analysis/results/jade/laz_mean.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/laz_mean.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/whz_mean.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/hcz_mean.RData")
-
-load("~/Dropbox/WBK-primary-analysis/results/jade/laz_rd_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/laz_rd_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/whz_rd_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/hcz_rd_unadj.RData")
-
-load("~/Dropbox/WBK-primary-analysis/results/jade/laz_t2_pval_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/laz_t2_pval_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/whz_t2_pval_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/hcz_t2_pval_unadj.RData")
+load(here("primary/res_data/laz_t2_pval_unadj.RData"))
+load(here("primary/res_data/laz_t2_pval_unadj.RData"))
+load(here("primary/res_data/whz_t2_pval_unadj.RData"))
+load(here("primary/res_data/hcz_t2_pval_unadj.RData"))
 
 
 #----------------- control prevalence ----------------- 
@@ -61,9 +59,6 @@ lab=rep(c("Control","Passive Control","Water","Sanitation","Handwashing",
 
 anthroZ.table=data.frame(cbind(lab,table))
 
-save(anthroZ.table,file="~/Dropbox/WBK-primary-analysis/Results/jade/table-anthroZ-reformat.RData")
-
-save(anthroZ.table,file="~/Dropbox/WBK-primary-analysis/Results/tables/table-anthroZ-reformat.RData")
-
+save(anthroZ.table,file=here("primary/res_tables/table-anthroZ-reformat.RData"))
 
 

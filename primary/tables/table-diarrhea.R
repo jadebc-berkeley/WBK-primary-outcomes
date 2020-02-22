@@ -6,17 +6,15 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
+source(here::here("primary/analysis/0-config.R"))
+source(here("primary/tables/0-table-base-functions.R"))
 
-rm(list=ls())
-load("~/Dropbox/WBK-primary-analysis/results/jade/diar_prev.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/diar_pr_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/diar_rd_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/diarr_pval_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/Results/jade/diarr-PR-adj.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/diarr_pval_adj.RData")
-
-
-source("~/Documents/CRG/wash-benefits/kenya/src/primary/tables/0-table-base-functions.R")
+load(here("primary/res_data/diar_prev.RData"))
+load(here("primary/res_data/diar_pr_unadj.RData"))
+load(here("primary/res_data/diar_rd_unadj.RData"))
+load(here("primary/res_data/diarr_pval_unadj.RData"))
+load(here("primary/res_data/diarr-PR-adj.RData"))
+load(here("primary/res_data/diarr_pval_adj.RData"))
 
 #----------------- prevalence ----------------- 
 prevn12=paste(sprintf("%0.01f",diar_t12_prev_j[,1]*100),"$\\%$",sep="")
@@ -42,7 +40,7 @@ diarr.table=cbind(lab,diarr.table)
 
 rownames(diarr.table)=NULL
 
-save(diarr.table,file="~/Dropbox/WBK-primary-analysis/Results/jade/table-diarrhea.RData")
+save(diarr.table,file=here("primary/res_tables/table-diarrhea.RData"))
 
 
 

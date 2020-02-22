@@ -6,26 +6,23 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
+source(here::here("primary/analysis/0-config.R"))
+source(here("primary/tables/0-table-base-functions.R"))
 
-rm(list=ls())
 
-load("~/Dropbox/WBK-primary-analysis/results/jade/laz_mean.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/laz_rd_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/Results/jade/laz-PR-adj.RData")
 
-load("~/Dropbox/WBK-primary-analysis/results/jade/waz_mean.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/waz_rd_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/Results/jade/waz-PR-adj.RData")
-
-load("~/Dropbox/WBK-primary-analysis/results/jade/whz_mean.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/whz_rd_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/Results/jade/whz-PR-adj.RData")
-
-load("~/Dropbox/WBK-primary-analysis/results/jade/hcz_mean.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/hcz_rd_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/Results/jade/hcz-PR-adj.RData")
-
-source("~/Documents/CRG/wash-benefits/kenya/src/primary/tables/0-table-base-functions.R")
+load(here("primary/res_data/laz_mean.Rdata"))
+load(here("primary/res_data/laz_rd_unadj.Rdata"))
+load(here("primary/res_data/laz-PR-adj.Rdata"))
+load(here("primary/res_data/waz_mean.Rdata"))
+load(here("primary/res_data/waz_rd_unadj.Rdata"))
+load(here("primary/res_data/waz-PR-adj.Rdata"))
+load(here("primary/res_data/whz_mean.Rdata"))
+load(here("primary/res_data/whz_rd_unadj.Rdata"))
+load(here("primary/res_data/whz-PR-adj.Rdata"))
+load(here("primary/res_data/hcz_mean.Rdata"))
+load(here("primary/res_data/hcz_rd_unadj.Rdata"))
+load(here("primary/res_data/hcz-PR-adj.Rdata"))
 
 #----------------- control prevalence ----------------- 
 laz_t2_prev=sprintf("%0.02f",laz_t2_n_j[,2])
@@ -84,8 +81,7 @@ anthroZ.adj.table.h3=data.frame(cbind(lab.h3,table.h3))
 
 
 save(anthroZ.adj.table.h1,anthroZ.adj.table.h3,
-     file="~/Dropbox/WBK-primary-analysis/Results/jade/table-anthroZ-adj.RData")
-
+     file=here("primary/res_tables/table-anthroZ-adj.Rdata"))
 
 
 

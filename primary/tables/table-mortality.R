@@ -6,12 +6,11 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
-rm(list=ls())
-load("~/Dropbox/WBK-primary-analysis/results/jade/mort_prev.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/mort_rd_unadj.RData")
+source(here::here("primary/analysis/0-config.R"))
+source(here("primary/tables/0-table-base-functions.R"))
 
-
-source("~/dropbox/wbk-primary-analysis/results/table/0-table-base-functions.R")
+load(here("primary/res_data/mort_prev.RData"))
+load(here("primary/res_data/mort_rd_unadj.RData"))
 
 pt.est.ci.f=function(obj,decimals,scale){
   a=sprintf(paste("%0.0",decimals,"f",sep=""),obj[1]*scale)
@@ -29,4 +28,4 @@ n=N_mort_j[,2]
 
 mort.tab=cbind(rownames(N_mort_j),N,n,mort.prev,mort.est)
 
-save(mort.tab,file="~/Dropbox/WBK-primary-analysis/Results/jade/table-mort.RData")
+save(mort.tab,file=here("primary/res_tables/table-mort.RData"))

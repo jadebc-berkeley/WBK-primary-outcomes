@@ -6,25 +6,23 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
+source(here::here("primary/analysis/0-config.R"))
+source(here("primary/tables/0-table-base-functions.R"))
 
-rm(list=ls())
+load(here("primary/res_data/stunt_prev.RData"))
+load(here("primary/res_data/sstunt_prev.RData"))
+load(here("primary/res_data/wast_prev.RData"))
+load(here("primary/res_data/underwt_prev.RData"))
 
-load("~/Dropbox/WBK-primary-analysis/results/jade/stunt_prev.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/sstunt_prev.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/wast_prev.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/underwt_prev.RData")
+load(here("primary/res_data/stunt_rd_unadj.RData"))
+load(here("primary/res_data/sstunt_rd_unadj.RData"))
+load(here("primary/res_data/wast_rd_unadj.RData"))
+load(here("primary/res_data/underwt_rd_unadj.RData"))
 
-load("~/Dropbox/WBK-primary-analysis/results/jade/stunt_rd_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/sstunt_rd_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/wast_rd_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/underwt_rd_unadj.RData")
-
-load("~/Dropbox/WBK-primary-analysis/Results/jade/stunted-PR-adj.RData")
-load("~/Dropbox/WBK-primary-analysis/Results/jade/sstunted-PR-adj.RData")
-load("~/Dropbox/WBK-primary-analysis/Results/jade/wasted-PR-adj.RData")
-load("~/Dropbox/WBK-primary-analysis/Results/jade/underwted-PR-adj.RData")
-
-source("~/Documents/CRG/wash-benefits/kenya/src/primary/tables/0-table-base-functions.R")
+load(here("primary/res_data/stunted-PR-adj.RData"))
+load(here("primary/res_data/sstunted-PR-adj.RData"))
+load(here("primary/res_data/wasted-PR-adj.RData"))
+load(here("primary/res_data/underwted-PR-adj.RData"))
 
 #-----------------  prevalence ----------------- 
 stunt_t2_prev=paste(sprintf("%0.01f",stunt_t2_prev_j[,1]*100),"$\\%$",sep="")
@@ -80,5 +78,5 @@ anthro.bin.table.adj.h1=cbind(lab.h1, table.h1)
 anthro.bin.table.adj.h3=cbind(lab.h3, table.h3)
 
 save(anthro.bin.table.adj.h1,anthro.bin.table.adj.h3,
-  file="~/Dropbox/WBK-primary-analysis/Results/Jade/table-anthro-bin-adj.RData")
+  file=here("primary/res_tables/table-anthro-bin-adj.RData"))
 
