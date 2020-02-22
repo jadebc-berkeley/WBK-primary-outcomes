@@ -9,22 +9,15 @@
 #---------------------------------------
 # preamble
 #---------------------------------------
-rm(list=ls())
-library(washb)
-library(lubridate)
-library(scales)
-library(dplyr)
+source(here::here("primary/analysis/0-config.R"))
 
 #---------------------------------------
 # Load the analysis dataset
 #---------------------------------------
-setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Data/Untouched/tr")
-treatment<-read.csv("washb-kenya-tr.csv")
+treatment<-read.csv(here("primary/data/washb-kenya-tr-public.csv"))
 
-
-setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Data/Final/Andrew")
-d<-read.csv("washb-kenya-diar.csv",stringsAsFactors = T)
-HHtracking<-read.csv("washb-kenya-tracking.csv",stringsAsFactors = T)
+d<-read.csv(here("primary/data/washb-kenya-diar-public.csv"),stringsAsFactors = T)
+HHtracking<-read.csv(here("primary/data/washb-kenya-tracking-public.csv"),stringsAsFactors = T)
 
 HHtracking<-subset(HHtracking, select=c("hhid","ms_ml_ad_date","ms_el_ad_date"))
 
@@ -131,7 +124,7 @@ summary(diar_i$n)
 #---------------------------------------
 # make plot in black and white (no CIs)
 #---------------------------------------
-pdf("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Figures/DiarByMonth_Kenya-bw-noci.pdf",width=6,height=3)
+pdf(here("primary/res_figures/DiarByMonth_Kenya-bw-noci.pdf"),width=6,height=3)
 # general plotting parameters
 op <- par(mar=c(4,4,2,1)+0.1)
 ytics <- c(0,0.05,0.10,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5)
@@ -181,7 +174,7 @@ dev.off()
 #---------------------------------------
 # make plot w/ color (no CIs)
 #---------------------------------------
-pdf("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Figures/DiarByMonth_Kenya-noci.pdf",width=6,height=3)
+pdf(here("primary/res_figures/DiarByMonth_Kenya-noci.pdf"),width=6,height=3)
 # general plotting parameters
 op <- par(mar=c(4,4,2,1)+0.1)
 ytics <- c(0,0.05,0.10,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5)
@@ -227,7 +220,7 @@ dev.off()
 #---------------------------------------
 # make plot w/ color + shaded 95% CIs
 #---------------------------------------
-pdf("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Figures/DiarByMonth_Kenya-ci.pdf",width=6,height=3)
+pdf(here("primary/res_figures/DiarByMonth_Kenya-ci.pdf"),width=6,height=3)
 # general plotting parameters
 op <- par(mar=c(4,4,2,1)+0.1)
 ytics <- c(0,0.05,0.10,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5)

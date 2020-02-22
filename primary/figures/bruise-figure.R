@@ -6,22 +6,15 @@
 # plot the WASH B kenya bruise/abrasian (negative control)
 # results
 # --------------------------------------
-
-# --------------------------------------
-# preamble
-# --------------------------------------
-
-rm(list=ls())
-library(RColorBrewer)
-library(scales)
+source(here::here("primary/analysis/0-config.R"))
 
 # --------------------------------------
 # load the analysis output files
 # --------------------------------------
 
-load("~/Dropbox/WBK-primary-analysis/results/jade/bruise_rd_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/bruise_pr_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/bruise_prev.RData")
+load(here("primary/res_data/bruise_rd_unadj.RData"))
+load(here("primary/res_data/bruise_pr_unadj.RData"))
+load(here("primary/res_data/bruise_prev.RData"))
 # --------------------------------------
 # format the objects for plotting
 # --------------------------------------
@@ -41,7 +34,7 @@ fuPrev <- bruise_t12_prev_j
 h1pr <- bruise_h1_pr_unadj_j
 h2pr <- bruise_h2_pr_unadj_j
 
-pdf("~/Dropbox/WBK-primary-analysis/results/Figures/kenya-bruise.pdf",width=14,height=4)
+pdf(here("primary/res_figures/kenya-bruise.pdf"),width=14,height=4)
 
 black = "#000004FF"
 blue = "#3366AA"
