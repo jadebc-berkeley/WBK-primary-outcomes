@@ -7,13 +7,14 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
-rm(list=ls())
-library(plyr)
+source(here("primary/tables/0-table-base-functions.R"))
 
-d=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/diarrhea.csv")
 
-ma=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/midline-anthro.csv")
-ea=read.csv("~/Dropbox/WASHB-Kenya-Data/1-primary-outcome-datasets/endline-anthro.csv")
+
+d=read.csv(here("primary/data/diarrhea.csv"))
+
+ma=read.csv(here("primary/data/midline-anthro.csv"))
+ea=read.csv(here("primary/data/endline-anthro.csv"))
 
 idchar=read.csv("~/Dropbox/WBK-primary-analysis/Data/Untouched/msP_child_IDchar_20161006.csv")
 
@@ -69,6 +70,6 @@ t1_tc_diar
 t2_tc_diar
 
 save(t1_tc_haz,t2_tc_haz, t1_tc_diar,t2_tc_diar,
-     file="~/Dropbox/WBK-primary-analysis/Results/Jade/flowchart.RData")
+     file=here("primary/res_figures/flowchart.RData"))
 
 

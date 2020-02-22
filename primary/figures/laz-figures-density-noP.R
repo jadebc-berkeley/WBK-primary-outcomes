@@ -23,22 +23,18 @@
 # preamble
 # --------------------------------------
 
-rm(list=ls())
-library(RColorBrewer)
-library(scales)
-library(foreign)
-
 # --------------------------------------
 # load the analysis output
 # --------------------------------------
+source(here("primary/analysis/0-base-programs.R"))
 
 #setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/")
 #setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Data/Final/Jade")
 
-load("~/Dropbox/WBK-primary-analysis/results/jade/laz_mean.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/laz_rd_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/laz_t1_pval_unadj.RData")
-load("~/Dropbox/WBK-primary-analysis/results/jade/laz_t2_pval_unadj.RData")
+load(here("primary/res_data/laz_mean.RData"))
+load(here("primary/res_data/laz_rd_unadj.RData"))
+load(here("primary/res_data/laz_t1_pval_unadj.RData"))
+load(here("primary/res_data/laz_t2_pval_unadj.RData"))
 
 
 # --------------------------------------
@@ -64,8 +60,8 @@ t2pvalh3 <- unlist(laz_t2_h3_pval_unadj_j)
 # setwd("~/Dropbox/WBK-primary-analysis/Data/Final/Andrew")
 # d<-read.csv("washb-kenya-anthro.dta")
 
-m=read.csv("~/Dropbox/WBK-primary-analysis/Data/final/jade/midline-anthro.csv")
-e=read.csv("~/Dropbox/WBK-primary-analysis/Data/final/jade/endline-anthro.csv")
+m=read.csv(here("primary/data/washb-kenya-midline-anthro-public.csv"))
+e=read.csv(here("primary/data/washb-kenya-endline-anthro-public.csv"))
 
 # subset the anthropometry to target children (excluding siblings)
 # dim(d)
@@ -78,8 +74,6 @@ e=read.csv("~/Dropbox/WBK-primary-analysis/Data/final/jade/endline-anthro.csv")
 # 
 # # Exclude children with missing data (none)
 # table(is.na(d$laz))
-
-source("~/documents/crg/wash-benefits/kenya/src/primary/analysis/0-base-programs.R")
 
 m=preprocess.anthro(m, "haz")
 e=preprocess.anthro(e, "haz")
@@ -230,8 +224,8 @@ grey = "#777777"
 cols=c(black,chartr,blue,teal,green,orange,red,magent)
 
 # setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/")
-setwd("~/Dropbox/WBK-primary-analysis/Results/")
-pdf("Figures/kenya-laz1-noP.pdf",width=18,height=10)
+
+pdf(here("primary/res_figures/kenya-laz1-noP.pdf"),width=18,height=10)
 
 # set up a layout
 lo <- layout(mat=matrix(1:8,nrow=2,ncol=4,byrow=T))
@@ -258,8 +252,8 @@ dev.off()
 #  make a multi-panel density plot - year 2
 # --------------------------------------
 #setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/")
-setwd("~/Dropbox/WBK-primary-analysis/Results/")
-pdf("Figures/kenya-laz2-noP.pdf",width=18,height=10)
+
+pdf(here("primary/res_figures/kenya-laz2-noP.pdf"),width=18,height=10)
 # set up a layout
 lo <- layout(mat=matrix(1:8,nrow=2,ncol=4,byrow=T))
 

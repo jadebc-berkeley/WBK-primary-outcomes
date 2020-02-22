@@ -7,13 +7,14 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
-library(washb)
+source(here("primary/tables/0-table-base-functions.R"))
 
-rm(list=ls())
 
-b=read.csv("~/Dropbox/WBK-primary-analysis/Data/final/jade/uptake_baseline.csv")
-m=read.csv("~/Dropbox/WBK-primary-analysis/Data/final/jade/uptake_midline.csv")
-e=read.csv("~/Dropbox/WBK-primary-analysis/Data/final/jade/uptake_endline.csv")
+
+
+b=read.csv(here("primary/data/washb-kenya-uptake-baseline-public.csv"))
+m=read.csv(here("primary/data/washb-kenya-uptake-midline-public.csv"))
+e=read.csv(here("primary/data/washb-kenya-uptake-endline-public.csv"))
 
 b$svy=0
 m$svy=1
@@ -98,7 +99,7 @@ rlnsp2 <- cbind(matrix(NA,nrow=3,ncol=6),sapply(narms,mean.est,Y=d$lns,tr=d$tr,s
 # save the objects
 #---------------------------------------
 rm(d)
-save.image(file="~/Dropbox/WBK-primary-analysis/results/jade/kenya-uptake.RData")
+save.image(file=here("primary/res_data/kenya-uptake.RData"))
 
 
 
