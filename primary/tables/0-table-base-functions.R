@@ -6,7 +6,8 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
-
+source(here::here("primary/analysis/0-config.R"))
+source(here("primary/analysis/0-base-programs.R"))
 
 pt.est.n.f=function(obj,decimals,scale){
   pts=obj[1]*scale
