@@ -26,6 +26,7 @@
 # --------------------------------------
 # load the analysis output
 # --------------------------------------
+source(here::here("primary/analysis/0-config.R"))
 source(here("primary/analysis/0-base-programs.R"))
 
 #setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/")

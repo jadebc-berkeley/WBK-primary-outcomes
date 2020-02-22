@@ -7,7 +7,8 @@
 
 # by Jade Benjamin-Chung (jadebc@berkeley.edu)
 ##############################################
-source(here("primary/tables/0-table-base-functions.R"))
+source(here::here("primary/analysis/0-config.R"))
+source(here("primary/analysis/0-base-programs.R"))
 
 
 

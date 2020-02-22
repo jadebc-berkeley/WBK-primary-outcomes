@@ -25,23 +25,17 @@
 # preamble
 # --------------------------------------
 
-
-
-
-
+source(here::here("primary/analysis/0-config.R"))
+source(here("primary/analysis/0-base-programs.R"))
 
 # --------------------------------------
 # load the analysis output
 # --------------------------------------
 
-
-
-
 load(here("primary/res_data/laz_mean.Rdata"))
 load(here("primary/res_data/laz_rd_unadj.Rdata"))
 load(here("primary/res_data/laz_t1_pval_unadj.Rdata"))
 load(here("primary/res_data/laz_t2_pval_unadj.Rdata"))
-
 
 # --------------------------------------
 # rename analysis output objects
