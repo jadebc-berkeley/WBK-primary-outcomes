@@ -22,6 +22,9 @@
 # preamble
 # --------------------------------------
 
+source(here::here("primary/analysis/0-config.R"))
+source(here("primary/analysis/0-base-programs.R"))
+
 # --------------------------------------
 # load the analysis output files
 # --------------------------------------
