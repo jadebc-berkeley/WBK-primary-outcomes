@@ -113,6 +113,16 @@ rownames(stunt_t2_h3_pr_adj_j)=c("Nutrition + WSH vs. Nutrition",
 rownames(stunt_t2_h3_rd_adj_j)=c("Nutrition + WSH vs. Nutrition",
                               "Nutrition + WSH vs. WSH")
 
+stunt_t1_h1_pr_adj_j
+stunt_t1_h3_pr_adj_j
+stunt_t2_h1_pr_adj_j
+stunt_t2_h3_pr_adj_j
+
+stunt_t1_h1_rd_adj_j
+stunt_t1_h3_rd_adj_j
+stunt_t2_h1_rd_adj_j
+stunt_t2_h3_rd_adj_j
+
 ######################################################
 # Save results
 ######################################################

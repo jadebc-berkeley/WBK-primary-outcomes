@@ -93,7 +93,15 @@ stunt_t2_h3_pr_unadj_j=t(sapply(trlist, function(x) washb_mh(Y=e$stunted,tr=e$tr
 rownames(stunt_t2_h3_pr_unadj_j)=c("Nutrition + WSH vs Nutrition","Nutrition + WSH vs WSH")
 rownames(stunt_t2_h3_rd_unadj_j)=c("Nutrition + WSH vs Nutrition","Nutrition + WSH vs WSH")
 
-  
+stunt_t1_h1_pr_unadj_j
+stunt_t1_h3_pr_unadj_j
+stunt_t2_h1_pr_unadj_j
+stunt_t2_h3_pr_unadj_j
+
+stunt_t1_h1_rd_unadj_j
+stunt_t1_h3_rd_unadj_j
+stunt_t2_h1_rd_unadj_j
+stunt_t2_h3_rd_unadj_j
 
 #----------------------------------------------
 # save objects
