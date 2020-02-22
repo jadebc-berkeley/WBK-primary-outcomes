@@ -25,22 +25,22 @@
 # preamble
 # --------------------------------------
 
-rm(list=ls())
-library(RColorBrewer)
-library(scales)
+
+
+
 
 
 # --------------------------------------
 # load the analysis output
 # --------------------------------------
 
-setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade")
-try(setwd("~/Dropbox/WBK-primary-analysis/Results/Jade/"))
 
-load("laz_mean.Rdata")
-load("laz_rd_unadj.Rdata")
-load("laz_t1_pval_unadj.Rdata")
-load("laz_t2_pval_unadj.Rdata")
+
+
+load(here("primary/res_data/laz_mean.Rdata"))
+load(here("primary/res_data/laz_rd_unadj.Rdata"))
+load(here("primary/res_data/laz_t1_pval_unadj.Rdata"))
+load(here("primary/res_data/laz_t2_pval_unadj.Rdata"))
 
 
 # --------------------------------------
@@ -63,15 +63,13 @@ t2pvalh3 <- laz_t2_h3_pval_unadj_j
 # load the anthropometry analysis data
 # and subset to analysis children
 #---------------------------------------
-setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Data/Final/Jade")
-try(setwd("~/Dropbox/WBK-primary-analysis/Data/Final/Jade/"))
-ad1 <- read.csv("midline-anthro.csv")
+ad1 <- read.csv(here("primary/data/washb-kenya-midline-anthro-public.csv"))
 head(ad1)
 #Subset to target children without extreme HAZ values
 ad1 <- ad1[ad1$targetchild==1 & !is.na(ad1$haz) & (ad1$haz >=-5 | ad1$haz <= 5),]
 
 
-ad2 <- read.csv("endline-anthro.csv")
+ad2 <- read.csv(here("primary/data/washb-kenya-endline-anthro-public.csv"))
 head(ad2)
 #Subset to target children without extreme HAZ values
 ad2 <- ad2[ad2$targetchild==1 & !is.na(ad2$haz) & (ad2$haz >=-5 | ad2$haz <= 5),]
@@ -192,9 +190,8 @@ cols=c(black,chartr,blue,teal,green,orange,red,magent)
 # --------------------------------------
 #  make a multi-panel density plot - year 1
 # --------------------------------------
-try(setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/"))
-try(setwd("~/Dropbox/WBK-primary-analysis/Results/"))
-pdf("Figures/kenya-laz1.pdf",width=15,height=15)
+
+pdf(here("primary/res_figures/kenya-laz1.pdf"),width=15,height=15)
 
 # set up the layout
 lo <- layout(mat=matrix(1:9,nrow=3,ncol=3,byrow=T))
@@ -224,8 +221,7 @@ dev.off()
 # --------------------------------------
 #  make a multi-panel density plot - year 2
 # --------------------------------------
-setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/")
-pdf("Figures/kenya-laz2.pdf",width=15,height=15)
+pdf(here("primary/res_figures/kenya-laz2.pdf"),width=15,height=15)
 
 # set up the layout
 lo <- layout(mat=matrix(1:9,nrow=3,ncol=3,byrow=T))

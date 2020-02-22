@@ -13,19 +13,19 @@
 # preamble
 # --------------------------------------
 
-rm(list=ls())
-library(RColorBrewer)
-library(scales)
-library(foreign)
+
+
+
+
 
 # --------------------------------------
 # load the analysis output files
 # --------------------------------------
-try(setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade/"))
-try(setwd("~/Dropbox/WBK-primary-analysis/Results/Jade/"))
-load("stunt_rd_unadj.RData")
-load("stunt_pr_unadj.RData")
-load("stunt_prev.RData")
+
+
+load(here("primary/res_data/stunt_rd_unadj.RData"))
+load(here("primary/res_data/stunt_pr_unadj.RData"))
+load(here("primary/res_data/stunt_prev.RData"))
 # --------------------------------------
 # format the objects for plotting
 # --------------------------------------
@@ -43,9 +43,8 @@ fuPrev <- stunt_t2_prev_j
 h1pr <- stunt_t2_h1_pr_unadj_j
 h3pr <- stunt_t2_h3_pr_unadj_j
 
-try(setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Figures/"))
-try(setwd("~/Dropbox/WBK-primary-analysis/Results/Figures/"))
-pdf("kenya-stunt.pdf",width=14,height=4)
+
+pdf(here("primary/res_figures/kenya-stunt.pdf"),width=14,height=4)
 
 
 # set up color palette

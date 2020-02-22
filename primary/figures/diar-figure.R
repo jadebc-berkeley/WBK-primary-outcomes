@@ -23,19 +23,14 @@
 # preamble
 # --------------------------------------
 
-rm(list=ls())
-library(RColorBrewer)
-library(scales)
-library(foreign)
-
 # --------------------------------------
 # load the analysis output files
 # --------------------------------------
-try(setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Jade/"))
-try(setwd("~/Dropbox/WBK-primary-analysis/Results/Jade/"))
-load("diar_rd_unadj.RData")
-load("diar_pr_unadj.RData")
-load("diar_prev.RData")
+
+
+load(here("primary/res_data/diar_rd_unadj.RData"))
+load(here("primary/res_data/diar_pr_unadj.RData"))
+load(here("primary/res_data/diar_prev.RData"))
 
 # --------------------------------------
 # format the objects for plotting
@@ -78,9 +73,8 @@ cols=c(black,chartr,blue,teal,green,orange,red,magent)
 #--------------------------------------------------------------------
 # Year 2 diarrhea figure 
 #--------------------------------------------------------------------
-try(setwd("C:/Users/andre/Dropbox/WBK-primary-analysis/Results/Figures/"))
-try(setwd("~/Dropbox/WBK-primary-analysis/Results/Figures/"))
-pdf("kenya-diar.pdf",width=14,height=4)
+
+pdf(here("primary/res_figures/kenya-diar.pdf"),width=14,height=4)
 
 
 ytics <- seq(18,36,by=2)  #<----------Set the Y-axis range here
