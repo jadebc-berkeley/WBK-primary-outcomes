@@ -1,4 +1,11 @@
 rm(list=ls())
+if(!require(here)){
+  install.packages("here")
+  library(here)
+} else{
+  library(here)
+}
+
 if(!require(plyr)){
   install.packages("plyr")
   library(plyr)
