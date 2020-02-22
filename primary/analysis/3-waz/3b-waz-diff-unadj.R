@@ -66,7 +66,12 @@ rownames(waz_t2_h3_rd_unadj_j)=c("Nutrition + WSH vs Nutrition",
                                    "Nutrition + WSH vs WSH")
 
 
+waz_t1_h1_rd_unadj_j
+waz_t1_h3_rd_unadj_j
+waz_t2_h1_rd_unadj_j
+waz_t2_h3_rd_unadj_j
+
 save(waz_t1_h1_rd_unadj_j, waz_t1_h3_rd_unadj_j,
      waz_t2_h1_rd_unadj_j, waz_t2_h3_rd_unadj_j,
-     file=here("primary/res_data/~waz_rd_unadj.RData"))
+     file=here("primary/res_data/waz_rd_unadj.RData"))
 
