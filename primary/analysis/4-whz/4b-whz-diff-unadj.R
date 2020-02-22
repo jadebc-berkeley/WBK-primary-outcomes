@@ -65,6 +65,11 @@ whz_t2_h3_rd_unadj_j=t(sapply(trlist,function(x) washb_ttest(Y=e$whz,tr=e$tr,
 rownames(whz_t2_h3_rd_unadj_j)=c("Nutrition + WSH vs Nutrition",
                                    "Nutrition + WSH vs WSH")
 
+whz_t1_h1_rd_unadj_j
+whz_t1_h3_rd_unadj_j
+whz_t2_h1_rd_unadj_j
+whz_t2_h3_rd_unadj_j
+
 
 save(whz_t1_h1_rd_unadj_j, whz_t1_h3_rd_unadj_j,
      whz_t2_h1_rd_unadj_j, whz_t2_h3_rd_unadj_j,
